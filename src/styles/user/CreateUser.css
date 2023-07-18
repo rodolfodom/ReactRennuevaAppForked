@@ -1,0 +1,93 @@
+.ModalBackground {
+    background-color: rgba(32,35,41,.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  .ModalClose {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 70px;
+    color: white;
+  }
+
+.DivModal {
+    background-color: #202329;
+    border-radius: 10px;
+    padding: 20px;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .DivModal h1 {
+    font-size: 30px;
+    margin: 0;
+  }
+  
+  .DivModal input {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    padding: 0 10px;
+    font-size: 20px;
+    margin: 10px 0;
+  }
+  
+  .DivModal button:not(.ModalClose) {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2f80ed;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .DivModal button:hover {
+    background-color: #2b6cb0;
+  }
+  
+  .DivModal button:disabled {
+    background-color: #2f80ed;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .DivModal button:disabled:hover {
+    background-color: #2f80ed;
+  }
+  
+  .DivModal p {
+    font-size: 20px;
+    margin: 0;
+  }
+  
+  .DivModal p span {
+    font-weight: bold;
+  }
+  
+  .DivModal p a {
+    color: #2f80ed;
+    text-decoration: none;
+  }
+  
+  .DivModal p a:hover {
+    text-decoration: underline;
+}
