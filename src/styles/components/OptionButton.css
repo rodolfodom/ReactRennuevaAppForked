@@ -1,3 +1,6 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;700&display=swap");
+
 .OptionButton {
     display: flex;
     align-items: center;
@@ -18,7 +21,7 @@
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-family: 'Roboto', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: "Titillium Web", sans-serif;
 
     &:hover {
         background-color: #ccc;

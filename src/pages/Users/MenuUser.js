@@ -4,6 +4,7 @@ import '../../styles/user/MenuUser.css'
 import { TodoContext } from '../../context/index.js';
 import { Modal } from './CreateUser.js';
 import { OptionButton } from '../../components/OptionButton';
+import Example from "../../components/Table";
 
 function MenuUser() {
   const [datos, setDatos] = useState([]);
@@ -17,44 +18,15 @@ function MenuUser() {
 
 
   return (
-    <div className="Container">
-      <h1 className="Title">Usuarios</h1>
-      <input className="Search" type="text" placeholder="Buscar" />
+    <div>
+      <h1 className="header" >Usuarios</h1>
 
-      <div className="TableContainer">
-      <table className="HeaderTable">
-        <thead>
-          <tr>
-            <th className="ComponentTable">ID</th>
-            <th className="ComponentTable">Nombre</th>
-            <th className="ComponentTable">Apellido</th>
-            <th className="ComponentTable">Email</th>
-            <th className="ComponentTable">Registrado</th>
-            <th className="ComponentTable">Roles</th>
-            <th className="ComponentTable">Opciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {datos.map((item) => (
-            <tr key={item.id}>
-              <td className="ComponentTable">{item.id}</td>
-              <td className="ComponentTable">{item.name}</td>
-              <td className="ComponentTable">{item.apellido}</td>
-              <td className="ComponentTable">{item.email}</td>
-              <td className="ComponentTable">{item.registered}</td>
-              <td className="ComponentTable">{item.rol}</td>
-              <td className="ComponentTable"> 
-                <OptionButton setOpenModal={setOpenModalEdit} text = "Editar Usuario" color = "yellow" />  
-                <OptionButton setOpenModal={setOpenModalDelete} text = "Borrar Usuario" color = "red" /> 
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <Example />
+      <div className="create-button">
+      <OptionButton  setOpenModal={setOpenModalCreate} text = "Crear Usuario" color = "#40916C" />
+
+      </div>
       
-      <OptionButton setOpenModal={setOpenModalCreate} text = "Crear Usuario" color = "#40916C" />
-
       
       {openModalCreate && (
         <Modal mode={"CREAR"}>

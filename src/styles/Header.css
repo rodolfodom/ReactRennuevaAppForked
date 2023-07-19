@@ -1,6 +1,4 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;700&display=swap");
-
 * {
 	padding: 0;
 	margin: 0;
@@ -11,6 +9,7 @@
     width: 130px;
 
 }
+
 :root {
 	--mainColor: #fff;
 	--mainColorLight: #5767aa;
@@ -26,6 +25,8 @@ header {
 	padding: 0 2rem;
 	background-color: var(--mainColor);
 	color: var(--textColor);
+	border-bottom: 2px solid #000;
+	
 }
 
 nav a {
@@ -33,6 +34,7 @@ nav a {
 	margin: 0 1rem;
 	color: var(--textColor);
 	text-decoration: none;
+	
 
 }
 
@@ -95,7 +97,6 @@ nav {
     nav a{
         
         font-size: 1.5rem;
-        
         
     }
     
