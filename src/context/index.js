@@ -1,8 +1,12 @@
 import React from 'react';
+import { Light, Dark } from "../styles/Themes.jsx";
 const TodoContext = React.createContext();
 
 
+
 function TodoProvider({ children }) {
+  const [theme, setTheme] = React.useState("light");
+  const themeStyle = theme === "light" ? Light : Dark;
   const [openModalCreate, setOpenModalCreate] = React.useState(false);
   const [openModalEdit, setOpenModalEdit] = React.useState(false);
   const [openModalDelete, setOpenModalDelete] = React.useState(false);
@@ -26,7 +30,7 @@ function TodoProvider({ children }) {
   
   return (
     <TodoContext.Provider value={{totalListlUsers,
-    openModalCreate, setOpenModalCreate, openModalEdit, setOpenModalEdit, openModalDelete, setOpenModalDelete}} >
+    openModalCreate, setOpenModalCreate, openModalEdit, setOpenModalEdit, openModalDelete, setOpenModalDelete, theme, setTheme,themeStyle}} >
       {children}
     </TodoContext.Provider>
   );

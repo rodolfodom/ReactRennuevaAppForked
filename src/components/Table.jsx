@@ -50,7 +50,7 @@ const data = [
   },
 ];
 
-const Example = () => {
+const UserTable = () => {
   //should be memoized or stable
   const columns = useMemo(
     () => [
@@ -86,4 +86,4 @@ const Example = () => {
   return <MaterialReactTable columns={columns} data={data} />;
 };
 
-export default Example;
+export default UserTable;

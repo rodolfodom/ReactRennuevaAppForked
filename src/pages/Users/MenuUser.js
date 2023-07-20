@@ -4,7 +4,7 @@ import '../../styles/user/MenuUser.css'
 import { TodoContext } from '../../context/index.js';
 import { Modal } from './CreateUser.js';
 import { OptionButton } from '../../components/OptionButton';
-import Example from "../../components/Table";
+import UserTable from "../../components/Table";
 
 function MenuUser() {
   const [datos, setDatos] = useState([]);
@@ -16,12 +16,17 @@ function MenuUser() {
     setDatos(totalListlUsers);
   }, []);
 
-
+  const style = {
+    height: "100vh",  
+  }
   return (
-    <div>
+    <div style={style}>
       <h1 className="header" >Usuarios</h1>
 
-      <Example />
+      <UserTable />
+
+
+
       <div className="create-button">
       <OptionButton  setOpenModal={setOpenModalCreate} text = "Crear Usuario" color = "#40916C" />
 
