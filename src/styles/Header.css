@@ -19,9 +19,11 @@
 
 header {
 	display: flex;
-	align-items: center;
 	justify-content: space-between;
+	align-items: center;
+
 	height: 80px;
+	width: 100vh;
 	padding: 0 2rem;
 	background-color: var(--mainColor);
 	color: var(--textColor);

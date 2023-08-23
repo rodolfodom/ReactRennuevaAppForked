@@ -1,0 +1,22 @@
+.etiquetaTabla {
+    text-align: center;
+    border: 1px solid black;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+  }
+.datoTabla {
+    text-align: center;
+    border: 1px solid black;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .table-container {
+    max-height: 400px; /* Set your desired height */
+    overflow: auto;
+  }
+  

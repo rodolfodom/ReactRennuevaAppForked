@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const Layout = ({ children }) => {
 	  	return (
-		<div className="Layout">
+		<div style={{width: '100%'}}>
 			<Header />			
 			{children}
 		</div>
@@ -19,5 +19,6 @@ const Container = styled.div`
   overflow: hidden;
   
 `;
+
 
 export default Layout;

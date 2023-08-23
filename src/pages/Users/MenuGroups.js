@@ -7,8 +7,9 @@ import { OptionButton } from '../../components/OptionButton';
 import UserTable from "../../components/Table";
 import CUDButtons from "../../containers/CUDButtons";
 import BarsChart from "../../components/BarsChart";
+import GroupTable from "../../components/GroupTable";
 
-function MenuUser() {
+function MenuGroups() {
 
   const handleAdd = () => {
     // Lógica para agregar
@@ -35,10 +36,10 @@ function MenuUser() {
 
   return (
     <div className="container" >
-      <h1 >Usuarios</h1>
+      <h1 >Grupos</h1>
 
       <CUDButtons />
-      <UserTable />
+      <GroupTable />
       <div  style={{ width: "450px", height: "225px",padding : "10px", margin: "10px" }}>
         <BarsChart />
       </div>
@@ -73,4 +74,4 @@ function MenuUser() {
 
 }
 
-export { MenuUser };
+export { MenuGroups };

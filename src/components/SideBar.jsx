@@ -7,6 +7,8 @@ import {
   AiOutlineApartment,
   AiOutlineSetting,
 } from "react-icons/ai";
+import { IoPersonCircle,IoPersonOutline ,IoLeafOutline,IoFileTrayFullOutline,IoStatsChartOutline,IoSpeedometerOutline,
+IoRocketOutline,IoPeopleCircleSharp,IoSettingsOutline,IoLogOutOutline,IoArrowForwardOutline} from "react-icons/io5";
 import { MdOutlineAnalytics, MdLogout } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
@@ -24,7 +26,7 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
   return (
     <Container isOpen={sidebarOpen} themeUse={theme}>
       <button className="Sidebarbutton" onClick={ModSidebaropen}>
-        <AiOutlineLeft />
+        <IoArrowForwardOutline />
       </button>
       {linksArray.map(({ icon, label, to }) => (
         <div className="LinkContainer" key={label}>
@@ -50,66 +52,57 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
         </div>
       ))}
       <Divider />
-      <div className="Themecontent">
-        {sidebarOpen && <span className="titletheme">Dark mode</span>}
-        <div className="Togglecontent">
-          <div className="grid theme-container">
-            <div className="content">
-              <div className="demo">
-                <label className="switch" istheme={theme}>
-                  <input
-                    istheme={theme}
-                    type="checkbox"
-                    className="theme-swither"
-                    onClick={CambiarTheme}
-                  ></input>
-                  <span istheme={theme} className="slider round"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </Container>
   );
 }
 //#region Data links
 const linksArray = [
   {
-    label: "Home",
-    icon: <AiOutlineHome />,
+    label: "Panel",
+    icon: <IoStatsChartOutline />,
     to: "/",
   },
   {
-    label: "Estadisticas",
-    icon: <MdOutlineAnalytics />,
+    label: "Administrador",
+    icon: <IoPeopleCircleSharp />,
+    to: "/",
+  },
+  {
+    label: "Usuarios",
+    icon: <IoPersonCircle />,
+    to: "/",
+  },
+  {
+    label: "Residuos",
+    icon: <IoLeafOutline />,
+    to: "/",
+  },
+  {
+    label: "Generadores",
+    icon: <IoRocketOutline />,
     to: "/estadisticas",
   },
   {
-    label: "Productos",
-    icon: <AiOutlineApartment />,
+    label: "Transportistas",
+    icon: <IoSpeedometerOutline />,
     to: "/productos",
   },
   {
-    label: "Diagramas",
-    icon: <MdOutlineAnalytics />,
+    label: "Responsivas",
+    icon: <IoFileTrayFullOutline />,
     to: "/diagramas",
-  },
-  {
-    label: "Reportes",
-    icon: <MdOutlineAnalytics />,
-    to: "/reportes",
   },
 ];
 const secondarylinksArray = [
   {
     label: "Configuración",
-    icon: <AiOutlineSetting />,
+    icon: <IoSettingsOutline />,
     to: "/null",
   },
   {
     label: "Salir",
-    icon: <MdLogout />,
+    icon: <IoLogOutOutline />,
     to: "/null",
   },
 ];
@@ -123,6 +116,7 @@ const Container = styled.div`
   border-bottom: 2px solid black;
   position: sticky;
   padding-top: 20px;
+
   .Sidebarbutton {
     position: absolute;
     top: ${v.xxlSpacing};
@@ -193,7 +187,7 @@ const Container = styled.div`
       &.active {
         .Linkicon {
           svg {
-            color: ${(props) => props.theme.bg4};
+            color: ${(props) => props.theme.primary};
           }
         }
       }
@@ -254,8 +248,7 @@ const Container = styled.div`
               left: 0;
               right: 0;
               bottom: 0;
-              background: ${({ themeUse }) =>
-                themeUse === "light" ? v.lightcheckbox : v.checkbox};
+              background: white;
 
               transition: 0.4s;
               &::before {

@@ -13,7 +13,7 @@ function Navbar() {
 	};
 
 	return (
-		<header className="header-container">
+		<header style={{width : '100%'}}>
 			 <img src={Rennueva} alt = "Rennueva" className="logo-header" />
 				
        
