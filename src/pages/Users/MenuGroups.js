@@ -7,6 +7,7 @@ import { OptionButton } from '../../components/OptionButton';
 import UserTable from "../../components/Table";
 import CUDButtons from "../../containers/CUDButtons";
 import BarsChart from "../../components/BarsChart";
+import BarsChartGroup from "../../components/BarsChartGroup";
 import GroupTable from "../../components/GroupTable";
 
 function MenuGroups() {
@@ -41,7 +42,7 @@ function MenuGroups() {
       <CUDButtons />
       <GroupTable />
       <div  style={{ width: "450px", height: "225px",padding : "10px", margin: "10px" }}>
-        <BarsChart />
+        <BarsChartGroup />
       </div>
 
 

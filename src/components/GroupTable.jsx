@@ -9,7 +9,7 @@ const GroupTable = ({ datos }) => {
     useEffect(() => {
         // Realiza una petición GET a una URL específica
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-users/')
+            .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
             .then(response => {
                 const data = response.data;
                 setClientes(data);
@@ -22,7 +22,7 @@ const GroupTable = ({ datos }) => {
     }, []);
 
     return (
-      <div className='table-container'>
+      <div className='table-containerGroup'>
       <table>
         <thead>
           <tr>
@@ -37,7 +37,7 @@ const GroupTable = ({ datos }) => {
             console.log(fila),
             
             <tr key={index}>
-              <td className='datoTabla'>{fila.first_name + " " + fila.last_name }</td>
+              <td className='datoTablaGroup'>{fila.name}</td>
             </tr>
           ))}
         </tbody>
