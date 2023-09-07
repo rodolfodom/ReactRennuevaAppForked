@@ -2,14 +2,14 @@ import React , {useState, useEffect}from 'react';
 import '../styles/Table.css';
 import axios from 'axios';
 
-const UserTable = ({ datos }) => {
+const ResidueTable = ({ datos }) => {
     const [clientes, setClientes] = useState([]);
 
 
     useEffect(() => {
         // Realiza una petición GET a una URL específica
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-users/')
+            .get('http://127.0.0.1:8000/Rennueva/get-all-residue/')
             .then(response => {
                 const data = response.data;
                 setClientes(data);
@@ -22,28 +22,27 @@ const UserTable = ({ datos }) => {
     }, []);
 
     return (
-      <div className='table-container'>
+      <div className='table-containerGroup'>
       <table>
         <thead>
           <tr>
             <th className='etiquetaTabla'>Nombre</th>
-            <th className='etiquetaTabla'>Correo</th>
-            <th className='etiquetaTabla'>Grupos</th>
-            <th className='etiquetaTabla'>Telefono</th>
-            <th className='etiquetaTabla'>Direccion</th>
+            <th className='etiquetaTabla'>Descripcion</th>
+
 
           </tr>
         </thead>
         <tbody>
           {clientes.map((fila, index) => (
-         
+            console.log("###############################"),
+            console.log(clientes),
+            console.log(fila),
             
             <tr key={index}>
-              <td className='datoTabla'>{fila.first_name + " " + fila.last_name }</td>
-              <td className='datoTabla'>{fila.email}</td>
-              <td className='datoTabla'>{fila.groups}</td>
-              <td className='datoTabla'>{fila.telefono}</td>
-              <td className='datoTabla'>{fila.direccion}</td>
+              <td className='datoTablaGroup'>{fila.nombre}</td>
+              <td className='datoTablaGroup'>{fila.descripcion}</td>
+
+                
             </tr>
           ))}
         </tbody>
@@ -52,4 +51,4 @@ const UserTable = ({ datos }) => {
     );
   }
 
-export default UserTable;
+export default ResidueTable;

@@ -14,11 +14,11 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate }) => {
 
       </div>
         <div className="create-button">
-        <OptionButton setOpenModal={setOpenModalCreate} text="Editar Usuario" color="#eeef20" />
+        <OptionButton setOpenModal={setOpenModalEdit} text="Editar Usuario" color="#eeef20" />
 
       </div>
         <div className="create-button">
-        <OptionButton setOpenModal={setOpenModalCreate} text="Borrar Usuario" color="red" />
+        <OptionButton setOpenModal={setOpenModalDelete} text="Borrar Usuario" color="red" />
 
       </div>
         </div>

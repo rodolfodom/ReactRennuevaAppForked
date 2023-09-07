@@ -1,15 +1,16 @@
 
 import React, { useState, useEffect, useContext } from "react";
-import '../../styles/user/MenuUser.css'
-import { TodoContext } from '../../context/index.js';
-import { Modal } from './CreateUser.js';
-import { OptionButton } from '../../components/OptionButton';
-import UserTable from "../../components/Table";
-import CUDButtons from "../../containers/CUDButtons";
-import BarsChart from "../../components/BarsChart";
-
-
-function MenuUser() {
+import '../styles/user/MenuUser.css'
+import { TodoContext } from '../context/index.js';
+import { Modal } from './Users/CreateUser';
+import { OptionButton } from '../components/OptionButton';
+import UserTable from "../components/Table";
+import CUDButtons from "../containers/CUDButtons";
+import BarsChart from "../components/BarsChart";
+import BarsChartVehicle from "../components/BarsChartVehicle";
+import GroupTable from "../components/GroupTable";
+import VehicleTable from "../components/VehicleTable";
+function MenuVehicle() {
 
   const handleAdd = () => {
     // Lógica para agregar
@@ -36,12 +37,12 @@ function MenuUser() {
 
   return (
     <div className="container" >
-      <h1 >Usuarios</h1>
+      <h1 >Vehiculos</h1>
 
       <CUDButtons />
-      <UserTable />
+      <VehicleTable />
       <div  style={{ width: "450px", height: "225px",padding : "10px", margin: "10px" }}>
-        <BarsChart />
+        <BarsChartVehicle />
       </div>
 
 
@@ -74,4 +75,4 @@ function MenuUser() {
 
 }
 
-export { MenuUser };
+export { MenuVehicle };
