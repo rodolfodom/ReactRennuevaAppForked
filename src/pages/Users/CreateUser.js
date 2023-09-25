@@ -1,26 +1,28 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {useState, useContext, useEffect}from 'react';
 import ReactDOM from 'react-dom';
 import '../../styles/user/CreateUser.css';
 import { TodoContext } from '../../context/index.js';
 import axios from 'axios';
-function Modal({ children, mode }) {
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+
+
+function Modal({ children , mode}) {
   console.log("#######################MODEMODEMDEO")
   console.log(mode);
   const [datos, setDatos] = useState([]);
   const [groups, setGroups] = useState([])
-  const [users, setUsers] = useState([])
-
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [first_name, setFirstName] = useState("");
-  const [last_name, setLastName] = useState("");
-
-
-
-
-
-  const { openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
+  const [users,setUsers] = useState([])
+  
+  const { openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete} = useContext(TodoContext);
   const closeModal = () => {
     if (openModalCreate) {
       setOpenModalCreate(false);
@@ -33,105 +35,33 @@ function Modal({ children, mode }) {
     }
   };
   const handleSubmit = (e) => {
-
-
-
-
     e.preventDefault();
     // Agregar los datos ingresados al arreglo de datos
     const nuevoDato = {
       user: e.target.user.value,
-      password: e.target.password.value,
+      password: e.target.password.value,  
       email: e.target.email.value,
       first_name: e.target.nombre.value,
-      last_name: e.target.apellido.value,
+      last_name: e.target.apellido.value, 
       group: e.target.rol.value
     };
     console.log(nuevoDato)
-    console.log("E#################################R")
-    console.log(document.getElementById("mySelect"))
-    console.log(user)
-
-    const antiguo_user = document.getElementById("mySelect")
-    var user_ant = antiguo_user.value
-
-    const editarDato = {
-      user: e.target.user.value,
-      password: e.target.password.value,
-      email: e.target.email.value,
-      first_name: e.target.nombre.value,
-      last_name: e.target.apellido.value,
-     
-      antiguoUser:  user_ant
-    };
-
-    const deleteDato = {
-      user : user_ant
-    }
-
-
-    
-
     // Realiza una petición GET a una URL específica
-
-    
-      const crear = mode === "CREAR" ? (
-        axios
-          .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
-          .then(response => {
-            const data = response.data;
-            console.log(data)
-
-
-
-
-          })
-          .catch(error => {
-            console.error(error);
-          })
-      ) : null
-    
-      const editar = mode === "EDITAR" ? (
-        axios
-          .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
-          .then(response => {
-            const data = response.data;
-            console.log(data)
-            e.target.reset();
-            closeModal()
-            // Limpiar los campos del formulario
+    axios
+    .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
+    .then(response => {
+        const data = response.data;
+        console.log(data)
+        
    
+      
 
+    })
+    .catch(error => {
+        console.error(error);
+    });
 
-
-
-          })
-          .catch(error => {
-            console.error(error);
-          })
-      ) : null
-   
-      const borrar = mode === "BORRAR" ? (
-
-        axios
-          .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
-          .then(response => {
-            const data = response.data;
-            console.log(data)
-            e.target.reset();
-            closeModal()
-
-
-
-
-          })
-          .catch(error => {
-            console.error(error);
-          })
-      ) : null
     
-
-
 
 
 
@@ -143,40 +73,40 @@ function Modal({ children, mode }) {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
-      .then(response => {
+    .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
+    .then(response => {
         const data = response.data;
         setGroups(data)
         console.log("######################GRUPOS##################################")
+       
+      
+        
+        
 
-
-
-
-
-      })
-      .catch(error => {
+    })
+    .catch(error => {
         console.error(error);
-      });
+    });
 
   }, []);
 
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-users/')
-      .then(response => {
+    .get('http://127.0.0.1:8000/Rennueva/get-all-users/')
+    .then(response => {
         const data = response.data;
         setUsers(data)
         console.log("######################GRUPOS##################################")
+       
+      
+        
+        
 
-
-
-
-
-      })
-      .catch(error => {
+    })
+    .catch(error => {
         console.error(error);
-      });
+    });
 
   }, []);
 
@@ -186,83 +116,92 @@ function Modal({ children, mode }) {
     // Buscar el dato seleccionado en el arreglo de datos
     const datoEncontrado = users.find((users) => users.user === selectedOption);
     console.log(datoEncontrado)
-    setUser(datoEncontrado.user);
-    setPassword(datoEncontrado.password);
-    setEmail(datoEncontrado.email);
-    setFirstName(datoEncontrado.first_name);
-    setLastName(datoEncontrado.last_name);
-
-
+    setState({ nombre: datoEncontrado.users,
+      apellido: datoEncontrado.apellido, 
+      user: datoEncontrado.user, 
+      email: datoEncontrado.email, 
+      password: datoEncontrado.password,
+      rol: datoEncontrado.rol });
+    // Actualizar el estado con el dato encontrado
+    
   }
 
 
   return ReactDOM.createPortal(
     
 
-
     <div className="ModalBackground">
-
+    
       <div className='DivModal'>
-        <button className="ModalClose" onClick={closeModal}>
+      <button className="ModalClose" onClick={closeModal}>
           <span>&times;</span>
         </button>
-        <form onSubmit={handleSubmit}>
-          <div style={{ margin: "10px" }}>
-            {mode === "EDITAR" || mode === "BORRAR" ? (
-              <select
-                style={{ width: "100%", height: "40px", backgroundColor: "white", borderRadius: "5px" }}
-                name="rol"
-                required
-                onChange={handleSelectChange}
-                id = "mySelect"
-              >
-                {
-                  users.map((name, index) => (
-                    <option key={index}>{name.user}</option>
-                  ))
-                }
-              </select>
-            ) : null}
-          </div>
+      <form   onSubmit={handleSubmit}>
+      <div style={{ margin: "10px"}}>
+      {mode === "EDITAR" || mode === "BORRAR" ? (
+        <select
+          style={{ width: "100%", height: "40px", backgroundColor: "white", borderRadius: "5px" }}
+          name="rol"
+          required
+          onChange={handleSelectChange}
+        >
+          {
+            users.map((name, index) => (
+              <option key={index}>{name.user}</option>
+            ))
+          }
+        </select>
+      ) : null}
+         </div>
+        
+        <label >
+          Nombre:
+          <input  type="text" name="nombre" required />
+        </label>
+        <label>
+          Apellido:
+          <input  type="text" name="apellido" required />
+        </label>
+        <label>
+          Nombre de Usuario:
+          <input  type="text" name="user" required />
+        </label>
+        <label>
+          Email:
+          <input  type="email" name="email" required />
+        </label>
+        <label>
+          Password:
+          <input  type="password" name="password" required />
+        </label>
+        <label  >
+          Rol:
+          
+        </label>
+        
 
-          <label >
-            Nombre:
-            <input type="text" name="nombre" required value={first_name} onChange={(e) => setFirstName(e.target.value)}/>
-          </label>
-          <label>
-            Apellido:
-            <input type="text" name="apellido" required value={last_name} onChange={(e) => setLastName(e.target.value)}/>
-          </label>
-          <label>
-            Nombre de Usuario:
-            <input type="text" name="user" required value={user} onChange={(e) => setUser(e.target.value)}/>
-          </label>
-          <label>
-            Email:
-            <input type="email" name="email" required value={email} onChange={(e) => setEmail(e.target.value)}/>
-          </label>
-          <label>
-            Password:
-            <input type="password" name="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-          </label>
-          <label  >
-            Rol:
+          
 
-          </label>
-          <div style={{ margin: "10px" }}>
-            <select style={{ width: "100%", height: "40px", backgroundColor: "white", borderRadius: "5px" }} name="rol" required>
+      
 
-              {
-                groups.map((name) => (
-                  <option>{name.name} </option>
-                ))
-              }
-            </select>
-          </div>
 
-          <button style={{ marginTop: "20px" }} type="submit">{mode}</button>
 
-        </form>
+
+
+        <div style={{ margin: "10px"}}>
+        <select style = {{width : "100%", height : "40px", backgroundColor : "white", borderRadius: "5px"}} name="rol" required>
+     
+            {
+              groups.map((name) => (
+                <option>{name.name} </option>
+              ))
+            }
+          </select>
+        </div>
+
+        <button style={{marginTop : "20px"}} type="submit">{mode}</button>
+        
+      </form>
       </div>
     </div>,
     document.getElementById('modal')

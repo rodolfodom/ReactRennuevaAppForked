@@ -1,12 +1,18 @@
 import React from 'react';
 import Header from '../components/Header';
-import { Sidebar } from '../components/SideBar';
 import styled from "styled-components";
+import Sidebar from './LayoutSideBar';
+
+
 
 const Layout = ({ children }) => {
 	  	return (
 		<div style={{width: '100%'}}>
-			<Header />			
+			
+			<Header  />
+			<Sidebar />
+			
+			
 			{children}
 		</div>
 	);

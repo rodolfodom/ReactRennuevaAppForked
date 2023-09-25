@@ -1,0 +1,62 @@
+/* Sidebar.css */
+* {
+  font-family: "Titillium Web", sans-serif;
+}
+
+.sidebar {
+    width: 0;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1;
+    color: white;
+    margin-top: 80px;
+    border-right: 1px solid #e5e5e5;
+    
+
+  }
+  
+.sidebar.open {
+    width: 250px;
+  }
+  
+.toggle-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Agrega estilos adicionales según tu diseño */
+
+.h1-side {
+  display: flex;
+  width: 100%;
+  margin-left: 30px;
+  margin-bottom: 15px;
+  color: black;
+  
+}
+.label-side {
+  display: flex;
+  width: 80%;
+  margin-left: 20px;
+  height: 40px;
+  border: 1px solid black;
+  color: black;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  align-items: center;
+  
+
+  
+}

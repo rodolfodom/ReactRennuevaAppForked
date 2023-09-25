@@ -11,7 +11,7 @@ import BarsChartVehicle from "../components/BarsChartVehicle";
 import ResidueTable from "../components/ResidueTable";
 import VehicleTable from "../components/VehicleTable";
 
-function MenuResidue() {
+function MenuCarrier() {
 
   const handleAdd = () => {
     // Lógica para agregar
@@ -40,7 +40,7 @@ function MenuResidue() {
     <div className="container" >
       <h1 >Residuos</h1>
 
-      <CUDButtons />
+      <CUDButtons model = "Carrier" />
       <ResidueTable />
       <div  style={{ width: "450px", height: "225px",padding : "10px", margin: "10px" }}>
         <BarsChartVehicle />
@@ -76,4 +76,4 @@ function MenuResidue() {
 
 }
 
-export { MenuResidue };
+export { MenuCarrier };

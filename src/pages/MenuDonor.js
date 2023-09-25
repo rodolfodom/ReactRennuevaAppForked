@@ -40,7 +40,7 @@ function MenuResidue() {
     <div className="container" >
       <h1 >Residuos</h1>
 
-      <CUDButtons />
+      <CUDButtons model = "Driver"/>
       <ResidueTable />
       <div  style={{ width: "450px", height: "225px",padding : "10px", margin: "10px" }}>
         <BarsChartVehicle />

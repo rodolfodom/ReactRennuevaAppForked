@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import '../styles/user/MenuUser.css'
 import { TodoContext } from '../context/index.js';
-import { Modal } from './Users/CreateUser';
+import { Modal } from './Users/ModalUser';
 import { OptionButton } from '../components/OptionButton';
 import UserTable from "../components/Table";
 import CUDButtons from "../containers/CUDButtons";
@@ -40,7 +40,7 @@ function MenuResidue() {
     <div className="container" >
       <h1 >Residuos</h1>
 
-      <CUDButtons />
+      <CUDButtons model = "Residue" />
       <ResidueTable />
       <div  style={{ width: "450px", height: "225px",padding : "10px", margin: "10px" }}>
         <BarsChartVehicle />
