@@ -2,15 +2,17 @@ import React from 'react';
 import Header from '../components/Header';
 import styled from "styled-components";
 import Sidebar from './LayoutSideBar';
-
+import ResponsiveAppBar from './LayoutAppBar';
 
 
 const Layout = ({ children }) => {
 	  	return (
 		<div style={{width: '100%'}}>
 			
-			<Header  />
-			<Sidebar />
+			<ResponsiveAppBar />        
+    
+
+
 			
 			
 			{children}

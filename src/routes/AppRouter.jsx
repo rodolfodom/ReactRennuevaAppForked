@@ -14,6 +14,7 @@ import { MenuGenerator } from '../pages/MenuGenerator';
 import { MenuDriver } from '../pages/MenuDriver';
 import { Sidebar } from '../containers/LayoutSideBar';
 import { SignUp } from '../pages/Register';
+import Dashboard from '../pages/Dashboard';
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
@@ -23,7 +24,6 @@ function App() {
     <TodoProvider>
       <BrowserRouter>
 
-        <Container className={sidebarOpen ? "sidebarState active" : ""}>
 
 
           <Routes>
@@ -36,14 +36,12 @@ function App() {
             <Route path="/recycling-center" element={<Layout><MenuRecyclingCenter /></Layout>} />
             <Route path="/generator" element={<Layout><MenuGenerator /></Layout>} />
             <Route path="/driver" element={<Layout><MenuDriver /></Layout>} />
-            <Route path="/register" element={<Layout><SignUp /></Layout>} />
+            <Route path="/register" element={<SignUp />} />
+            <Route path="/dash" element={<Layout><Dashboard /></Layout>} />
 
-
-            
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>
 
-        </Container>
 
 
       </BrowserRouter>
@@ -54,11 +52,7 @@ function App() {
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  
   
 `;
 

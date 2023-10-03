@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,13 +12,18 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 function Copyright(props) {
+
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+      {'© '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Rennueva
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -30,15 +35,43 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+
+
+
+
+
 export default function SignInSide() {
-  const handleSubmit = (event) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState(null);
+  const [token, setToken] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    console.log('username', username);
+    try {
+      // Realizando la petición POST a la API
+      const response = await axios.post('http://127.0.0.1:8000/api-token-auth/', {
+        username,
+        password,
+      });
+      // Almacenar el token en el estado (y posiblemente en un almacenamiento persistente como localStorage)
+      setToken(response.data.token);
+      console.log(response.data.token);
+      setError(null);
+      navigate('/dash');
+    } catch (error) {
+      // Manejar y mostrar error
+      setError('Login Failed');
+      setShowModal(true); // Mostrar el modal de error
+      setUsername(''); // Limpiar campo de usuario
+      setPassword(''); // Limpiar campo de contraseña
+    }
   };
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -72,31 +105,43 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Iniciar Sesion
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Correo Electronico"
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Contraseña"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
+                control={
+                  <Checkbox
+                    value="remember"
+                    color="primary"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                }
                 label="Remember me"
               />
               <Button
@@ -105,25 +150,35 @@ export default function SignInSide() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Ingresar
               </Button>
+              {showModal &&
+                <div>
+                  <Stack sx={{ width: '100%' }} spacing={2}>
+                    <Alert severity="error"> — Usuario o Contraseña Incorrecta — </Alert>
+                  </Stack>
+                </div>
+              }
+
+
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
-                    Forgot password?
+                    Olvidaste tu Contrasena?
                   </Link>
                 </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                {/* <Grid item>
+                  <Link href="/register" variant="body2">
+                    {"Aun no tienes cuenta? Registrate"}
                   </Link>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>
       </Grid>
+
     </ThemeProvider>
   );
 }
