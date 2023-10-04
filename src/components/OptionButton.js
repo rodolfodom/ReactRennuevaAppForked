@@ -1,16 +1,17 @@
-import '../styles/components/OptionButton.css';
+import React from 'react';
+import Button from '@mui/material/Button';
 
-function OptionButton({ setOpenModal , text, color}) {
+function OptionButton({ setOpenModal, text, color }) {
   return (
-    <button
-      className="OptionButton"
-      onClick={
-        () => {
-          setOpenModal(state => !state);
-        }
-      }
-        style={{ backgroundColor: color }}
-    >{text}</button>
+    <Button
+      variant="contained"
+      onClick={() => {
+        setOpenModal(state => !state);
+      }}
+      style={{ backgroundColor: color }}
+    >
+      {text}
+    </Button>
   );
 }
 

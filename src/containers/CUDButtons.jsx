@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { TodoContext } from '../context/index.js';
 import { OptionButton } from '../components/OptionButton';
 
+
 const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
     const {
       totalListlUsers,
@@ -42,22 +43,22 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         <div style={{display :"flex"}}>
         <div className="create-button">
         {model === 'User' ? (
-        <OptionButton setOpenModal={setOpenModalCreate} text="Crear Usuario" color="#40916C" />
+        <OptionButton setOpenModal={setOpenModalCreate} text="Crear Usuario" color="#28a745" />
       ): null } 
       {model === 'Group' ? (
-        <OptionButton setOpenModal={setOpenModalCreateGroup} text="Crear Grupo" color="#40916C" />
+        <OptionButton setOpenModal={setOpenModalCreateGroup} text="Crear Grupo" color="#28a745" />
       ): null }
       {model === 'Carrier' ? (
-        <OptionButton setOpenModal={setOpenModalCreateCarrier} text="Crear Transportista" color="#40916C" />
+        <OptionButton setOpenModal={setOpenModalCreateCarrier} text="Crear Transportista" color="#28a745" />
       ):null}
       {model === 'CollectionCenter' ? (
-        <OptionButton setOpenModal={setOpenModalCreateCollectionCenter} text="Crear Centro de Acopio" color="#40916C" />
+        <OptionButton setOpenModal={setOpenModalCreateCollectionCenter} text="Crear Centro de Acopio" color="##28a745" />
       ) : null}
       {model === 'Donor' ? (
-        <OptionButton setOpenModal={setOpenModalCreateDonor} text="Crear Donador" color="#40916C" />
+        <OptionButton setOpenModal={setOpenModalCreateDonor} text="Crear Donador" color="##28a745" />
       ): null}
       {model === 'Driver' ? (
-        <OptionButton setOpenModal={setOpenModalCreateDriver} text="Crear Conductor" color="#40916C" />
+        <OptionButton setOpenModal={setOpenModalCreateDriver} text="Crear Conductor" color="#28a745" />
       ) : null}
       {model === 'Generator' ? (
         <OptionButton setOpenModal={setOpenModalCreateGenerator} text="Crear Generador" color="#40916C" />
@@ -75,13 +76,13 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       </div>
         <div className="create-button">
         {model === "User"  ? (
-          <OptionButton setOpenModal={setOpenModalEdit} text="Editar Usuario" color="#eeef20" />
+          <OptionButton setOpenModal={setOpenModalEdit} text="Editar Usuario" color="#007bff" />
         ) : null}
         {model === "Group"  ? (
-          <OptionButton setOpenModal={setOpenModalEditGroup} text="Editar Grupo" color="#eeef20" />
+          <OptionButton setOpenModal={setOpenModalEditGroup} text="Editar Grupo" color="##007bff" />
         ) : null}
         {model === "Carrier"  ? (
-          <OptionButton setOpenModal={setOpenModalEditCarreir} text="Editar Transportista" color="#eeef20" />
+          <OptionButton setOpenModal={setOpenModalEditCarreir} text="Editar Transportista" color="##007bff" />
         ) : null }
         {model === "CollectionCenter"  ? (
           <OptionButton setOpenModal={setOpenModalEditCollectionCenter} text="Editar Centro de Acopio" color="#eeef20" />
@@ -108,13 +109,13 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       </div>
         <div className="create-button">
         {model === "User" ? (
-          <OptionButton setOpenModal={setOpenModalDelete} text="Borrar Usuario" color="red" />
+          <OptionButton setOpenModal={setOpenModalDelete} text="Borrar Usuario" color="#dc3545" />
         ): null}
         {model === "Group" ? (
-          <OptionButton setOpenModal={setOpenModalDeleteGroup} text="Borrar Grupo" color="red" />
+          <OptionButton setOpenModal={setOpenModalDeleteGroup} text="Borrar Grupo" color="#dc3545" />
         ): null}
         {model === "Carrier" ? (
-          <OptionButton setOpenModal={setOpenModalDeleteCarrier} text="Borrar Transportista" color="red" />
+          <OptionButton setOpenModal={setOpenModalDeleteCarrier} text="Borrar Transportista" color="#dc3545" />
         ): null}
         {model === "CollectionCenter" ? (
           <OptionButton setOpenModal={setOpenModalDeleteCollectionCenter} text="Borrar Centro de Acopio" color="red" />

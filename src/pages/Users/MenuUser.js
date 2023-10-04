@@ -105,7 +105,7 @@ function MenuUser() {
               <Grid item xs={6}>
 
                 <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                  
+                <Title item xs = {12}>Usuarios</Title>
                   <CUDButtons model="User" />
                   <Title>Usuarios Creados</Title>
                   <UserTable />
