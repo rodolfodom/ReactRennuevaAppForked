@@ -7,8 +7,7 @@ import { OptionButton } from '../../components/OptionButton';
 import UserTable from "../../components/Table";
 import CUDButtons from "../../containers/CUDButtons";
 import BarsChart from "../../components/BarsChart";
-
-import { styled } from '@mui/material/styles';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
@@ -16,6 +15,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import CssBaseline from '@mui/material/CssBaseline';
+import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container';
+import Link from '@mui/material/Link';
+import Chart from '../../components/Chart';
+import Title from '../../components/Title';
 
 function MenuUser() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -27,7 +34,7 @@ function MenuUser() {
       fontSize: 14,
     },
   }));
-  
+
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
@@ -37,11 +44,11 @@ function MenuUser() {
       border: 0,
     },
   }));
-  
+  const defaultTheme = createTheme();
   function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }
-  
+
   const rows = [
     createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
     createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
@@ -73,71 +80,104 @@ function MenuUser() {
     setDatos(totalListlUsers);
   }, []);
 
+  function preventDefault(event) {
+    event.preventDefault();
+  }
   return (
-    <div className="container" >
-      <h1 >Usuarios</h1>
+    <ThemeProvider theme={defaultTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
 
-      <CUDButtons  model = "User"/>
-      <div>
-          <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell></StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-          </div>
-      <div  style={{ width: "450px", height: "225px",padding : "10px", margin: "10px" }}>
-        <BarsChart />
-      </div>
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.grey[100],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="xl">
+            <Grid container spacing={3}>
 
+              <Grid item xs={6}>
 
-
-      {openModalCreate && (
-        <Modal mode={"CREAR"}>
-          La funcionalidad de agregar TODO
-        </Modal>
-      )
-      }
-      {openModalEdit && (
-        <Modal mode={"EDITAR"}>
-          La funcionalidad de editar TODO
-        </Modal>
-      )
-      }
-      {openModalDelete && (
-        <Modal mode={"BORRAR"}>
-          La funcionalidad de borrar TODO
-        </Modal>
-      )
-      }
-
-
-    </div>
+                <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                  <h1>Usuarios</h1>
+                  <CUDButtons model="User" />
+                  <Title>Recent Orders</Title>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Ship To</TableCell>
+                        <TableCell>Payment Method</TableCell>
+                        <TableCell align="right">Sale Amount</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {rows.map((row) => (
+                        <TableRow key={row.id}>
+                          <TableCell>{row.date}</TableCell>
+                          <TableCell>{row.name}</TableCell>
+                          <TableCell>{row.shipTo}</TableCell>
+                          <TableCell>{row.paymentMethod}</TableCell>
+                          <TableCell align="right">{`$${row.amount}`}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+                    See more orders
+                  </Link>
+                  
+                </Paper>
 
 
 
+
+              </Grid>
+              <Grid item xs={12} md={12} lg={6}>
+                <Paper
+                  sx={{
+                    p: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 505,
+                  }}
+                >
+                  <BarsChart />
+                  
+                </Paper>
+                
+              </Grid>
+            </Grid>
+          </Container>
+
+          {openModalCreate && (
+            <Modal mode={"CREAR"}>
+              La funcionalidad de agregar TODO
+            </Modal>
+          )}
+          {openModalEdit && (
+            <Modal mode={"EDITAR"}>
+              La funcionalidad de editar TODO
+            </Modal>
+          )}
+          {openModalDelete && (
+            <Modal mode={"BORRAR"}>
+              La funcionalidad de borrar TODO
+            </Modal>
+          )}
+
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
-
 }
+
 
 export { MenuUser };

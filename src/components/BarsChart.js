@@ -1,35 +1,40 @@
-
 import { Bar } from 'react-chartjs-2';
+import { useTheme } from '@mui/material/styles';
+import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
+import Title from './Title';
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    Filler,
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  BarElement,
+  Tooltip,
+  Legend,
+  Filler,
 } from 'chart.js';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    Filler
-);
+// Generate Sales Data
+function createData(time, amount) {
+  return { time, amount };
+}
 
+const data = [
+  createData('00:00', 0),
+  createData('03:00', 300),
+  createData('06:00', 600),
+  createData('09:00', 800),
+  createData('12:00', 1500),
+  createData('15:00', 2000),
+  createData('18:00', 2400),
+  createData('21:00', 2400),
+  createData('24:00', undefined),
+];
 
-
-export default function Bars() {
- 
-    const [months, setMonths] = useState([]);
+export default function Chart() {
+  const theme = useTheme();
+  const [months, setMonths] = useState([]);
     
     useEffect(() => {
         // Realiza una petición GET a una URL específica
@@ -99,6 +104,12 @@ export default function Bars() {
     };
 
 
-
-    return <Bar data={midata} options={misoptions} />
+  return (
+    <React.Fragment>
+      <Title>Today</Title>
+      <ResponsiveContainer>
+        <Bar data={midata} options={misoptions} />
+      </ResponsiveContainer>
+    </React.Fragment>
+  );
 }
