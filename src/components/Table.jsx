@@ -1,8 +1,27 @@
 import React , {useState, useEffect}from 'react';
 import '../styles/Table.css';
 import axios from 'axios';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TablePagination from '@mui/material/TablePagination';
+import Paper from '@mui/material/Paper';
+import TableContainer from '@mui/material/TableContainer';
 
 const UserTable = ({ datos }) => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Cambiar según tus necesidades
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
     const [clientes, setClientes] = useState([]);
 
 
@@ -22,34 +41,46 @@ const UserTable = ({ datos }) => {
     }, []);
 
     return (
-      <div className='table-container'>
-      <table>
-        <thead>
-          <tr>
-            <th className='etiquetaTabla'>Nombre</th>
-            <th className='etiquetaTabla'>Correo</th>
-            <th className='etiquetaTabla'>Grupos</th>
-            <th className='etiquetaTabla'>Telefono</th>
-            <th className='etiquetaTabla'>Direccion</th>
-
-          </tr>
-        </thead>
-        <tbody>
-          {clientes.map((fila, index) => (
-         
-            
-            <tr key={index}>
-              <td className='datoTabla'>{fila.first_name + " " + fila.last_name }</td>
-              <td className='datoTabla'>{fila.email}</td>
-              <td className='datoTabla'>{fila.groups}</td>
-              <td className='datoTabla'>{fila.telefono}</td>
-              <td className='datoTabla'>{fila.direccion}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: 300, minHeight : 300 }}> {/* Ajusta maxHeight según tus necesidades */}
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Correo</TableCell>
+                <TableCell>Grupos</TableCell>
+                <TableCell>Teléfono</TableCell>
+                <TableCell>Dirección</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {clientes
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((cliente, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{`${cliente.first_name} ${cliente.last_name}`}</TableCell>
+                    <TableCell>{cliente.email}</TableCell>
+                    <TableCell>{cliente.groups}</TableCell>
+                    <TableCell>{cliente.telefono}</TableCell>
+                    <TableCell>{cliente.direccion}</TableCell>
+                  </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={clientes.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
     );
+
+    
   }
 
 export default UserTable;

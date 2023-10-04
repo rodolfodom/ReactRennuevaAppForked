@@ -105,34 +105,11 @@ function MenuUser() {
               <Grid item xs={6}>
 
                 <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                  <h1>Usuarios</h1>
+                  
                   <CUDButtons model="User" />
-                  <Title>Recent Orders</Title>
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Ship To</TableCell>
-                        <TableCell>Payment Method</TableCell>
-                        <TableCell align="right">Sale Amount</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow key={row.id}>
-                          <TableCell>{row.date}</TableCell>
-                          <TableCell>{row.name}</TableCell>
-                          <TableCell>{row.shipTo}</TableCell>
-                          <TableCell>{row.paymentMethod}</TableCell>
-                          <TableCell align="right">{`$${row.amount}`}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-                    See more orders
-                  </Link>
+                  <Title>Usuarios Creados</Title>
+                  <UserTable />
+                 
                   
                 </Paper>
 
@@ -146,7 +123,7 @@ function MenuUser() {
                     p: 4,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 505,
+                    height: 560,
                   }}
                 >
                   <BarsChart />
