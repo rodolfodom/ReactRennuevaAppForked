@@ -1,58 +1,246 @@
-// Sidebar.js
-import React, { useState, useContext } from 'react';
-import { TodoContext } from '../context/index.js';
-import '../styles/Sidebar.css';
-import { useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import * as React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import ResponsiveAppBar from './LayoutAppBar';
 
-function Sidebar(props) {
-  const history = useNavigate();
-  const changepath = (path) => {
-    path === "Usuarios" ? history("/users") : history("/");
-    path === "Grupos" ? history("/groups") : history("/");
-    path === "Residuos" ? history("/residue") : history("/");
-    path === "Transportistas" ? history("/groups") : history("/");
-    path === "Conductor" ? history("/driver") : history("/");
-    path === "Vehiculo" ? history("/vehicle") : history("/");
-    path === "Donador" ? history("/groups") : history("/");
-    path === "CentroReciclaje" ? history("/recycling-center") : history("/");
-    path === "CentroRecoleccion" ? history("/recycling-center") : history("/");
-    path === "Generadores" ? history("/generator") : history("/");
 
+import AccountBoxRoundedIcon from '@mui/icons-material/AccountBoxRounded';
+import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
+import RecyclingRoundedIcon from '@mui/icons-material/RecyclingRounded';
+import Man2RoundedIcon from '@mui/icons-material/Man2Rounded';
+import ElectricBoltRoundedIcon from '@mui/icons-material/ElectricBoltRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import HomeWorkRoundedIcon from '@mui/icons-material/HomeWorkRounded';
+import ElectricRickshawRoundedIcon from '@mui/icons-material/ElectricRickshawRounded';
+import DirectionsRunRoundedIcon from '@mui/icons-material/DirectionsRunRounded';
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+const drawerWidth = 240;
+
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
+
+export default function MiniDrawer() {
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(true);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
   };
-  const { openSideBar, setOpenSideBar } = useContext(TodoContext);
 
-  const toggleSidebar = () => {
-    setOpenSideBar(!openSideBar);
-    console.log("ASDASDAS###############33")
-
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
 
   return (
-    <div className={`sidebar ${openSideBar ? 'open' : ''}`}>
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <ResponsiveAppBar />   
+      <Drawer variant="permanent" open={open}>
 
-      <label className='h1-side' >Modelos</label>
-      {/* Contenido de la barra lateral */}
-      <ul >
-        <button className='label-side' onClick={() => { changepath("Usuarios") }}>
-          <FontAwesomeIcon icon={faUser} /> Usuarios
-        </button>
-        <button className='label-side' onClick={() => { changepath("Grupos") }}><FontAwesomeIcon icon={faUserGroup} />Grupos</button>
-        <button className='label-side' onClick={() => { changepath("Residuos") }}><FontAwesomeIcon icon="fa-solid fa-trash-arrow-up" />Residuo</button>
-        <label className='h1-side'>Viajes </label>
-        <button className='label-side'>Transportista</button>
-        <button className='label-side' onClick={() => { changepath("Conductor") }}>Conductor</button>
-        <button className='label-side' onClick={() => { changepath("Vehiculo") }}>Vehiculo</button>
-        <button className='label-side'>Donador</button>
-        <button className='label-side' onClick={() => { changepath("Generadores") }}>Generador</button>
-        <button className='label-side' onClick={() => { changepath("CentroReciclaje") }}>Centro de Reciclaje</button>
-        <button className='label-side'>Centro de recoleccion</button>
-      </ul>
+        <Box sx={{ display: 'flex', alignItems: 'center',marginTop: .9, marginBottom: .9 }}>
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
+        </Box>
+        
+        
+        <Divider />
+        <List>
+          {['Usuarios', 'Grupos'].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {index % 2 === 0 ? <AccountBoxRoundedIcon/> : <GroupsRoundedIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        
+        <List>
+          {['Residuos', 'Generadores', 'Donadores'].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {index  === 0 ? <RecyclingRoundedIcon /> : null}
+                  {index  === 1 ? <ElectricBoltRoundedIcon /> : null}
+                  {index  === 2 ? <Man2RoundedIcon /> : null}
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {['Centros Reciclaje', 'Centros Recoleccion', "Conductor", "Transportista"].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                 
+                  {index  === 0 ? <HomeRoundedIcon /> : null}
+                  {index  === 1 ? <HomeWorkRoundedIcon /> : null}
+                  {index  === 2 ? <DirectionsRunRoundedIcon /> : null}
+                  {index  === 3 ? <ElectricRickshawRoundedIcon /> : null}
+                  
+                  
+                  
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <Divider />
+        <List>
+          {['Responsivas'].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {index  === 0 ? <AssignmentRoundedIcon /> : null}
 
-    </div>
 
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+      </Drawer>
+     
+    </Box>
   );
 }
-
-export default Sidebar;

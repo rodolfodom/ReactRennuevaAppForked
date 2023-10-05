@@ -99,13 +99,13 @@ function MenuUser() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="xl">
+          <Container maxWidth="lg">
             <Grid container spacing={3}>
 
               <Grid item xs={6}>
 
                 <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <Title item xs = {12}>Usuarios</Title>
+                <Title >Usuarios</Title>
                   <CUDButtons model="User" />
                   <Title>Usuarios Creados</Title>
                   <UserTable />
@@ -123,7 +123,7 @@ function MenuUser() {
                     p: 4,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 560,
+                    height: 580,
                   }}
                 >
                   <BarsChart />

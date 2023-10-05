@@ -3,13 +3,15 @@ import Header from '../components/Header';
 import styled from "styled-components";
 import Sidebar from './LayoutSideBar';
 import ResponsiveAppBar from './LayoutAppBar';
+import MiniDrawer from './LayoutSideBar';
 
 
 const Layout = ({ children }) => {
 	  	return (
 		<div style={{width: '100%'}}>
 			
-			<ResponsiveAppBar />        
+			
+			<MiniDrawer />     
     
 
 
