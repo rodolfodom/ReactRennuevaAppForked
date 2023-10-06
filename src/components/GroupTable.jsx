@@ -43,8 +43,7 @@ const GroupTable = ({ datos }) => {
             <TableHead>
               <TableRow>
                 <TableCell>Nombre</TableCell>
-                {/* Agrega aquí más celdas de encabezado si las necesitas */}
-              </TableRow>
+                 </TableRow>
             </TableHead>
             <TableBody>
               {clientes
@@ -52,7 +51,7 @@ const GroupTable = ({ datos }) => {
                 .map((cliente, index) => (
                   <TableRow key={index}>
                     <TableCell>{cliente.name}</TableCell>
-                    {/* Agrega aquí más celdas si las necesitas */}
+                   
                   </TableRow>
               ))}
             </TableBody>

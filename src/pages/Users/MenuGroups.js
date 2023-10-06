@@ -50,8 +50,10 @@ function MenuGroups() {
                 >
                   <Title>Grupos</Title>
                   <CUDButtons model="Group" />
+
                   <Title>Grupos Creados</Title>
                   <GroupTable />
+                  
                 </Paper>
               </Grid>
               <Grid item xs={12} md={12} lg={6}>
