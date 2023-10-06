@@ -1,98 +1,50 @@
-
-import { Bar } from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    Filler,
-} from 'chart.js';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
+import Title from './Title';
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    Filler
-);
+export default function Chart() {
+  const [groups, setGroups] = useState([]);
 
+  useEffect(() => {
+    axios
+      .get('http://127.0.0.1:8000/Rennueva/get-all-users-groups/')
+      .then(response => {
+        const data = response.data.group_data; // Asumiendo que los datos relevantes están en group_data
 
-export default function Bars() {
+        let chartData = data.map(item => ({
+          group: item.group,  // Asegúrate de que 'group' y 'user_count' son las claves correctas
+          users: item.user_count
+        }));
 
-   
-    const [beneficio, setBeneficio] = useState([]);
-    const [grupos, setGrupos] = useState([]);
+        setGroups(chartData);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
-    useEffect(() => {
-        // Realiza una petición GET a una URL específica
-        axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-users-groups/')
-            .then(response => {
-                const data = response.data;
-              
-                console.log("data#hjshjahjashjas$##$#$#$##$#$#$##$");
-                console.log(data.group_data[0].group);
-
-                for (let i = 0; i < data.group_data.length; i++) {
-
-                    meses.push(data.group_data[i].group);
-                    beneficios.push(data.group_data[i].user_count);
-                }
-                console.log("data#$##$#$#$adsdasdsad##$#$#$##$");
-                console.log(meses);
-                console.log(beneficios);
-                setBeneficio(beneficios);
-                setGrupos(meses);
-
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
-
-    var beneficios = [];
-    var meses = [];
-
-
-
-    var misoptions = {
-        responsive: true,
-        animation: false,
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        scales: {
-            y: {
-                min: 0,
-                max: 100
-            },
-            x: {
-                ticks: { color: 'rgba(0, 220, 195)' }
-            }
-        }
-    };
-
-    var midata = {
-        labels: grupos,
-        datasets: [
-            {
-                label: 'Plastico reciclado',
-                data: beneficio ,
-                backgroundColor: 'rgba(0, 220, 195, 0.5)'
-            }
-        ]
-    };
-
-    return <Bar data={midata} options={misoptions} />
+  return (
+    <React.Fragment>
+      <Title>Today</Title>
+      <ResponsiveContainer width="100%" height={500}>
+        <BarChart
+          data={groups}
+          margin={{
+            top: 16,
+            right: 16,
+            bottom: 0,
+            left: 24,
+          }}
+        >
+          <XAxis dataKey="group" stroke="#000000" />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Legend />
+          <CartesianGrid stroke="#f5f5f5" />
+          <Bar type="monotone" dataKey="users" fill="#3f51b5" barSize={30} />
+        </BarChart>
+      </ResponsiveContainer>
+    </React.Fragment>
+  );
 }
