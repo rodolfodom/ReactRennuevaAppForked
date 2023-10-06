@@ -19,6 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import ResponsiveAppBar from './LayoutAppBar';
+import { useNavigate } from 'react-router-dom';
 
 
 import AccountBoxRoundedIcon from '@mui/icons-material/AccountBoxRounded';
@@ -31,6 +32,9 @@ import HomeWorkRoundedIcon from '@mui/icons-material/HomeWorkRounded';
 import ElectricRickshawRoundedIcon from '@mui/icons-material/ElectricRickshawRounded';
 import DirectionsRunRoundedIcon from '@mui/icons-material/DirectionsRunRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import LeaderboardRoundedIcon from '@mui/icons-material/LeaderboardRounded';
+import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -99,37 +103,104 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
+  const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const handleDrawerOpenClose = () => {
+    setOpen(prevOpen => !prevOpen);
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const handleClickUsersGroups = (index) => {
+    console.log("index");
+    console.log(index);
+    if (index == 0) {
+      navigate('/users');
+    } else if (index == 1) {
+      navigate('/groups');
+    }
+  }
+  const handleClickResidueGeneratorDonor = (index) => {
+    console.log("index");
+    console.log(index);
+    if (index == 0) {
+      navigate('/residue');
+    } else if (index == 1) {
+      navigate('/generator');
+    } else if (index == 2) {
+      navigate('/');
+    }
+
+  }
+  const handleClickCCDriverCarrier = (index) => {
+    console.log("index");
+    console.log(index);
+    if (index == 0) {
+      navigate('/recycling-center');
+    } else if (index == 1) {
+      navigate('/');
+    } else if (index == 2) {
+      navigate('/driver');
+    } else if (index == 3) {
+      navigate('/vehicle');
+    }
+
+  }
+  
+
+
+
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <ResponsiveAppBar />   
+      <ResponsiveAppBar />
       <Drawer variant="permanent" open={open}>
 
-        <Box sx={{ display: 'flex', alignItems: 'center',marginTop: .9, marginBottom: .9 }}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginTop: .9, marginBottom: .9 }}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerOpenClose}>
+              {open === false ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </DrawerHeader>
         </Box>
-        
-        
+
+
+        <Divider />
+        <List>
+          {['Dashboard'].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                onClick={() => { navigate('/dash') }}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {index === 0 ? <LeaderboardRoundedIcon /> : null}
+
+
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+    
         <Divider />
         <List>
           {['Usuarios', 'Grupos'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
+                onClick={() => handleClickUsersGroups(index)}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -143,7 +214,7 @@ export default function MiniDrawer() {
                     justifyContent: 'center',
                   }}
                 >
-                  {index % 2 === 0 ? <AccountBoxRoundedIcon/> : <GroupsRoundedIcon />}
+                  {index % 2 === 0 ? <AccountBoxRoundedIcon /> : <GroupsRoundedIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -151,11 +222,12 @@ export default function MiniDrawer() {
           ))}
         </List>
         <Divider />
-        
+
         <List>
           {['Residuos', 'Generadores', 'Donadores'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
+                onClick={() => handleClickResidueGeneratorDonor(index)}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -169,9 +241,9 @@ export default function MiniDrawer() {
                     justifyContent: 'center',
                   }}
                 >
-                  {index  === 0 ? <RecyclingRoundedIcon /> : null}
-                  {index  === 1 ? <ElectricBoltRoundedIcon /> : null}
-                  {index  === 2 ? <Man2RoundedIcon /> : null}
+                  {index === 0 ? <RecyclingRoundedIcon /> : null}
+                  {index === 1 ? <ElectricBoltRoundedIcon /> : null}
+                  {index === 2 ? <Man2RoundedIcon /> : null}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -180,9 +252,10 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          {['Centros Reciclaje', 'Centros Recoleccion', "Conductor", "Transportista"].map((text, index) => (
+          {['Centros Reciclaje', 'Centros Recoleccion', "Conductor", "Vehiculo","Transportista"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
+                onClick={() => handleClickCCDriverCarrier(index)}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -196,14 +269,15 @@ export default function MiniDrawer() {
                     justifyContent: 'center',
                   }}
                 >
-                 
-                  {index  === 0 ? <HomeRoundedIcon /> : null}
-                  {index  === 1 ? <HomeWorkRoundedIcon /> : null}
-                  {index  === 2 ? <DirectionsRunRoundedIcon /> : null}
-                  {index  === 3 ? <ElectricRickshawRoundedIcon /> : null}
-                  
-                  
-                  
+
+                  {index === 0 ? <HomeRoundedIcon /> : null}
+                  {index === 1 ? <HomeWorkRoundedIcon /> : null}
+                  {index === 2 ? <DirectionsRunRoundedIcon /> : null}
+                  {index === 3 ? <LocalShippingRoundedIcon /> : null}
+                  {index === 4 ? <ElectricRickshawRoundedIcon /> : null}
+
+
+
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -229,7 +303,7 @@ export default function MiniDrawer() {
                     justifyContent: 'center',
                   }}
                 >
-                  {index  === 0 ? <AssignmentRoundedIcon /> : null}
+                  {index === 0 ? <AssignmentRoundedIcon /> : null}
 
 
                 </ListItemIcon>
@@ -240,7 +314,7 @@ export default function MiniDrawer() {
         </List>
         <Divider />
       </Drawer>
-     
+
     </Box>
   );
 }
