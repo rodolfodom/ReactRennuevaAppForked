@@ -128,7 +128,7 @@ export default function MiniDrawer() {
     } else if (index == 1) {
       navigate('/generator');
     } else if (index == 2) {
-      navigate('/');
+      navigate('/donor');
     }
 
   }

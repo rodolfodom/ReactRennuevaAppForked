@@ -15,6 +15,8 @@ import { MenuDriver } from '../pages/MenuDriver';
 import { Sidebar } from '../containers/LayoutSideBar';
 import { SignUp } from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
+import { MenuDonor } from '../pages/MenuDonor';
+
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
@@ -38,6 +40,7 @@ function App() {
             <Route path="/driver" element={<Layout><MenuDriver /></Layout>} />
             <Route path="/register" element={<SignUp />} />
             <Route path="/dash" element={<Layout><Dashboard /></Layout>} />
+            <Route path="/donor" element={<Layout><MenuDonor /></Layout>} />
 
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>
