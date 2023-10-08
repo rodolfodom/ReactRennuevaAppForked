@@ -16,6 +16,8 @@ import { Sidebar } from '../containers/LayoutSideBar';
 import { SignUp } from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
 import { MenuDonor } from '../pages/MenuDonor';
+import { MenuCarrier } from '../pages/MenuCarrier';
+import { MenuCollectionCenter } from '../pages/MenuCollectionCenter';
 
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
             <Route path="/register" element={<SignUp />} />
             <Route path="/dash" element={<Layout><Dashboard /></Layout>} />
             <Route path="/donor" element={<Layout><MenuDonor /></Layout>} />
+            <Route path="/carrier" element={<Layout><MenuCarrier /></Layout>} />
+            <Route path="/collection-center" element={<Layout><MenuCollectionCenter /></Layout>} />
 
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>

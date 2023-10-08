@@ -138,11 +138,14 @@ export default function MiniDrawer() {
     if (index == 0) {
       navigate('/recycling-center');
     } else if (index == 1) {
-      navigate('/');
+      navigate('/collection-center');
     } else if (index == 2) {
       navigate('/driver');
     } else if (index == 3) {
       navigate('/vehicle');
+    }
+    else if (index == 4) {
+      navigate('/carrier');
     }
 
   }
