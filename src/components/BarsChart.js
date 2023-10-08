@@ -32,7 +32,7 @@ const data = [
   createData('24:00', undefined),
 ];
 
-export default function Chart() {
+export default function aChart() {
   const theme = useTheme();
   const [months, setMonths] = useState([]);
     

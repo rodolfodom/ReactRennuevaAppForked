@@ -1,79 +1,92 @@
-
-import React, { useState, useEffect, useContext } from "react";
-import '../styles/user/MenuUser.css'
+import React, { useContext } from "react";
+import '../styles/user/MenuUser.css';
 import { TodoContext } from '../context/index.js';
 import { Modal } from './Users/ModalUser';
-import { OptionButton } from '../components/OptionButton';
-import UserTable from "../components/Table";
-import CUDButtons from "../containers/CUDButtons";
-import BarsChart from "../components/BarsChart";
-import BarsChartVehicle from "../components/BarsChartVehicle";
 import ResidueTable from "../components/ResidueTable";
-import VehicleTable from "../components/VehicleTable";
+import BarsChartVehicle from "../components/BarsChartVehicle";
+import CUDButtons from "../containers/CUDButtons";
+
+import { ThemeProvider, createTheme, Box, Grid, Paper, Container, Toolbar, CssBaseline } from '@mui/material';
+import Title from '../components/Title';
 
 function MenuResidue() {
+  const {
+    openModalCreate,
+    setOpenModalCreate,
+    setOpenModalEdit,
+    openModalEdit,
+    setOpenModalDelete,
+    openModalDelete
+  } = useContext(TodoContext);
 
-  const handleAdd = () => {
-    // Lógica para agregar
-    console.log("Agregando")
-
-  };
-
-  const handleUpdate = () => {
-    console.log("Actualizando")
-  };
-
-  const handleDelete = () => {
-    // Lógica para eliminar
-    console.log("Eliminando")
-  };
-  const [datos, setDatos] = useState([]);
-  const { totalListlUsers, openModalCreate, setOpenModalCreate, setOpenModalEdit,
-    openModalEdit, setOpenModalDelete, openModalDelete } = useContext(TodoContext);
-
-  useEffect(() => {
-
-    setDatos(totalListlUsers);
-  }, []);
+  const defaultTheme = createTheme();
 
   return (
-    <div className="container" >
-      <h1 >Residuos</h1>
+    <ThemeProvider theme={defaultTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) => (theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900]),
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="lg">
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  sx={{
+                    p: 3,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Title>Residuos</Title>
+                  <CUDButtons model="Residue" />
+                  <Title>Tabla de Residuos</Title>
+                  <ResidueTable />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  sx={{
+                    p: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 580,
+                  }}
+                >
+                  <BarsChartVehicle />
+                </Paper>
+              </Grid>
+            </Grid>
+          </Container>
 
-      <CUDButtons model = "Residue" />
-      <ResidueTable />
-      <div  style={{ width: "450px", height: "225px",padding : "10px", margin: "10px" }}>
-        <BarsChartVehicle />
-      </div>
-
-
-
-      {openModalCreate && (
-        <Modal mode={"CREAR"}>
-          La funcionalidad de agregar TODO
-        </Modal>
-      )
-      }
-      {openModalEdit && (
-        <Modal mode={"EDITAR"}>
-          La funcionalidad de editar TODO
-        </Modal>
-      )
-      }
-      {openModalDelete && (
-        <Modal mode={"BORRAR"}>
-          La funcionalidad de borrar TODO
-        </Modal>
-      )
-      }
-
-
-    </div>
-
-
-
+          {openModalCreate && (
+            <Modal mode={"CREAR"}>
+              La funcionalidad de agregar TODO
+            </Modal>
+          )}
+          {openModalEdit && (
+            <Modal mode={"EDITAR"}>
+              La funcionalidad de editar TODO
+            </Modal>
+          )}
+          {openModalDelete && (
+            <Modal mode={"BORRAR"}>
+              La funcionalidad de borrar TODO
+            </Modal>
+          )}
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
-
 }
 
 export { MenuResidue };
