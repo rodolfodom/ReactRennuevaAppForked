@@ -1,56 +1,78 @@
-import React , {useState, useEffect}from 'react';
-import '../styles/Table.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { 
+  Paper, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  TablePagination 
+} from '@mui/material';
 
-const GroupTable = ({ datos }) => {
-    const [clientes, setClientes] = useState([]);
+const VehicleTable = () => {
+  const [vehicles, setVehicles] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  useEffect(() => {
+    axios
+      .get('http://127.0.0.1:8000/Rennueva/get-all-vehicle/')
+      .then(response => {
+        setVehicles(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
-    useEffect(() => {
-        // Realiza una petición GET a una URL específica
-        axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-vehicle/')
-            .then(response => {
-                const data = response.data;
-                setClientes(data);
-              
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-    return (
-      <div className='table-containerGroup'>
-      <table>
-        <thead>
-          <tr>
-            <th className='etiquetaTabla'>Modelo</th>
-            <th className='etiquetaTabla'>Placas</th>
-            <th className='etiquetaTabla'>Capacidad</th>
-            <th className='etiquetaTabla'>Conductor</th>
+  return (
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 300, minHeight : 300 }}>
+        <Table size="small" stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Modelo</TableCell>
+              <TableCell>Placas</TableCell>
+              <TableCell>Capacidad</TableCell>
+              <TableCell>Conductor</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {vehicles
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((vehicle, index) => (
+                <TableRow key={index}>
+                  <TableCell>{vehicle.modelo}</TableCell>
+                  <TableCell>{vehicle.placas}</TableCell>
+                  <TableCell>{vehicle.capacidad}</TableCell>
+                  <TableCell>{vehicle.conductor}</TableCell>
+                </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={vehicles.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
+  );
+}
 
-          </tr>
-        </thead>
-        <tbody>
-          {clientes.map((fila, index) => (
-            console.log("###############################"),
-            console.log(clientes),
-            console.log(fila),
-            
-            <tr key={index}>
-              <td className='datoTablaGroup'>{fila.modelo}</td>
-              <td className='datoTablaGroup'>{fila.placas}</td>
-                <td className='datoTablaGroup'>{fila.capacidad}</td>
-                <td className='datoTablaGroup'>{fila.conductor}</td>
-                
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    );
-  }
-
-export default GroupTable;
+export default VehicleTable;
