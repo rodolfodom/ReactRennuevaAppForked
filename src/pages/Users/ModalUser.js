@@ -4,25 +4,38 @@ import '../../styles/user/CreateUser.css';
 import { TodoContext } from '../../context/index.js';
 import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
+import Title from '../../components/Title';
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
+
 
 function ModalUser({ children, mode }) {
-  console.log("#######################MODEMODEMDEO")
-  console.log(mode);
   const [datos, setDatos] = useState([]);
   const [groups, setGroups] = useState([])
   const [users, setUsers] = useState([])
-
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
+  const [group, setGroup] = useState("");
+  const [company, setCompany] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [locality, setLocality] = useState("");
+  const [street, setStreet] = useState("");
+  const [postal_code, setPostalCode] = useState("");
+  const [rfc, setRfc] = useState("");
+  const [phone, setPhone] = useState("");
 
 
-
-
-
-  const { openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
+  const { openModalText,setOpenModalText,openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
   const closeModal = () => {
     if (openModalCreate) {
       setOpenModalCreate(false);
@@ -34,11 +47,9 @@ function ModalUser({ children, mode }) {
       setOpenModalDelete(false);
     }
   };
+
+
   const handleSubmit = (e) => {
-
-
-
-
     e.preventDefault();
     // Agregar los datos ingresados al arreglo de datos
     const nuevoDato = {
@@ -47,15 +58,22 @@ function ModalUser({ children, mode }) {
       email: e.target.email.value,
       first_name: e.target.nombre.value,
       last_name: e.target.apellido.value,
-      group: e.target.rol.value
+      group: "admin",
+      rfc : e.target.rfc.value,
+      company : e.target.company.value,
+      phone : e.target.phone.value,
+      address_state : e.target.state.value,
+      address_city : e.target.city.value,
+      address_locality : e.target.locality.value,
+      address_street : e.target.street.value,
+      address_postal_code : e.target.postal_code.value,
+      address_lat : 0,
+      address_lng : 0,
     };
-    console.log(nuevoDato)
-    console.log("E#################################R")
-    console.log(document.getElementById("mySelect"))
-    console.log(user)
 
-    const antiguo_user = document.getElementById("mySelect")
-    var user_ant = antiguo_user.value
+
+    const antiguo_user = document.getElementById("mySelect") 
+    var user_ant = antiguo_user ? antiguo_user.value : null;
 
     const editarDato = {
       user: e.target.user.value,
@@ -71,22 +89,16 @@ function ModalUser({ children, mode }) {
       user : user_ant
     }
 
-
-    
-
-    // Realiza una petición GET a una URL específica
-
-    
       const crear = mode === "CREAR" ? (
         axios
           .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
           .then(response => {
             const data = response.data;
             console.log(data)
-
-
-
-
+            setOpenModalText(true);
+            e.target.reset();
+            closeModal()
+            
           })
           .catch(error => {
             console.error(error);
@@ -102,11 +114,6 @@ function ModalUser({ children, mode }) {
             e.target.reset();
             closeModal()
             // Limpiar los campos del formulario
-   
-
-
-
-
           })
           .catch(error => {
             console.error(error);
@@ -131,13 +138,6 @@ function ModalUser({ children, mode }) {
             console.error(error);
           })
       ) : null
-    
-
-
-
-
-
-
 
     // Limpiar los campos del formulario
     e.target.reset();
@@ -150,10 +150,6 @@ function ModalUser({ children, mode }) {
         const data = response.data;
         setGroups(data)
         console.log("######################GRUPOS##################################")
-
-
-
-
 
       })
       .catch(error => {
@@ -170,10 +166,6 @@ function ModalUser({ children, mode }) {
         const data = response.data;
         setUsers(data)
         console.log("######################GRUPOS##################################")
-
-
-
-
 
       })
       .catch(error => {
@@ -215,6 +207,7 @@ function ModalUser({ children, mode }) {
         <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
         <form onSubmit={handleSubmit} >
           <Box mb={2}>
+            <Title> Usuario</Title>
             {mode === "EDITAR" || mode === "BORRAR" ? (
               <FormControl fullWidth>
                 <InputLabel id="user-select-label">Usuario</InputLabel>
@@ -251,6 +244,15 @@ function ModalUser({ children, mode }) {
             margin="dense"
           />
           <TextField 
+            label="RFC" 
+            name="rfc" 
+            required 
+            fullWidth 
+            value={rfc} 
+            onChange={(e) => setRfc(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
             label="Nombre de Usuario" 
             name="user" 
             required 
@@ -280,7 +282,7 @@ function ModalUser({ children, mode }) {
             margin="dense"
           />
           <FormControl fullWidth mt={2} mb={2}>
-            <InputLabel id="rol-select-label">Rol</InputLabel>
+            <InputLabel id="rol-select-label">Grupo</InputLabel>
             <Select
               labelId="rol-select-label"
               id="rol-select"
@@ -293,59 +295,72 @@ function ModalUser({ children, mode }) {
 
             
             <TextField 
-            label="Nombre de Usuario" 
-            name="user" 
+            label="Compañia" 
+            name="company" 
             required 
             fullWidth 
-            value={user} 
-            onChange={(e) => setUser(e.target.value)}
+            value={company} 
+            onChange={(e) => setCompany(e.target.value)}
             margin="dense"
           />
           <TextField 
-            label="Nombre de Usuario" 
-            name="user" 
+            label="Celular" 
+            name="phone" 
             required 
             fullWidth 
-            value={user} 
-            onChange={(e) => setUser(e.target.value)}
+            value={phone} 
+            onChange={(e) => setPhone(e.target.value)}
+            margin="dense"
+          />
+          <Title>Ubicacion</Title>
+          <TextField 
+            label="Estado" 
+            name="state" 
+            required 
+            fullWidth 
+            value={state} 
+            onChange={(e) => setState(e.target.value)}
             margin="dense"
           />
           <TextField 
-            label="Nombre de Usuario" 
-            name="user" 
+            label="Ciudad" 
+            name="city" 
             required 
             fullWidth 
-            value={user} 
-            onChange={(e) => setUser(e.target.value)}
+            value={city} 
+            onChange={(e) => setCity(e.target.value)}
             margin="dense"
           />
           <TextField 
-            label="Nombre de Usuario" 
-            name="user" 
+            label="Colonia" 
+            name="locality" 
             required 
             fullWidth 
-            value={user} 
-            onChange={(e) => setUser(e.target.value)}
+            value={locality} 
+            onChange={(e) => setLocality(e.target.value)}
             margin="dense"
           />
           <TextField 
-            label="Nombre de Usuario" 
-            name="user" 
+            label="Calle y Numero" 
+            name="street" 
             required 
             fullWidth 
-            value={user} 
-            onChange={(e) => setUser(e.target.value)}
+            value={street} 
+            onChange={(e) => setStreet(e.target.value)}
             margin="dense"
           />
+          
+          
           <TextField 
-            label="Nombre de Usuario" 
-            name="user" 
+            label="Codigo postal" 
+            name="postal_code" 
             required 
             fullWidth 
-            value={user} 
-            onChange={(e) => setUser(e.target.value)}
+            value={postal_code} 
+            onChange={(e) => setPostalCode(e.target.value)}
             margin="dense"
           />
+          
           
 
 
@@ -355,8 +370,12 @@ function ModalUser({ children, mode }) {
           <Button type="submit" variant="contained" fullWidth>{mode}</Button>
         </form>
       </Box>
+      
+     
     </Modal>,
+    
     document.getElementById('modal')
+   
   );
 }
 

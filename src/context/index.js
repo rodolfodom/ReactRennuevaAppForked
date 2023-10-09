@@ -38,6 +38,7 @@ function TodoProvider({ children }) {
   const [openModalEditVehicle, setOpenModalEditVehicle] = React.useState(false);
   const [openModalDeleteVehicle, setOpenModalDeleteVehicle] = React.useState(false);
   const [openSideBar , setOpenSideBar] = React.useState(false);
+  const [openModalText, setOpenModalText] = React.useState(false);
 
 
   const users = [
@@ -89,7 +90,8 @@ function TodoProvider({ children }) {
       openModalCreateVehicle, setOpenModalCreateVehicle,
       openModalEditVehicle, setOpenModalEditVehicle,
       openModalDeleteVehicle, setOpenModalDeleteVehicle,
-      openSideBar , setOpenSideBar
+      openSideBar , setOpenSideBar,
+      openModalText, setOpenModalText
     }} >
       {children}
     </TodoContext.Provider>

@@ -3,13 +3,10 @@ import React, { useState, useEffect, useContext } from "react";
 import '../../styles/user/MenuUser.css'
 import { TodoContext } from '../../context/index.js';
 import { ModalUser } from './ModalUser.js';
-import { OptionButton } from '../../components/OptionButton';
 import UserTable from "../../components/Table";
 import CUDButtons from "../../containers/CUDButtons";
 import BarsChart from "../../components/BarsChart";
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -20,9 +17,16 @@ import Grid from '@mui/material/Grid';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import Chart from '../../components/Chart';
 import Title from '../../components/Title';
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
+
 
 function MenuUser() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -73,7 +77,7 @@ function MenuUser() {
   };
   const [datos, setDatos] = useState([]);
   const { totalListlUsers, openModalCreate, setOpenModalCreate, setOpenModalEdit,
-    openModalEdit, setOpenModalDelete, openModalDelete } = useContext(TodoContext);
+    openModalEdit, setOpenModalDelete, openModalDelete, openModalText, setOpenModalText } = useContext(TodoContext);
 
   useEffect(() => {
 
@@ -105,12 +109,12 @@ function MenuUser() {
               <Grid item xs={6}>
 
                 <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <Title >Usuarios</Title>
+                  <Title >Usuarios</Title>
                   <CUDButtons model="User" />
                   <Title>Usuarios Creados</Title>
                   <UserTable />
-                 
-                  
+
+
                 </Paper>
               </Grid>
               <Grid item xs={12} md={12} lg={6}>
@@ -123,9 +127,9 @@ function MenuUser() {
                   }}
                 >
                   <BarsChart />
-                  
+
                 </Paper>
-                
+
               </Grid>
             </Grid>
           </Container>
@@ -144,6 +148,25 @@ function MenuUser() {
             <ModalUser mode={"BORRAR"}>
               La funcionalidad de borrar TODO
             </ ModalUser >
+          )}
+
+          {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{"Usuario creado con exito"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  El usuario se creo con exito
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
           )}
 
         </Box>
