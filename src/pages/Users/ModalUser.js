@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import '../../styles/user/CreateUser.css';
 import { TodoContext } from '../../context/index.js';
 import axios from 'axios';
-function Modal({ children, mode }) {
+import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
+
+function ModalUser({ children, mode }) {
   console.log("#######################MODEMODEMDEO")
   console.log(mode);
   const [datos, setDatos] = useState([]);
@@ -197,76 +199,165 @@ function Modal({ children, mode }) {
 
 
   return ReactDOM.createPortal(
-    
-
-
-    <div className="ModalBackground">
-
-      <div className='DivModal'>
-        <button className="ModalClose" onClick={closeModal}>
-          <span>&times;</span>
-        </button>
-        <form onSubmit={handleSubmit}>
-          <div style={{ margin: "10px" }}>
+    <Modal open={true} onClose={closeModal} >
+      <Box className="ModalContent" sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+        borderRadius: 2,
+        
+      }}>
+        <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
+        <form onSubmit={handleSubmit} >
+          <Box mb={2}>
             {mode === "EDITAR" || mode === "BORRAR" ? (
-              <select
-                style={{ width: "100%", height: "40px", backgroundColor: "white", borderRadius: "5px" }}
-                name="rol"
-                required
-                onChange={handleSelectChange}
-                id = "mySelect"
-              >
-                {
-                  users.map((name, index) => (
-                    <option key={index}>{name.user}</option>
-                  ))
-                }
-              </select>
+              <FormControl fullWidth>
+                <InputLabel id="user-select-label">Usuario</InputLabel>
+                <Select
+                  labelId="user-select-label"
+                  id="user-select"
+                  onChange={handleSelectChange}
+                  required
+                >
+                  {users.map((name, index) => (
+                    <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             ) : null}
-          </div>
+          </Box>
+          <Box mt={2} mb={2} sx={{overflowY: 'auto', maxHeight : 500}}>
+          <TextField 
+            label="Nombre" 
+            name="nombre" 
+            required 
+            fullWidth 
+            value={first_name} 
+            onChange={(e) => setFirstName(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
+            label="Apellido" 
+            name="apellido" 
+            required 
+            fullWidth 
+            value={last_name} 
+            onChange={(e) => setLastName(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
+            label="Nombre de Usuario" 
+            name="user" 
+            required 
+            fullWidth 
+            value={user} 
+            onChange={(e) => setUser(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
+            label="Email" 
+            name="email" 
+            type="email" 
+            required 
+            fullWidth 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
+            label="Password" 
+            name="password" 
+            type="password" 
+            required 
+            fullWidth 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)}
+            margin="dense"
+          />
+          <FormControl fullWidth mt={2} mb={2}>
+            <InputLabel id="rol-select-label">Rol</InputLabel>
+            <Select
+              labelId="rol-select-label"
+              id="rol-select"
+              required
+            >
+              {groups.map((name, index) => (
+                <MenuItem key={index} value={name.name}>{name.name}</MenuItem>
+              ))}
+            </Select>
 
-          <label >
-            Nombre:
-            <input type="text" name="nombre" required value={first_name} onChange={(e) => setFirstName(e.target.value)}/>
-          </label>
-          <label>
-            Apellido:
-            <input type="text" name="apellido" required value={last_name} onChange={(e) => setLastName(e.target.value)}/>
-          </label>
-          <label>
-            Nombre de Usuario:
-            <input type="text" name="user" required value={user} onChange={(e) => setUser(e.target.value)}/>
-          </label>
-          <label>
-            Email:
-            <input type="email" name="email" required value={email} onChange={(e) => setEmail(e.target.value)}/>
-          </label>
-          <label>
-            Password:
-            <input type="password" name="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-          </label>
-          <label  >
-            Rol:
+            
+            <TextField 
+            label="Nombre de Usuario" 
+            name="user" 
+            required 
+            fullWidth 
+            value={user} 
+            onChange={(e) => setUser(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
+            label="Nombre de Usuario" 
+            name="user" 
+            required 
+            fullWidth 
+            value={user} 
+            onChange={(e) => setUser(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
+            label="Nombre de Usuario" 
+            name="user" 
+            required 
+            fullWidth 
+            value={user} 
+            onChange={(e) => setUser(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
+            label="Nombre de Usuario" 
+            name="user" 
+            required 
+            fullWidth 
+            value={user} 
+            onChange={(e) => setUser(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
+            label="Nombre de Usuario" 
+            name="user" 
+            required 
+            fullWidth 
+            value={user} 
+            onChange={(e) => setUser(e.target.value)}
+            margin="dense"
+          />
+          <TextField 
+            label="Nombre de Usuario" 
+            name="user" 
+            required 
+            fullWidth 
+            value={user} 
+            onChange={(e) => setUser(e.target.value)}
+            margin="dense"
+          />
+          
 
-          </label>
-          <div style={{ margin: "10px" }}>
-            <select style={{ width: "100%", height: "40px", backgroundColor: "white", borderRadius: "5px" }} name="rol" required>
 
-              {
-                groups.map((name) => (
-                  <option>{name.name} </option>
-                ))
-              }
-            </select>
-          </div>
+          </FormControl>
+          </Box>
 
-          <button style={{ marginTop: "20px" }} type="submit">{mode}</button>
-
+          <Button type="submit" variant="contained" fullWidth>{mode}</Button>
         </form>
-      </div>
-    </div>,
+      </Box>
+    </Modal>,
     document.getElementById('modal')
   );
 }
 
-export { Modal };
+export { ModalUser };

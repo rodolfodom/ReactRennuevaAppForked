@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import '../styles/user/MenuUser.css';
 import { TodoContext } from '../context/index.js';
-import { Modal } from './Users/ModalUser';
+import { ModalUser } from './Users/ModalUser';
 import ResidueTable from "../components/ResidueTable";
 import BarsChartVehicle from "../components/BarsChartVehicle";
 import CUDButtons from "../containers/CUDButtons";
@@ -69,19 +69,19 @@ function MenuResidue() {
           </Container>
 
           {openModalCreate && (
-            <Modal mode={"CREAR"}>
+            <ModalUser mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </Modal>
+            </ ModalUser >
           )}
           {openModalEdit && (
-            <Modal mode={"EDITAR"}>
+            <ModalUser mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </Modal>
+            </ ModalUser >
           )}
           {openModalDelete && (
-            <Modal mode={"BORRAR"}>
+            <ModalUser mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </Modal>
+            </ ModalUser >
           )}
         </Box>
       </Box>

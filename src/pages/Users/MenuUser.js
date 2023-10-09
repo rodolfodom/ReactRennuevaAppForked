@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import '../../styles/user/MenuUser.css'
 import { TodoContext } from '../../context/index.js';
-import { Modal } from './ModalUser.js';
+import { ModalUser } from './ModalUser.js';
 import { OptionButton } from '../../components/OptionButton';
 import UserTable from "../../components/Table";
 import CUDButtons from "../../containers/CUDButtons";
@@ -131,19 +131,19 @@ function MenuUser() {
           </Container>
 
           {openModalCreate && (
-            <Modal mode={"CREAR"}>
+            <ModalUser mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </Modal>
+            </ ModalUser >
           )}
           {openModalEdit && (
-            <Modal mode={"EDITAR"}>
+            <ModalUser mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </Modal>
+            </ ModalUser >
           )}
           {openModalDelete && (
-            <Modal mode={"BORRAR"}>
+            <ModalUser mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </Modal>
+            </ ModalUser >
           )}
 
         </Box>

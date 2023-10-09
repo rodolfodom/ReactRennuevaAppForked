@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TodoContext } from '../context/index.js';
-import { Modal } from './Users/ModalUser';
+import { ModalUser } from './Users/ModalUser';
 import GeneratorTable from "../components/GeneratorTable";
 import BarsChartVehicle from "../components/BarsChartVehicle";
 import {
@@ -80,19 +80,19 @@ function MenuCarrier() {
           </Container>
 
           {openModalCreate && (
-            <Modal mode={"CREAR"}>
+            <ModalUser mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </Modal>
+            </ ModalUser >
           )}
           {openModalEdit && (
-            <Modal mode={"EDITAR"}>
+            <ModalUser mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </Modal>
+            </ ModalUser >
           )}
           {openModalDelete && (
-            <Modal mode={"BORRAR"}>
+            <ModalUser mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </Modal>
+            </ ModalUser >
           )}
         </Box>
       </Box>

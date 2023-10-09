@@ -8,7 +8,7 @@ function OptionButton({ setOpenModal, text, color }) {
       onClick={() => {
         setOpenModal(state => !state);
       }}
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: color , color: 'black'}}
     >
       {text}
     </Button>
