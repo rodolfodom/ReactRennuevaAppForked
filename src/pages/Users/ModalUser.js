@@ -6,15 +6,6 @@ import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
 import Title from '../../components/Title';
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
-
-
-
 function ModalUser({ children, mode }) {
   const [datos, setDatos] = useState([]);
   const [groups, setGroups] = useState([])
@@ -34,7 +25,6 @@ function ModalUser({ children, mode }) {
   const [rfc, setRfc] = useState("");
   const [phone, setPhone] = useState("");
 
-
   const { openModalText,setOpenModalText,openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
   const closeModal = () => {
     if (openModalCreate) {
@@ -51,7 +41,7 @@ function ModalUser({ children, mode }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Agregar los datos ingresados al arreglo de datos
+    
     const nuevoDato = {
       user: e.target.user.value,
       password: e.target.password.value,
@@ -71,7 +61,6 @@ function ModalUser({ children, mode }) {
       address_lng : 0,
     };
 
-
     const antiguo_user = document.getElementById("mySelect") 
     var user_ant = antiguo_user ? antiguo_user.value : null;
 
@@ -81,6 +70,18 @@ function ModalUser({ children, mode }) {
       email: e.target.email.value,
       first_name: e.target.nombre.value,
       last_name: e.target.apellido.value,
+
+      group: "admin",
+      rfc : e.target.rfc.value,
+      company : e.target.company.value,
+      phone : e.target.phone.value,
+      address_state : e.target.state.value,
+      address_city : e.target.city.value,
+      address_locality : e.target.locality.value,
+      address_street : e.target.street.value,
+      address_postal_code : e.target.postal_code.value,
+      address_lat : 0,
+      address_lng : 0,
      
       antiguoUser:  user_ant
     };
@@ -121,7 +122,6 @@ function ModalUser({ children, mode }) {
       ) : null
    
       const borrar = mode === "BORRAR" ? (
-
         axios
           .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
           .then(response => {
@@ -129,9 +129,6 @@ function ModalUser({ children, mode }) {
             console.log(data)
             e.target.reset();
             closeModal()
-
-
-
 
           })
           .catch(error => {
@@ -185,6 +182,16 @@ function ModalUser({ children, mode }) {
     setEmail(datoEncontrado.email);
     setFirstName(datoEncontrado.first_name);
     setLastName(datoEncontrado.last_name);
+    setGroup(datoEncontrado.group);
+    setRfc(datoEncontrado.rfc);
+    setCompany(datoEncontrado.company);
+    setPhone(datoEncontrado.phone);
+    setState(datoEncontrado.address_state);
+    setCity(datoEncontrado.address_city);
+    setLocality(datoEncontrado.address_locality);
+    setStreet(datoEncontrado.address_street);
+    setPostalCode(datoEncontrado.address_postal_code);
+    
 
 
   }

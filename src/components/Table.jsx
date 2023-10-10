@@ -48,9 +48,16 @@ const UserTable = ({ datos }) => {
               <TableRow>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Correo</TableCell>
+                <TableCell>Nombre Usuario</TableCell>
+                <TableCell>RFC</TableCell>
                 <TableCell>Grupos</TableCell>
-                <TableCell>Teléfono</TableCell>
-                <TableCell>Dirección</TableCell>
+                <TableCell>Compañia</TableCell>
+                <TableCell>Direccion Estado</TableCell>
+                <TableCell>Direccion Ciudad</TableCell>
+                <TableCell>Dirección Colonia</TableCell>
+                <TableCell>Dirección Calle</TableCell>
+                <TableCell>Dirección Codigo Postal</TableCell>
+                
               </TableRow>
             </TableHead>
             <TableBody>

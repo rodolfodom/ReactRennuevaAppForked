@@ -18,6 +18,7 @@ import Dashboard from '../pages/Dashboard';
 import { MenuDonor } from '../pages/MenuDonor';
 import { MenuCarrier } from '../pages/MenuCarrier';
 import { MenuCollectionCenter } from '../pages/MenuCollectionCenter';
+import { MenuReport } from '../pages/MenuReport';
 
 
 function App() {
@@ -45,7 +46,8 @@ function App() {
             <Route path="/donor" element={<Layout><MenuDonor /></Layout>} />
             <Route path="/carrier" element={<Layout><MenuCarrier /></Layout>} />
             <Route path="/collection-center" element={<Layout><MenuCollectionCenter /></Layout>} />
-
+            <Route path="/report" element={<Layout><MenuReport /></Layout>} />
+            
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>
 
