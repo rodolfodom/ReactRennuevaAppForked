@@ -61,6 +61,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         <OptionButton setOpenModal={setOpenModalCreateDriver} text="Crear Conductor" color="#28a745" />
       ) : null}
       {model === 'Generator' ? (
+        console.log("MODELS"),
         <OptionButton setOpenModal={setOpenModalCreateGenerator} text="Crear Generador" color="#28a745" />
       ): null}
       {model === 'RecyclingCenter' ? (

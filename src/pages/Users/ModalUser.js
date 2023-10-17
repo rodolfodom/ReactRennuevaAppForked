@@ -360,7 +360,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={street} 
-            onChange={(e) => (e, setStreet,mode )}
+            onChange={(e) => handleInputChange(e, setStreet,mode )}
             margin="dense"
           />
           

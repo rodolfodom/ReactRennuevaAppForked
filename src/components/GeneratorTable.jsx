@@ -44,15 +44,15 @@ const GeneratorTable = () => {
               <TableRow>
                 {/* Añade aquí tus encabezados de tabla */}
                 <TableCell>Nombre</TableCell>
-                <TableCell>Razon Social</TableCell>
+                <TableCell>Correo</TableCell>
+                <TableCell>Nombre Usuario</TableCell>
                 <TableCell>RFC</TableCell>
-                <TableCell>Calle</TableCell>
-                <TableCell>Celular</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Dirección</TableCell>
-                <TableCell>Ciudad</TableCell>
-                <TableCell>Estado</TableCell>
-                <TableCell>Codigo Postal</TableCell>
+                <TableCell>Compañia</TableCell>
+                <TableCell>Direccion Estado</TableCell>
+                <TableCell>Direccion Ciudad</TableCell>
+                <TableCell>Dirección Colonia</TableCell>
+                <TableCell>Dirección Calle</TableCell>
+                <TableCell>Dirección Codigo Postal</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -61,16 +61,16 @@ const GeneratorTable = () => {
                 .map((cliente, index) => (
                   <TableRow key={index}>
                     {/* Añade aquí tus celdas de datos */}
-                    <TableCell>{cliente.nombre}</TableCell>
-                    <TableCell>{cliente.razonSocial}</TableCell>
+                    <TableCell>{`${cliente.first_name} ${cliente.last_name}`}</TableCell>
+                    <TableCell>{cliente.email}</TableCell>
+                    <TableCell>{cliente.user}</TableCell>
                     <TableCell>{cliente.rfc}</TableCell>
-                    <TableCell>{cliente.calle}</TableCell>
-                    <TableCell>{cliente.celular}</TableCell>
-                    <TableCell>{cliente.correo}</TableCell>
-                    <TableCell>{cliente.direccion}</TableCell>
-                    <TableCell>{cliente.ciudad}</TableCell>
-                    <TableCell>{cliente.estado}</TableCell>
-                    <TableCell>{cliente.codigoPostal}</TableCell>
+                    <TableCell>{cliente.company}</TableCell>
+                    <TableCell>{cliente.address_state}</TableCell>
+                    <TableCell>{cliente.address_city}</TableCell>
+                    <TableCell>{cliente.address_locality}</TableCell>
+                    <TableCell>{cliente.address_street}</TableCell>
+                    <TableCell>{cliente.address_postal_code}</TableCell>
                   </TableRow>
               ))}
             </TableBody>

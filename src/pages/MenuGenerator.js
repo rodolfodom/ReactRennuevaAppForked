@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TodoContext } from '../context/index.js';
-import { ModalUser } from './Users/ModalUser';
+import { ModalGenerator } from './ModalGenerator';
 import GeneratorTable from "../components/GeneratorTable";
 import BarsChartVehicle from "../components/BarsChartVehicle";
 import {
@@ -23,7 +23,16 @@ function MenuGenerator() {
     setOpenModalEdit,
     openModalEdit, 
     setOpenModalDelete, 
-    openModalDelete 
+    openModalDelete ,
+
+    openModalCreateGenerator,
+    setOpenModalCreateGenerator,
+    openModalEditGenerator,
+    setOpenModalEditGenerator,
+    openModalDeleteGenerator,
+    setOpenModalDeleteGenerator,
+
+    
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -79,20 +88,20 @@ function MenuGenerator() {
             </Grid>
           </Container>
 
-          {openModalCreate && (
-            <ModalUser mode={"CREAR"}>
+          {openModalCreateGenerator && (
+            <ModalGenerator mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalGenerator >
           )}
-          {openModalEdit && (
-            <ModalUser mode={"EDITAR"}>
+          {openModalEditGenerator && (
+            <ModalGenerator mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalGenerator >
           )}
-          {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+          {openModalDeleteGenerator && (
+            <ModalGenerator mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalGenerator >
           )}
         </Box>
       </Box>
