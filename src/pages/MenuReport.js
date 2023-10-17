@@ -60,7 +60,7 @@ function MenuReport() {
                   }}
                 >
                   <Title>Reportes</Title>
-                  <CUDButtons model="Generator" />
+                  <CUDButtons model="Responsiva" />
                   <Title>Historial Reportes</Title>
                   <ReportTable />
                 </Paper>

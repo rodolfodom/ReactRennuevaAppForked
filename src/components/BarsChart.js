@@ -89,7 +89,7 @@ export default function Chart() {
         labels: meses,
         datasets: [
             {
-                label: 'Plastico reciclado',
+                label: 'Usuarios dados de alta',
                 data: months,
                 backgroundColor: "#3f51b5"
             }

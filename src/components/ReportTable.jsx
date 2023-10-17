@@ -14,6 +14,93 @@ import {
 
 import { styled } from '@mui/system';
 
+
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+
+
+  const exampleData = [
+    { id: 1, name: "John", age: 28 },
+    { id: 2, name: "Anna", age: 22 },
+    { id: 3, name: "Mike", age: 32 }
+  ];
+
+  const generatePdf = () => {
+    const doc = new jsPDF();
+
+    // Use this if you have a logo to add
+    // doc.addImage(imgData, 'JPEG', x, y, width, height);
+    
+    // Text on the top right side
+    doc.setFontSize(8);
+    doc.text("Responsiva de Recepcion de Residuos", 150, 10, { align: 'left' });
+    doc.text("RA-TRE-01-06-01/2020", 150, 15, { align: 'left' });
+    doc.text("PM-TRE-01-06-01/2021", 150, 20, { align: 'left' });
+    doc.text("NOM-161-SEMARNAT-2011", 150, 25, { align: 'left' });
+  
+    // Title before the table
+    doc.setFontSize(18);
+    doc.text("Datos del Generador", 14, 30);
+
+    const tableStyles = {
+      cellPadding: 2,
+      fontSize: 10,
+      lineColor: [0, 0, 0], 
+      lineWidth: 0.5
+    };
+
+    // Table 1: Datos del Generador
+    doc.autoTable({
+      startY: 35, 
+      tableWidth: 190,
+      body: [
+        ['RFC:', 'ACR857025922', 'Razón Social:', 'Asociación de Colonos de Residencial Chiluca A.C.'],
+        ['Domicilio', '', '', ''],
+        ['Calle:', 'Av. Residencial Chiluca', 'Número:', 'S/N'],
+        ['Colonia:', 'Fraccionamiento Residencial Chiluca', 'C.P.:', '52930'],
+        ['Estado:', 'Estado de México', 'Municipio:', 'Atizapán de Zaragoza'],
+        ['Contacto:', 'Cecilia Montañés', 'Teléfono:', '5554146775'],
+      ],
+      theme: 'plain',
+      styles: tableStyles,
+    });
+
+
+    
+
+    // Table 2: Recolection
+    doc.autoTable({
+      startY: 95, 
+      tableWidth: 190,
+      body: [
+        ['Recolección', 'Disposición', 'Ruta', 'Procedencia:', 'Edo Méx'],
+        ['Ubicación:', 'Av. Residencial Chiluca S/N, Fraccionamiento Residencial Chiluca, Atizapán de Zaragoza'],
+      ],
+      theme: 'plain',
+      styles: tableStyles,
+    });
+
+    // Table 3: Residuos
+    doc.autoTable({
+      startY: 125, 
+      tableWidth: 190,
+      body: [
+        ['Tipo de Residuos', 'PET', 'Cantidad', '0.7 m³ / 12 kg'],
+        ['Agricultura', 'Construcción', 'Embalaje', 'Postconsumo'],
+        ['Fecha Recepción:', '17/11/2022', 'Fecha Elaboración:', '24/11/2022'],
+      ],
+      theme: 'plain',
+      styles: tableStyles,
+    });
+
+    doc.save('Responsiva.pdf');
+};
+
+
+
+
+
+
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(theme.palette.primary.main),
   backgroundColor: theme.palette.primary.main,
@@ -93,7 +180,7 @@ const ReportTable = () => {
                 <TableCell><StyledButton>Residuo</StyledButton></TableCell>
                 <TableCell>Fecha inicio</TableCell>
                 <TableCell>Fecha fin</TableCell>
-                <TableCell><StyledButton>Reporte</StyledButton></TableCell>
+                <TableCell><StyledButton onClick={generatePdf}>Reporte</StyledButton></TableCell>
               
                   </TableRow>
               ))}

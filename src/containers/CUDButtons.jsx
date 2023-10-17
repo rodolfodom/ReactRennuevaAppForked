@@ -72,6 +72,9 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       {model === 'Vehicle' ? (
         <OptionButton setOpenModal={setOpenModalCreateVehicle} text="Crear Vehicle" color="#28a745" />
       ) : null}
+      {model === 'Responsiva' ? (
+        <OptionButton setOpenModal={setOpenModalCreateVehicle} text="Crear responsiva" color="#28a745" />
+      ) : null}
 
       </div>
         <div className="create-button">
@@ -105,6 +108,9 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         {model === "Vehicle"  ? (
           <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Vehicle" color="#007bff" />
         ) : null}
+        {model === "Responsiva"  ? (
+          <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Responsiva" color="#007bff" />
+        ) : null}
 
       </div>
         <div className="create-button">
@@ -137,6 +143,9 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         ): null}
         {model === "Vehicle" ? (
           <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Vehicle" color="#dc3545" />
+        ): null}
+        {model === "Responsiva" ? (
+          <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Responsiva" color="#dc3545" />
         ): null}
 
       </div>

@@ -196,6 +196,13 @@ function ModalUser({ children, mode }) {
 
   }
 
+  const handleInputChange = (e, setState, mode) => {
+    const currentInputValue = e.target.value;
+    
+    if (mode !== "BORRAR") {
+      setState(currentInputValue);
+    }
+  };
 
   return ReactDOM.createPortal(
     <Modal open={true} onClose={closeModal} >
@@ -221,7 +228,7 @@ function ModalUser({ children, mode }) {
                 <Select
                   labelId="user-select-label"
                   id="user-select"
-                  onChange={handleSelectChange}
+                  onChange={(e) => handleSelectChange(e, setUser)}
                   required
                 >
                   {users.map((name, index) => (
@@ -238,7 +245,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={first_name} 
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={(e) => handleInputChange(e, setFirstName,mode)}
             margin="dense"
           />
           <TextField 
@@ -247,7 +254,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={last_name} 
-            onChange={(e) => setLastName(e.target.value)}
+            onChange={(e) => handleInputChange(e, setLastName,mode)}
             margin="dense"
           />
           <TextField 
@@ -256,7 +263,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={rfc} 
-            onChange={(e) => setRfc(e.target.value)}
+            onChange={(e) => handleInputChange(e, setRfc,mode)}
             margin="dense"
           />
           <TextField 
@@ -265,7 +272,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={user} 
-            onChange={(e) => setUser(e.target.value)}
+            onChange={(e) => handleInputChange(e, setUser,mode)}
             margin="dense"
           />
           <TextField 
@@ -275,7 +282,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={email} 
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleInputChange(e, setEmail,mode)}
             margin="dense"
           />
           <TextField 
@@ -285,7 +292,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={password} 
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => handleInputChange(e, setPassword,mode )}
             margin="dense"
           />
           <FormControl fullWidth mt={2} mb={2}>
@@ -307,7 +314,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={company} 
-            onChange={(e) => setCompany(e.target.value)}
+            onChange={(e) => handleInputChange(e, setCompany,mode)}
             margin="dense"
           />
           <TextField 
@@ -316,7 +323,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={phone} 
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => handleInputChange(e, setPhone,mode)}
             margin="dense"
           />
           <Title>Ubicacion</Title>
@@ -326,7 +333,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={state} 
-            onChange={(e) => setState(e.target.value)}
+            onChange={(e) => handleInputChange(e, setState,mode)}
             margin="dense"
           />
           <TextField 
@@ -335,7 +342,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={city} 
-            onChange={(e) => setCity(e.target.value)}
+            onChange={(e) => handleInputChange(e, setCity,mode)}
             margin="dense"
           />
           <TextField 
@@ -344,7 +351,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={locality} 
-            onChange={(e) => setLocality(e.target.value)}
+            onChange={(e) => handleInputChange(e, setLocality,mode)}
             margin="dense"
           />
           <TextField 
@@ -353,7 +360,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={street} 
-            onChange={(e) => setStreet(e.target.value)}
+            onChange={(e) => (e, setStreet,mode )}
             margin="dense"
           />
           
@@ -364,7 +371,7 @@ function ModalUser({ children, mode }) {
             required 
             fullWidth 
             value={postal_code} 
-            onChange={(e) => setPostalCode(e.target.value)}
+            onChange={(e) => handleInputChange(e, setPostalCode,mode)}
             margin="dense"
           />
           
