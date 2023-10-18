@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TodoContext } from '../context/index.js';
-import { ModalUser } from './Users/ModalUser';
+import { ModalReport } from './ModalReport';
 import GeneratorTable from "../components/GeneratorTable";
 import BarsChartVehicle from "../components/BarsChartVehicle";
 import {
@@ -24,7 +24,9 @@ function MenuReport() {
     setOpenModalEdit,
     openModalEdit, 
     setOpenModalDelete, 
-    openModalDelete 
+    openModalDelete ,
+    openModalCreateReport,
+    setOpenModalCreateReport
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -69,20 +71,20 @@ function MenuReport() {
             </Grid>
           </Container>
 
-          {openModalCreate && (
-            <ModalUser mode={"CREAR"}>
+          {openModalCreateReport && (
+            <ModalReport mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalReport >
           )}
           {openModalEdit && (
-            <ModalUser mode={"EDITAR"}>
+            <ModalReport mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalReport >
           )}
           {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+            <ModalReport mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalReport >
           )}
         </Box>
       </Box>

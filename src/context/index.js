@@ -39,6 +39,10 @@ function TodoProvider({ children }) {
   const [openModalDeleteVehicle, setOpenModalDeleteVehicle] = React.useState(false);
   const [openSideBar , setOpenSideBar] = React.useState(false);
   const [openModalText, setOpenModalText] = React.useState(false);
+  const [openModalCreateReport, setOpenModalCreateReport] = React.useState(false);
+  const [openModalEditReport, setOpenModalEditReport] = React.useState(false);
+  const [openModalDeleteReport, setOpenModalDeleteReport] = React.useState(false);
+
 
 
   const users = [
@@ -91,7 +95,11 @@ function TodoProvider({ children }) {
       openModalEditVehicle, setOpenModalEditVehicle,
       openModalDeleteVehicle, setOpenModalDeleteVehicle,
       openSideBar , setOpenSideBar,
-      openModalText, setOpenModalText
+      openModalText, setOpenModalText,
+      openModalCreateReport, setOpenModalCreateReport,
+      openModalEditReport, setOpenModalEditReport,
+      openModalDeleteReport, setOpenModalDeleteReport,
+
     }} >
       {children}
     </TodoContext.Provider>

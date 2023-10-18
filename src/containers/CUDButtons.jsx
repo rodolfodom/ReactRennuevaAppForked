@@ -37,6 +37,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       openModalCreateVehicle, setOpenModalCreateVehicle,
       openModalEditVehicle, setOpenModalEditVehicle,
       openModalDeleteVehicle, setOpenModalDeleteVehicle,
+      openModalCreateReport, setOpenModalCreateReport
     } = useContext(TodoContext);
     
     return (
@@ -74,7 +75,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         <OptionButton setOpenModal={setOpenModalCreateVehicle} text="Crear Vehicle" color="#28a745" />
       ) : null}
       {model === 'Responsiva' ? (
-        <OptionButton setOpenModal={setOpenModalCreateVehicle} text="Crear responsiva" color="#28a745" />
+        <OptionButton setOpenModal={setOpenModalCreateReport} text="Crear responsiva" color="#28a745" />
       ) : null}
 
       </div>
