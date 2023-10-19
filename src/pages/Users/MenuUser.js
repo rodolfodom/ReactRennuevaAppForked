@@ -27,7 +27,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 
 
-
 function MenuUser() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -131,7 +130,9 @@ function MenuUser() {
                 </Paper>
 
               </Grid>
+              
             </Grid>
+            
           </Container>
 
           {openModalCreate && (

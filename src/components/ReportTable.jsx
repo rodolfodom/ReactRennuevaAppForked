@@ -17,13 +17,10 @@ import { styled } from '@mui/system';
 
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+import { ModalFirmar } from '../pages/ModalFirmar';
 
 
-const exampleData = [
-  { id: 1, name: "John", age: 28 },
-  { id: 2, name: "Anna", age: 22 },
-  { id: 3, name: "Mike", age: 32 }
-];
+
 
 const QRCode = require('qrcode');
 
@@ -188,6 +185,7 @@ const ReportTable = () => {
   const [clientes, setClientes] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openModalFirmar, setOpenModalFirmar] = useState(false);
 
   useEffect(() => {
     axios
@@ -209,6 +207,12 @@ const ReportTable = () => {
     setPage(0);
   };
 
+  const Firmar = () => {
+    return (
+      <ModalFirmar />
+    )
+  }
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 300, minHeight: 300 }}>
@@ -228,6 +232,8 @@ const ReportTable = () => {
               <TableCell>Codigo Postal</TableCell>
               <TableCell>Procedencia</TableCell>
               <TableCell>Residuo</TableCell>
+              <TableCell>Firma Receptor</TableCell>
+              <TableCell>Firma Generador</TableCell>
               <TableCell>Fecha inicio</TableCell>
               <TableCell>Fecha fin</TableCell>
               <TableCell>Reporte</TableCell>
@@ -251,8 +257,12 @@ const ReportTable = () => {
                   <TableCell>Ciudad</TableCell>
                   <TableCell>Estado</TableCell>
                   <TableCell>Codigo Postar</TableCell>
-                  <TableCell><StyledButton>Procedencia</StyledButton></TableCell>
+                  <TableCell><StyledButton >Procedencia</StyledButton></TableCell>
                   <TableCell><StyledButton>Residuo</StyledButton></TableCell>
+                  <TableCell><StyledButton onClick={() => {
+                    setOpenModalFirmar(true)
+                  }}>Firmar</StyledButton></TableCell>
+                  <TableCell><StyledButton>Firmar</StyledButton></TableCell>
                   <TableCell>Fecha inicio</TableCell>
                   <TableCell>Fecha fin</TableCell>
                   <TableCell><StyledButton onClick={async () => {
@@ -275,6 +285,11 @@ const ReportTable = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      {openModalFirmar && (
+        
+        <ModalFirmar />
+          )}
+         
     </Paper>
   );
 }
