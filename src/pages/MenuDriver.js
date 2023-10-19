@@ -1,79 +1,103 @@
-
-import React, { useState, useEffect, useContext } from "react";
-import '../styles/user/MenuUser.css'
+import React, { useContext, useState } from "react";
 import { TodoContext } from '../context/index.js';
-import { Modal } from './Users/ModalUser';
-import { OptionButton } from '../components/OptionButton';
-import UserTable from "../components/Table";
-import CUDButtons from "../containers/CUDButtons";
-import BarsChart from "../components/BarsChart";
-import BarsChartVehicle from "../components/BarsChartVehicle";
+import { ModalUser } from './Users/ModalUser';
 import ResidueTable from "../components/ResidueTable";
-import VehicleTable from "../components/VehicleTable";
+import BarsChartVehicle from "../components/BarsChartVehicle";
+import {
+  ThemeProvider,
+  createTheme,
+  Box,
+  Grid,
+  Paper,
+  Container,
+  Toolbar,
+  CssBaseline,
+} from '@mui/material';
+import Title from '../components/Title';
+import CUDButtons from "../containers/CUDButtons";
 
 function MenuDriver() {
+  const { 
+    openModalCreate, 
+    setOpenModalCreate, 
+    setOpenModalEdit,
+    openModalEdit, 
+    setOpenModalDelete, 
+    openModalDelete 
+  } = useContext(TodoContext);
 
-  const handleAdd = () => {
-    // Lógica para agregar
-    console.log("Agregando")
-
-  };
-
-  const handleUpdate = () => {
-    console.log("Actualizando")
-  };
-
-  const handleDelete = () => {
-    // Lógica para eliminar
-    console.log("Eliminando")
-  };
   const [datos, setDatos] = useState([]);
-  const { totalListlUsers, openModalCreate, setOpenModalCreate, setOpenModalEdit,
-    openModalEdit, setOpenModalDelete, openModalDelete } = useContext(TodoContext);
 
-  useEffect(() => {
+  //... otros handlers y useEffect ...
 
-    setDatos(totalListlUsers);
-  }, []);
+  const defaultTheme = createTheme();
 
   return (
-    <div className="container" >
-      <h1 >Conductores</h1>
+    <ThemeProvider theme={defaultTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) => theme.palette.grey[100],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="lg">
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  sx={{
+                    p: 3,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Title>Conductores</Title>
+                  <CUDButtons model="Driver" />
+                  <Title>Lista de Conductores</Title>
+                  <ResidueTable />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  sx={{
+                    p: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 580,
+                  }}
+                >
+                  <BarsChartVehicle />
+                </Paper>
+              </Grid>
+            </Grid>
+          </Container>
 
-      <CUDButtons model = "Driver"/>
-      <ResidueTable />
-      <div  style={{ width: "450px", height: "225px",padding : "10px", margin: "10px" }}>
-        <BarsChartVehicle />
-      </div>
-
-
-
-      {openModalCreate && (
-        <Modal mode={"CREAR"}>
-          La funcionalidad de agregar TODO
-        </Modal>
-      )
-      }
-      {openModalEdit && (
-        <Modal mode={"EDITAR"}>
-          La funcionalidad de editar TODO
-        </Modal>
-      )
-      }
-      {openModalDelete && (
-        <Modal mode={"BORRAR"}>
-          La funcionalidad de borrar TODO
-        </Modal>
-      )
-      }
-
-
-    </div>
-
-
-
+          {openModalCreate && (
+            <ModalUser mode={"CREAR"}>
+              La funcionalidad de agregar TODO
+            </ ModalUser >
+          )}
+          {openModalEdit && (
+            <ModalUser mode={"EDITAR"}>
+              La funcionalidad de editar TODO
+            </ ModalUser >
+          )}
+          {openModalDelete && (
+            <ModalUser mode={"BORRAR"}>
+              La funcionalidad de borrar TODO
+            </ ModalUser >
+          )}
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
-
 }
 
 export { MenuDriver };

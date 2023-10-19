@@ -1,54 +1,67 @@
-import React , {useState, useEffect}from 'react';
-import '../styles/Table.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from '@mui/material';
 
 const ResidueTable = ({ datos }) => {
-    const [clientes, setClientes] = useState([]);
+  const [clientes, setClientes] = useState([]);
 
+  useEffect(() => {
+    axios
+      .get('http://127.0.0.1:8000/Rennueva/get-all-residue/')
+      .then(response => {
+        const data = response.data;
+        setClientes(data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
-    useEffect(() => {
-        // Realiza una petición GET a una URL específica
-        axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-residue/')
-            .then(response => {
-                const data = response.data;
-                setClientes(data);
-              
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-    return (
-      <div className='table-containerGroup'>
-      <table>
-        <thead>
-          <tr>
-            <th className='etiquetaTabla'>Nombre</th>
-            <th className='etiquetaTabla'>Descripcion</th>
-
-
-          </tr>
-        </thead>
-        <tbody>
-          {clientes.map((fila, index) => (
-            console.log("###############################"),
-            console.log(clientes),
-            console.log(fila),
-            
-            <tr key={index}>
-              <td className='datoTablaGroup'>{fila.nombre}</td>
-              <td className='datoTablaGroup'>{fila.descripcion}</td>
-
-                
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    );
-  }
+  return (
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 300, minHeight: 300 }}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Nombre</TableCell>
+              <TableCell>Descripcion</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {clientes
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((cliente, index) => (
+                <TableRow key={index}>
+                  <TableCell>{cliente.nombre}</TableCell>
+                  <TableCell>{cliente.descripcion}</TableCell>
+                </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={clientes.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
+  );
+}
 
 export default ResidueTable;

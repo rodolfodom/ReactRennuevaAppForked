@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import '../../styles/user/CreateUser.css';
 import { TodoContext } from '../../context/index.js';
 import axios from 'axios';
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';

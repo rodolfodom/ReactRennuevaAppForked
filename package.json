@@ -15,7 +15,10 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "chart.js": "^4.3.3",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.7.0",
     "material-react-table": "^1.14.0",
+    "qrcode": "^1.5.3",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
@@ -23,6 +26,7 @@
     "react-pro-sidebar": "^1.1.0-alpha.1",
     "react-router-dom": "^6.14.2",
     "react-scripts": "^5.0.1",
+    "react-signature-canvas": "^1.0.6",
     "recharts": "^2.8.0",
     "styled-components": "^6.0.4",
     "web-vitals": "^2.1.4"

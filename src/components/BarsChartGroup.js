@@ -18,6 +18,7 @@ export default function Chart() {
         }));
 
         setGroups(chartData);
+        console.log(chartData);
       })
       .catch(error => {
         console.error(error);
@@ -26,7 +27,7 @@ export default function Chart() {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Usuarios por Grupo</Title>
       <ResponsiveContainer width="100%" height={500}>
         <BarChart
           data={groups}

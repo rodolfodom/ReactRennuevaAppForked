@@ -1,43 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Table.css';
 import axios from 'axios';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from '@mui/material';
+import { 
+  Paper, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  TablePagination 
+} from '@mui/material';
 
-
-const GroupTable = ({ datos }) => {
-  const [clientes, setClientes] = useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
+const VehicleTable = () => {
+  const [vehicles, setVehicles] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    // Realiza una petición GET a una URL específica
     axios
       .get('http://127.0.0.1:8000/Rennueva/get-all-vehicle/')
       .then(response => {
-        const data = response.data;
-        setClientes(data);
-
-
+        setVehicles(response.data);
       })
       .catch(error => {
         console.error(error);
       });
   }, []);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 300, minHeight: 300 }}>
-        <Table size="small">
+      <TableContainer sx={{ maxHeight: 300, minHeight : 300 }}>
+        <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>Modelo</TableCell>
@@ -47,23 +49,23 @@ const GroupTable = ({ datos }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {clientes
+            {vehicles
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((cliente, index) => (
+              .map((vehicle, index) => (
                 <TableRow key={index}>
-                  <TableCell>{cliente.modelo}</TableCell>
-                  <TableCell>{cliente.placas}</TableCell>
-                  <TableCell>{cliente.capacidad}</TableCell>
-                  <TableCell>{cliente.conductor}</TableCell>
+                  <TableCell>{vehicle.modelo}</TableCell>
+                  <TableCell>{vehicle.placas}</TableCell>
+                  <TableCell>{vehicle.capacidad}</TableCell>
+                  <TableCell>{vehicle.conductor}</TableCell>
                 </TableRow>
-              ))}
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={clientes.length}
+        count={vehicles.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -73,4 +75,4 @@ const GroupTable = ({ datos }) => {
   );
 }
 
-export default GroupTable;
+export default VehicleTable;

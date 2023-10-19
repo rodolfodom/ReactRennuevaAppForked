@@ -3,24 +3,29 @@ import ReactDOM from 'react-dom';
 import '../../styles/user/CreateUser.css';
 import { TodoContext } from '../../context/index.js';
 import axios from 'axios';
-function Modal({ children, mode }) {
-  console.log("#######################MODEMODEMDEO")
-  console.log(mode);
+import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
+import Title from '../../components/Title';
+
+function ModalUser({ children, mode }) {
   const [datos, setDatos] = useState([]);
   const [groups, setGroups] = useState([])
   const [users, setUsers] = useState([])
-
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
+  const [group, setGroup] = useState("");
+  const [company, setCompany] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [locality, setLocality] = useState("");
+  const [street, setStreet] = useState("");
+  const [postal_code, setPostalCode] = useState("");
+  const [rfc, setRfc] = useState("");
+  const [phone, setPhone] = useState("");
 
-
-
-
-
-  const { openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
+  const { openModalText,setOpenModalText,openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
   const closeModal = () => {
     if (openModalCreate) {
       setOpenModalCreate(false);
@@ -32,28 +37,32 @@ function Modal({ children, mode }) {
       setOpenModalDelete(false);
     }
   };
+
+
   const handleSubmit = (e) => {
-
-
-
-
     e.preventDefault();
-    // Agregar los datos ingresados al arreglo de datos
+    
     const nuevoDato = {
       user: e.target.user.value,
       password: e.target.password.value,
       email: e.target.email.value,
       first_name: e.target.nombre.value,
       last_name: e.target.apellido.value,
-      group: e.target.rol.value
+      group: "admin",
+      rfc : e.target.rfc.value,
+      company : e.target.company.value,
+      phone : e.target.phone.value,
+      address_state : e.target.state.value,
+      address_city : e.target.city.value,
+      address_locality : e.target.locality.value,
+      address_street : e.target.street.value,
+      address_postal_code : e.target.postal_code.value,
+      address_lat : 0,
+      address_lng : 0,
     };
-    console.log(nuevoDato)
-    console.log("E#################################R")
-    console.log(document.getElementById("mySelect"))
-    console.log(user)
 
-    const antiguo_user = document.getElementById("mySelect")
-    var user_ant = antiguo_user.value
+    const antiguo_user = document.getElementById("mySelect") 
+    var user_ant = antiguo_user ? antiguo_user.value : null;
 
     const editarDato = {
       user: e.target.user.value,
@@ -61,6 +70,18 @@ function Modal({ children, mode }) {
       email: e.target.email.value,
       first_name: e.target.nombre.value,
       last_name: e.target.apellido.value,
+
+      group: "admin",
+      rfc : e.target.rfc.value,
+      company : e.target.company.value,
+      phone : e.target.phone.value,
+      address_state : e.target.state.value,
+      address_city : e.target.city.value,
+      address_locality : e.target.locality.value,
+      address_street : e.target.street.value,
+      address_postal_code : e.target.postal_code.value,
+      address_lat : 0,
+      address_lng : 0,
      
       antiguoUser:  user_ant
     };
@@ -69,22 +90,16 @@ function Modal({ children, mode }) {
       user : user_ant
     }
 
-
-    
-
-    // Realiza una petición GET a una URL específica
-
-    
       const crear = mode === "CREAR" ? (
         axios
           .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
           .then(response => {
             const data = response.data;
             console.log(data)
-
-
-
-
+            setOpenModalText(true);
+            e.target.reset();
+            closeModal()
+            
           })
           .catch(error => {
             console.error(error);
@@ -100,11 +115,6 @@ function Modal({ children, mode }) {
             e.target.reset();
             closeModal()
             // Limpiar los campos del formulario
-   
-
-
-
-
           })
           .catch(error => {
             console.error(error);
@@ -112,7 +122,6 @@ function Modal({ children, mode }) {
       ) : null
    
       const borrar = mode === "BORRAR" ? (
-
         axios
           .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
           .then(response => {
@@ -121,21 +130,11 @@ function Modal({ children, mode }) {
             e.target.reset();
             closeModal()
 
-
-
-
           })
           .catch(error => {
             console.error(error);
           })
       ) : null
-    
-
-
-
-
-
-
 
     // Limpiar los campos del formulario
     e.target.reset();
@@ -148,10 +147,6 @@ function Modal({ children, mode }) {
         const data = response.data;
         setGroups(data)
         console.log("######################GRUPOS##################################")
-
-
-
-
 
       })
       .catch(error => {
@@ -168,10 +163,6 @@ function Modal({ children, mode }) {
         const data = response.data;
         setUsers(data)
         console.log("######################GRUPOS##################################")
-
-
-
-
 
       })
       .catch(error => {
@@ -191,82 +182,215 @@ function Modal({ children, mode }) {
     setEmail(datoEncontrado.email);
     setFirstName(datoEncontrado.first_name);
     setLastName(datoEncontrado.last_name);
+    setGroup(datoEncontrado.group);
+    setRfc(datoEncontrado.rfc);
+    setCompany(datoEncontrado.company);
+    setPhone(datoEncontrado.phone);
+    setState(datoEncontrado.address_state);
+    setCity(datoEncontrado.address_city);
+    setLocality(datoEncontrado.address_locality);
+    setStreet(datoEncontrado.address_street);
+    setPostalCode(datoEncontrado.address_postal_code);
+    
 
 
   }
 
+  const handleInputChange = (e, setState, mode) => {
+    const currentInputValue = e.target.value;
+    
+    if (mode !== "BORRAR") {
+      setState(currentInputValue);
+    }
+  };
 
   return ReactDOM.createPortal(
-    
-
-
-    <div className="ModalBackground">
-
-      <div className='DivModal'>
-        <button className="ModalClose" onClick={closeModal}>
-          <span>&times;</span>
-        </button>
-        <form onSubmit={handleSubmit}>
-          <div style={{ margin: "10px" }}>
+    <Modal open={true} onClose={closeModal} >
+      <Box className="ModalContent" sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+        borderRadius: 2,
+        
+      }}>
+        <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
+        <form onSubmit={handleSubmit} >
+          <Box mb={2}>
+            <Title> Usuario</Title>
             {mode === "EDITAR" || mode === "BORRAR" ? (
-              <select
-                style={{ width: "100%", height: "40px", backgroundColor: "white", borderRadius: "5px" }}
-                name="rol"
-                required
-                onChange={handleSelectChange}
-                id = "mySelect"
-              >
-                {
-                  users.map((name, index) => (
-                    <option key={index}>{name.user}</option>
-                  ))
-                }
-              </select>
+              <FormControl fullWidth>
+                <InputLabel id="user-select-label">Usuario</InputLabel>
+                <Select
+                  labelId="user-select-label"
+                  id="user-select"
+                  onChange={(e) => handleSelectChange(e, setUser)}
+                  required
+                >
+                  {users.map((name, index) => (
+                    <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             ) : null}
-          </div>
+          </Box>
+          <Box mt={2} mb={2} sx={{overflowY: 'auto', maxHeight : 500}}>
+          <TextField 
+            label="Nombre" 
+            name="nombre" 
+            required 
+            fullWidth 
+            value={first_name} 
+            onChange={(e) => handleInputChange(e, setFirstName,mode)}
+            margin="dense"
+          />
+          <TextField 
+            label="Apellido" 
+            name="apellido" 
+            required 
+            fullWidth 
+            value={last_name} 
+            onChange={(e) => handleInputChange(e, setLastName,mode)}
+            margin="dense"
+          />
+          <TextField 
+            label="RFC" 
+            name="rfc" 
+            required 
+            fullWidth 
+            value={rfc} 
+            onChange={(e) => handleInputChange(e, setRfc,mode)}
+            margin="dense"
+          />
+          <TextField 
+            label="Nombre de Usuario" 
+            name="user" 
+            required 
+            fullWidth 
+            value={user} 
+            onChange={(e) => handleInputChange(e, setUser,mode)}
+            margin="dense"
+          />
+          <TextField 
+            label="Email" 
+            name="email" 
+            type="email" 
+            required 
+            fullWidth 
+            value={email} 
+            onChange={(e) => handleInputChange(e, setEmail,mode)}
+            margin="dense"
+          />
+          <TextField 
+            label="Password" 
+            name="password" 
+            type="password" 
+            required 
+            fullWidth 
+            value={password} 
+            onChange={(e) => handleInputChange(e, setPassword,mode )}
+            margin="dense"
+          />
+          <FormControl fullWidth mt={2} mb={2}>
+            <InputLabel id="rol-select-label">Grupo</InputLabel>
+            <Select
+              labelId="rol-select-label"
+              id="rol-select"
+              required
+            >
+              {groups.map((name, index) => (
+                <MenuItem key={index} value={name.name}>{name.name}</MenuItem>
+              ))}
+            </Select>
 
-          <label >
-            Nombre:
-            <input type="text" name="nombre" required value={first_name} onChange={(e) => setFirstName(e.target.value)}/>
-          </label>
-          <label>
-            Apellido:
-            <input type="text" name="apellido" required value={last_name} onChange={(e) => setLastName(e.target.value)}/>
-          </label>
-          <label>
-            Nombre de Usuario:
-            <input type="text" name="user" required value={user} onChange={(e) => setUser(e.target.value)}/>
-          </label>
-          <label>
-            Email:
-            <input type="email" name="email" required value={email} onChange={(e) => setEmail(e.target.value)}/>
-          </label>
-          <label>
-            Password:
-            <input type="password" name="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-          </label>
-          <label  >
-            Rol:
+            
+            <TextField 
+            label="Compañia" 
+            name="company" 
+            required 
+            fullWidth 
+            value={company} 
+            onChange={(e) => handleInputChange(e, setCompany,mode)}
+            margin="dense"
+          />
+          <TextField 
+            label="Celular" 
+            name="phone" 
+            required 
+            fullWidth 
+            value={phone} 
+            onChange={(e) => handleInputChange(e, setPhone,mode)}
+            margin="dense"
+          />
+          <Title>Ubicacion</Title>
+          <TextField 
+            label="Estado" 
+            name="state" 
+            required 
+            fullWidth 
+            value={state} 
+            onChange={(e) => handleInputChange(e, setState,mode)}
+            margin="dense"
+          />
+          <TextField 
+            label="Ciudad" 
+            name="city" 
+            required 
+            fullWidth 
+            value={city} 
+            onChange={(e) => handleInputChange(e, setCity,mode)}
+            margin="dense"
+          />
+          <TextField 
+            label="Colonia" 
+            name="locality" 
+            required 
+            fullWidth 
+            value={locality} 
+            onChange={(e) => handleInputChange(e, setLocality,mode)}
+            margin="dense"
+          />
+          <TextField 
+            label="Calle y Numero" 
+            name="street" 
+            required 
+            fullWidth 
+            value={street} 
+            onChange={(e) => handleInputChange(e, setStreet,mode )}
+            margin="dense"
+          />
+          
+          
+          <TextField 
+            label="Codigo postal" 
+            name="postal_code" 
+            required 
+            fullWidth 
+            value={postal_code} 
+            onChange={(e) => handleInputChange(e, setPostalCode,mode)}
+            margin="dense"
+          />
+          
+          
 
-          </label>
-          <div style={{ margin: "10px" }}>
-            <select style={{ width: "100%", height: "40px", backgroundColor: "white", borderRadius: "5px" }} name="rol" required>
 
-              {
-                groups.map((name) => (
-                  <option>{name.name} </option>
-                ))
-              }
-            </select>
-          </div>
+          </FormControl>
+          </Box>
 
-          <button style={{ marginTop: "20px" }} type="submit">{mode}</button>
-
+          <Button type="submit" variant="contained" fullWidth>{mode}</Button>
         </form>
-      </div>
-    </div>,
+      </Box>
+      
+     
+    </Modal>,
+    
     document.getElementById('modal')
+   
   );
 }
 
-export { Modal };
+export { ModalUser };

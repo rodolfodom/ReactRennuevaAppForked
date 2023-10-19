@@ -61,9 +61,9 @@ export default function Orders() {
           <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>Responsivas</TableCell>
+            <TableCell>residuo</TableCell>
+          
           </TableRow>
         </TableHead>
         <TableBody>
@@ -72,14 +72,14 @@ export default function Orders() {
               <TableCell>{row.date}</TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+              <TableCell>sda</TableCell>
+   
             </TableRow>
           ))}
         </TableBody>
       </Table>
       <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
+        Ver todos los usuarios
       </Link>
     </React.Fragment>
   );

@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TodoContext } from '../context/index.js';
-import { ModalUser } from './Users/ModalUser';
-import VehicleTable from "../components/VehicleTable";
+import { ModalReport } from './ModalReport';
+import GeneratorTable from "../components/GeneratorTable";
 import BarsChartVehicle from "../components/BarsChartVehicle";
 import {
   ThemeProvider,
@@ -15,15 +15,18 @@ import {
 } from '@mui/material';
 import Title from '../components/Title';
 import CUDButtons from "../containers/CUDButtons";
+import ReportTable from "../components/ReportTable.jsx";
 
-function MenuVehicle() {
+function MenuReport() {
   const { 
     openModalCreate, 
     setOpenModalCreate, 
     setOpenModalEdit,
     openModalEdit, 
     setOpenModalDelete, 
-    openModalDelete 
+    openModalDelete ,
+    openModalCreateReport,
+    setOpenModalCreateReport
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -48,7 +51,7 @@ function MenuVehicle() {
           <Toolbar />
           <Container maxWidth="lg">
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 <Paper
                   sx={{
                     p: 3,
@@ -58,41 +61,30 @@ function MenuVehicle() {
                     justifyContent: 'center'
                   }}
                 >
-                  <Title>Vehículos</Title>
-                  <CUDButtons model="Vehicle" />
-                  <Title>Vehículos Creados</Title>
-                  <VehicleTable />
+                  <Title>Reportes</Title>
+                  <CUDButtons model="Responsiva" />
+                  <Title>Historial Reportes</Title>
+                  <ReportTable />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Paper
-                  sx={{
-                    p: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 580,
-                  }}
-                >
-                  <BarsChartVehicle />
-                </Paper>
-              </Grid>
+              
             </Grid>
           </Container>
 
-          {openModalCreate && (
-            <ModalUser mode={"CREAR"}>
+          {openModalCreateReport && (
+            <ModalReport mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalReport >
           )}
           {openModalEdit && (
-            <ModalUser mode={"EDITAR"}>
+            <ModalReport mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalReport >
           )}
           {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+            <ModalReport mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalReport >
           )}
         </Box>
       </Box>
@@ -100,4 +92,4 @@ function MenuVehicle() {
   );
 }
 
-export { MenuVehicle };
+export { MenuReport };

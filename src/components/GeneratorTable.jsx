@@ -1,70 +1,92 @@
-import React , {useState, useEffect}from 'react';
-import '../styles/Table.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { 
+  Paper, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  TablePagination 
+} from '@mui/material';
 
-const GeneratorTable = ({ datos }) => {
+const GeneratorTable = () => {
     const [clientes, setClientes] = useState([]);
-
-
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+  
     useEffect(() => {
-        // Realiza una petición GET a una URL específica
         axios
             .get('http://127.0.0.1:8000/Rennueva/get-all-generator/')
             .then(response => {
-                const data = response.data;
-                setClientes(data);
-              
-
+                setClientes(response.data);
             })
             .catch(error => {
                 console.error(error);
             });
     }, []);
-
+  
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+  
     return (
-      <div className='table-container'>
-      <table>
-        <thead>
-          <tr>
-            <th className='etiquetaTabla'>Nombre</th>
-            
-            <th className='etiquetaTabla'>Razon Social</th>
-            <th className='etiquetaTabla'>RFC</th>
-            <th className='etiquetaTabla'>Calle</th>
-            <th className='etiquetaTabla'>Celular</th>
-            <th className='etiquetaTabla'>Email</th>
-            <th className='etiquetaTabla'>Direccion</th>
-            <th className='etiquetaTabla'>Ciudad</th>
-            <th className='etiquetaTabla'>Estado</th>
-            <th className='etiquetaTabla'>Codigo Postal</th>
-
-
-          </tr>
-        </thead>
-        <tbody>
-          {clientes.map((fila, index) => (
-            console.log("###############################"),
-            console.log(clientes),
-            console.log(fila),
-            
-            <tr key={index}>
-              <td className='datoTabla'>{fila.nombre } </td>
-              
-              <td className='datoTabla'>{fila.razonSocial}</td>
-              <td className='datoTabla'>{fila.rfc}</td>
-              <td className='datoTabla'>{fila.calle}</td>
-              <td className='datoTabla'>{fila.celular}</td>
-              <td className='datoTabla'>{fila.correo}</td>
-              <td className='datoTabla'>{fila.direccion}</td>
-              <td className='datoTabla'>{fila.ciudad}</td>
-              <td className='datoTabla'>{fila.estado}</td>
-              <td className='datoTabla'>{fila.codigoPostal}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: 300 , minHeight : 300 }}>
+          <Table size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                {/* Añade aquí tus encabezados de tabla */}
+                <TableCell>Nombre</TableCell>
+                <TableCell>Correo</TableCell>
+                <TableCell>Nombre Usuario</TableCell>
+                <TableCell>RFC</TableCell>
+                <TableCell>Compañia</TableCell>
+                <TableCell>Direccion Estado</TableCell>
+                <TableCell>Direccion Ciudad</TableCell>
+                <TableCell>Dirección Colonia</TableCell>
+                <TableCell>Dirección Calle</TableCell>
+                <TableCell>Dirección Codigo Postal</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {clientes
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((cliente, index) => (
+                  <TableRow key={index}>
+                    {/* Añade aquí tus celdas de datos */}
+                    <TableCell>{`${cliente.first_name} ${cliente.last_name}`}</TableCell>
+                    <TableCell>{cliente.email}</TableCell>
+                    <TableCell>{cliente.user}</TableCell>
+                    <TableCell>{cliente.rfc}</TableCell>
+                    <TableCell>{cliente.company}</TableCell>
+                    <TableCell>{cliente.address_state}</TableCell>
+                    <TableCell>{cliente.address_city}</TableCell>
+                    <TableCell>{cliente.address_locality}</TableCell>
+                    <TableCell>{cliente.address_street}</TableCell>
+                    <TableCell>{cliente.address_postal_code}</TableCell>
+                  </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={clientes.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
     );
-  }
+}
 
 export default GeneratorTable;

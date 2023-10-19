@@ -33,7 +33,7 @@ const data = [
 ];
 
 export default function Chart() {
-  const theme = useTheme();
+ 
   const [months, setMonths] = useState([]);
     
     useEffect(() => {
@@ -42,9 +42,6 @@ export default function Chart() {
             .get('http://127.0.0.1:8000/Rennueva/get-all-users-months/')
             .then(response => {
                 const data = response.data;
-                console.log("data#$##$#$#$##$#$#$##$");
-                console.log(data[0].enero);
-                
                 let enero = data[0].enero;
                 let febrero = data[0].febrero;
                 let marzo = data[0].marzo;
@@ -57,12 +54,8 @@ export default function Chart() {
                 let octubre = data[0].octubre;
                 let noviembre = data[0].noviembre;
                 let diciembre = data[0].diciembre;
-                 
-                
+                              
                 setMonths([enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre]);
-
-
-
             })
             .catch(error => {
                 console.error(error);
@@ -87,7 +80,7 @@ export default function Chart() {
                 max: 100
             },
             x: {
-                ticks: { color: 'rgba(0, 220, 195)' }
+                ticks: { color: "black" }
             }
         }
     };
@@ -96,9 +89,9 @@ export default function Chart() {
         labels: meses,
         datasets: [
             {
-                label: 'Plastico reciclado',
+                label: 'Usuarios dados de alta',
                 data: months,
-                backgroundColor: 'rgba(0, 220, 195, 0.5)'
+                backgroundColor: "#3f51b5"
             }
         ]
     };
@@ -106,7 +99,7 @@ export default function Chart() {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Usuarios Creados</Title>
       <ResponsiveContainer>
         <Bar data={midata} options={misoptions} />
       </ResponsiveContainer>

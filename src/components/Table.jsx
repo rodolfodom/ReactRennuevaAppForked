@@ -48,21 +48,35 @@ const UserTable = ({ datos }) => {
               <TableRow>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Correo</TableCell>
+                <TableCell>Nombre Usuario</TableCell>
+                <TableCell>RFC</TableCell>
                 <TableCell>Grupos</TableCell>
-                <TableCell>Teléfono</TableCell>
-                <TableCell>Dirección</TableCell>
+                <TableCell>Compañia</TableCell>
+                <TableCell>Direccion Estado</TableCell>
+                <TableCell>Direccion Ciudad</TableCell>
+                <TableCell>Dirección Colonia</TableCell>
+                <TableCell>Dirección Calle</TableCell>
+                <TableCell>Dirección Codigo Postal</TableCell>
+                
               </TableRow>
             </TableHead>
             <TableBody>
               {clientes
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((cliente, index) => (
+
                   <TableRow key={index}>
                     <TableCell>{`${cliente.first_name} ${cliente.last_name}`}</TableCell>
                     <TableCell>{cliente.email}</TableCell>
+                    <TableCell>{cliente.user}</TableCell>
+                    <TableCell>{cliente.rfc}</TableCell>
                     <TableCell>{cliente.groups}</TableCell>
-                    <TableCell>{cliente.telefono}</TableCell>
-                    <TableCell>{cliente.direccion}</TableCell>
+                    <TableCell>{cliente.company}</TableCell>
+                    <TableCell>{cliente.address_state}</TableCell>
+                    <TableCell>{cliente.address_city}</TableCell>
+                    <TableCell>{cliente.address_locality}</TableCell>
+                    <TableCell>{cliente.address_street}</TableCell>
+                    <TableCell>{cliente.address_postal_code}</TableCell>
                   </TableRow>
               ))}
             </TableBody>

@@ -128,7 +128,7 @@ export default function MiniDrawer() {
     } else if (index == 1) {
       navigate('/generator');
     } else if (index == 2) {
-      navigate('/');
+      navigate('/donor');
     }
 
   }
@@ -138,11 +138,14 @@ export default function MiniDrawer() {
     if (index == 0) {
       navigate('/recycling-center');
     } else if (index == 1) {
-      navigate('/');
+      navigate('/collection-center');
     } else if (index == 2) {
       navigate('/driver');
     } else if (index == 3) {
       navigate('/vehicle');
+    }
+    else if (index == 4) {
+      navigate('/carrier');
     }
 
   }
@@ -290,6 +293,7 @@ export default function MiniDrawer() {
           {['Responsivas'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
+                onClick={() => { navigate('/report') }}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
