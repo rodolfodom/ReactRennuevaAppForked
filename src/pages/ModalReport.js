@@ -76,6 +76,26 @@ function ModalReport({ children, mode }) {
     };
 
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (mode === "CREAR") {
+            console.log("CREAR")
+            console.log(user)
+            axios
+                .post('http://127.0.0.1:8000/Rennueva/create-initial-report/', {
+                    username : user,
+                }) 
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    };
+
+
+    
     const handleInputChange = (e, setState, mode) => {
         const currentInputValue = e.target.value;
 
@@ -111,6 +131,8 @@ function ModalReport({ children, mode }) {
 
     }
 
+    
+
     return ReactDOM.createPortal(
         <Modal open={true} onClose={closeModal}>
 
@@ -127,7 +149,7 @@ function ModalReport({ children, mode }) {
 
             }}>
                 <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
-
+                <form onSubmit={handleSubmit} >
                 <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 600 }}>
 
                     <Box mb={2}>
@@ -303,6 +325,7 @@ function ModalReport({ children, mode }) {
 
 
                 </Box>
+                </form>
 
             </Box>
 
