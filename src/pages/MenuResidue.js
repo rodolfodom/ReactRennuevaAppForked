@@ -8,15 +8,16 @@ import CUDButtons from "../containers/CUDButtons";
 
 import { ThemeProvider, createTheme, Box, Grid, Paper, Container, Toolbar, CssBaseline } from '@mui/material';
 import Title from '../components/Title';
+import { ModalResidue } from "./ModalResidue";
 
 function MenuResidue() {
   const {
-    openModalCreate,
-    setOpenModalCreate,
-    setOpenModalEdit,
-    openModalEdit,
-    setOpenModalDelete,
-    openModalDelete
+    openModalCreateResidue,
+    setOpenModalCreateResidue,
+    setOpenModalEditResidue,
+    openModalEditResidue,
+    setOpenModalDeleteResidue,
+    openModalDeleteResidue
   } = useContext(TodoContext);
 
   const defaultTheme = createTheme();
@@ -68,20 +69,20 @@ function MenuResidue() {
             </Grid>
           </Container>
 
-          {openModalCreate && (
-            <ModalUser mode={"CREAR"}>
+          {openModalCreateResidue && (
+            <ModalResidue mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalResidue >
           )}
-          {openModalEdit && (
-            <ModalUser mode={"EDITAR"}>
+          {openModalEditResidue && (
+            <ModalResidue mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalResidue >
           )}
-          {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+          {openModalDeleteResidue && (
+            <ModalResidue mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalResidue >
           )}
         </Box>
       </Box>

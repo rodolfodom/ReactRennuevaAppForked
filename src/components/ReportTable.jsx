@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext} from 'react';
 import axios from 'axios';
 import {
   Paper,
@@ -18,6 +18,7 @@ import { styled } from '@mui/system';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { ModalFirmar } from '../pages/ModalFirmar';
+import { TodoContext } from '../context/index.js';
 
 
 
@@ -187,6 +188,8 @@ const ReportTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openModalFirmar, setOpenModalFirmar] = useState(false);
   const [report, setReport] = useState([]);
+  const { openModalCreateResidueReport, setOpenModalCreateResidueReport,openModalEditResidueReport, openModalDeleteResidueReport , } = useContext(TodoContext);
+
 
   useEffect(() => {
     axios
@@ -262,7 +265,9 @@ const ReportTable = () => {
                   <TableCell>{reporte.calle_usuario}</TableCell>
                   <TableCell>{reporte.cp_usuario}</TableCell>
                   <TableCell>{reporte.fecha_inicio_reporte}</TableCell>
-                  <TableCell><StyledButton>Residuo</StyledButton></TableCell>
+                  <TableCell><StyledButton onClick={() => {
+                    setOpenModalCreateResidueReport(true)
+                  }} >Residuo</StyledButton></TableCell>
                   <TableCell><StyledButton onClick={() => {
                     setOpenModalFirmar(true)
                   }}>Firmar</StyledButton></TableCell>

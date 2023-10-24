@@ -26,7 +26,6 @@ function ModalReport({ children, mode }) {
     const [phone, setPhone] = useState("");
     const [nameGenerator, setNameGenerator] = useState([]);
     const { openModalCreateReport, setOpenModalCreateReport, openModalEditReport, setOpenModalEditReport, openModalDeleteReport, setOpenModalDeleteReport } = useContext(TodoContext);
-
     useEffect(() => {
         axios
             .get('http://127.0.0.1:8000/Rennueva/get-all-generator/')
