@@ -42,7 +42,10 @@ function TodoProvider({ children }) {
   const [openModalCreateReport, setOpenModalCreateReport] = React.useState(false);
   const [openModalEditReport, setOpenModalEditReport] = React.useState(false);
   const [openModalDeleteReport, setOpenModalDeleteReport] = React.useState(false);
-
+  const [openModalCreateResidueReport, setOpenModalCreateResidueReport] = React.useState(false);
+  const [openModalEditResidueReport, setOpenModalEditResidueReport] = React.useState(false);
+  const [openModalDeleteResidueReport, setOpenModalDeleteResidueReport] = React.useState(false);
+ 
 
 
   const users = [
@@ -99,6 +102,9 @@ function TodoProvider({ children }) {
       openModalCreateReport, setOpenModalCreateReport,
       openModalEditReport, setOpenModalEditReport,
       openModalDeleteReport, setOpenModalDeleteReport,
+      openModalCreateResidueReport, setOpenModalCreateResidueReport,
+      openModalEditResidueReport, setOpenModalEditResidueReport,
+      openModalDeleteResidueReport, setOpenModalDeleteResidueReport
 
     }} >
       {children}

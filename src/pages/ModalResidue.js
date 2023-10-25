@@ -1,26 +1,27 @@
 import React, { useState, useContext, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import '../../styles/user/CreateUser.css';
-import { TodoContext } from '../../context/index.js';
+import '../styles/user/CreateUser.css';
+import { TodoContext } from '../context/index.js';
 import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
-import Title from '../../components/Title';
+import Title from '../components/Title';
 
-function ModalGroup({ children, mode }) {
-  const [groups, setGroups] = useState([]);
-  const [group, setGroup] = useState("");
+function ModalResidue({ children, mode }) {
+  const [residues, setResidues] = useState([]);
+  const [residue, setResidue] = useState("");
+  const [descripcion, setDescripcion] = useState("");
 
-  const { openModalCreateGroup , setOpenModalCreateGroup, openModalEditGroup, setOpenModalEditGroup, openModalDeleteGroup, setOpenModalDeleteGroup } = useContext(TodoContext);
+  const { openModalCreateResidue , setOpenModalCreateResidue, openModalEditResidue, setOpenModalEditResidue, openModalDeleteResidue, setOpenModalDeleteResidue } = useContext(TodoContext);
 
   const closeModal = () => {
-    if (openModalCreateGroup) {
-      setOpenModalCreateGroup(false);
+    if (openModalCreateResidue) {
+      setOpenModalCreateResidue(false);
     }
-    if (openModalEditGroup) {
-      setOpenModalEditGroup(false);
+    if (openModalEditResidue) {
+      setOpenModalEditResidue(false);
     }
-    if (openModalDeleteGroup) {
-      setOpenModalDeleteGroup(false);
+    if (openModalDeleteResidue) {
+      setOpenModalDeleteResidue(false);
     }
   };
 
@@ -31,8 +32,8 @@ function ModalGroup({ children, mode }) {
 
   
      const nuevoDato = {
-      name: e.target.name.value,
-
+      nombre: e.target.name.value,
+      descripcion: e.target.descripcion.value,
      };
 
   //   const antiguo_user = document.getElementById("mySelect")
@@ -49,7 +50,10 @@ function ModalGroup({ children, mode }) {
 
       const crear = mode === "CREAR" ? (
         axios
-          .post('http://127.0.0.1:8000/Rennueva/create-django-group/', nuevoDato)
+          .post('http://127.0.0.1:8000/Rennueva/create-residue/', {
+            nombre: e.target.nombre.value,
+            descripcion: e.target.descripcion.value,
+           })
           .then(response => {
             const data = response.data;
             console.log(data)
@@ -102,7 +106,7 @@ function ModalGroup({ children, mode }) {
       .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
       .then(response => {
         const data = response.data;
-        setGroups(data)
+        setResidues(data)
         console.log("######################GRUPOS##################################")
 
       })
@@ -113,20 +117,19 @@ function ModalGroup({ children, mode }) {
   }, []);
 
 
+//   const handleSelectChange = (event) => {
+//     const selectedOption = event.target.value; // Obtener la opción seleccionada
+//     console.log(selectedOption)
+//     // Buscar el dato seleccionado en el arreglo de datos
+//      const datoEncontrado = groups.find((groups) => groups.name === selectedOption);
+//     // console.log(datoEncontrado)
 
-  const handleSelectChange = (event) => {
-    const selectedOption = event.target.value; // Obtener la opción seleccionada
-    console.log(selectedOption)
-    // Buscar el dato seleccionado en el arreglo de datos
-     const datoEncontrado = groups.find((groups) => groups.name === selectedOption);
-    // console.log(datoEncontrado)
-
-    setGroup(datoEncontrado.group);
-
+//     setGroup(datoEncontrado.group);
 
 
 
-  }
+
+//   }
 
   const handleInputChange = (e, setState, mode) => {
     const currentInputValue = e.target.value;
@@ -153,7 +156,7 @@ function ModalGroup({ children, mode }) {
         <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
         <form onSubmit={handleSubmit} >
           <Box mb={2}>
-            <Title> Grupo</Title>
+            <Title> Residuos</Title>
             {mode === "EDITAR" || mode === "BORRAR" ? (
               <FormControl fullWidth>
                 <InputLabel id="user-select-label">Grupo</InputLabel>
@@ -163,7 +166,7 @@ function ModalGroup({ children, mode }) {
                   // onChange={(e) => handleSelectChange(e, setUser)}
                   required
                 >
-                  {groups.map((name, index) => (
+                  {residues.map((name, index) => (
                     <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
                   ))}
                 </Select>
@@ -175,12 +178,21 @@ function ModalGroup({ children, mode }) {
           <FormControl fullWidth mt={2} mb={2}>
 
           <TextField
-            label="Nombre Grupo"
-            name="name"
+            label="Nombre Residuo"
+            name="nombre"
             required
             fullWidth
-            value={group}
-            onChange={(e) => handleInputChange(e, setGroup,mode)}
+            value={residue}
+            onChange={(e) => handleInputChange(e, setResidue,mode)}
+            margin="dense"
+          />
+          <TextField
+            label="Descripcion"
+            name="descripcion"
+            required
+            fullWidth
+            value={descripcion}
+            onChange={(e) => handleInputChange(e, setDescripcion,mode)}
             margin="dense"
           />
 
@@ -199,4 +211,4 @@ function ModalGroup({ children, mode }) {
   );
 }
 
-export { ModalGroup };
+export { ModalResidue };

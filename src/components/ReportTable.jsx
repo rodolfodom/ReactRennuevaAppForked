@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext} from 'react';
 import axios from 'axios';
 import {
   Paper,
@@ -18,6 +18,7 @@ import { styled } from '@mui/system';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { ModalFirmar } from '../pages/ModalFirmar';
+import { TodoContext } from '../context/index.js';
 
 
 
@@ -49,7 +50,7 @@ function loadImage(src, callback) {
   xhr.send();
 }
 
-const generatePdf = () => {
+const generatePdf = (report) => {
 
 
   const doc = new jsPDF();
@@ -69,7 +70,7 @@ const generatePdf = () => {
   doc.setFontSize(18);
   doc.text("Datos del Generador", 14, 30);
   doc.setFontSize(12);
-  doc.text("FOLIO: 29347", 110, 30, { align: 'left' });
+  doc.text("FOLIO: " + report.id_report, 110, 30, { align: 'left' });
 
   const tableStyles = {
     cellPadding: 2,
@@ -83,7 +84,7 @@ const generatePdf = () => {
     startY: 35,
     tableWidth: 190,
     body: [
-      ['RFC:', 'ACR857025922', 'Razón Social:', 'Asociación de Colonos de Residencial Chiluca A.C.'],
+      ['RFC:', report.rfc_usuario , 'Razón Social:', 'Asociación de Colonos de Residencial Chiluca A.C.'],
 
     ],
     theme: 'plain',
@@ -96,10 +97,10 @@ const generatePdf = () => {
     tableWidth: 190,
     body: [
 
-      ['Calle:', 'Av. Residencial Chiluca', 'Número:', 'S/N'],
-      ['Colonia:', 'Fraccionamiento Residencial Chiluca', 'C.P.:', '52930'],
-      ['Estado:', 'Estado de México', 'Municipio:', 'Atizapán de Zaragoza'],
-      ['Contacto:', 'Cecilia Montañés', 'Teléfono:', '5554146775'],
+      ['Calle:', report.calle_usuario, 'Número:', 'S/N'],
+      ['Colonia:', report.colonia_usuario, 'C.P.:', report.cp_usuario],
+      ['Estado:', report.estado_usuario, 'Municipio:', report.ciudad_usuario],
+      ['Contacto:', report.nombre_real_usuario + " " + report.apellido_usuario, 'Teléfono:', report.telefono_usuario],
     ],
     theme: 'plain',
     styles: tableStyles,
@@ -186,12 +187,17 @@ const ReportTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openModalFirmar, setOpenModalFirmar] = useState(false);
+  const [report, setReport] = useState([]);
+  const { openModalCreateResidueReport, setOpenModalCreateResidueReport,openModalEditResidueReport, openModalDeleteResidueReport , } = useContext(TodoContext);
+
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-generator/')
+      .get('http://127.0.0.1:8000/Rennueva/get-all-reports/')
       .then(response => {
-        setClientes(response.data);
+        setReport(response.data);
+        console.log("##################################################");
+        console.log(response.data)
       })
       .catch(error => {
         console.error(error);
@@ -223,51 +229,53 @@ const ReportTable = () => {
               <TableCell>ID Reporte</TableCell>
               <TableCell>Nombre</TableCell>
               <TableCell>RFC</TableCell>
-              <TableCell>Calle</TableCell>
-              <TableCell>Celular</TableCell>
               <TableCell>Email</TableCell>
-              <TableCell>Dirección</TableCell>
-              <TableCell>Ciudad</TableCell>
+              <TableCell>Celular</TableCell>            
               <TableCell>Estado</TableCell>
-              <TableCell>Codigo Postal</TableCell>
-              <TableCell>Procedencia</TableCell>
+              <TableCell>Ciudad</TableCell>
+              <TableCell>Colonia</TableCell>
+              <TableCell>calle</TableCell>
+              <TableCell>CP</TableCell>
+              <TableCell>Fecha inicio</TableCell>
               <TableCell>Residuo</TableCell>
               <TableCell>Firma Receptor</TableCell>
               <TableCell>Firma Generador</TableCell>
-              <TableCell>Fecha inicio</TableCell>
-              <TableCell>Fecha fin</TableCell>
               <TableCell>Reporte</TableCell>
 
             </TableRow>
           </TableHead>
           <TableBody>
-            {clientes
+            {report
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((cliente, index) => (
+              .map((reporte, index) => (
+
+                console.log("###############" + reporte.nombre_real_usuario),
                 <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'action.hover' : 'background.paper' }}
-                >
+
+>
                   {/* Añade aquí tus celdas de datos */}
-                  <TableCell>id</TableCell>
-                  <TableCell>nobre</TableCell>
-                  <TableCell>rfc</TableCell>
-                  <TableCell>calle</TableCell>
-                  <TableCell>celular</TableCell>
-                  <TableCell>email</TableCell>
-                  <TableCell>direccion</TableCell>
-                  <TableCell>Ciudad</TableCell>
-                  <TableCell>Estado</TableCell>
-                  <TableCell>Codigo Postar</TableCell>
-                  <TableCell><StyledButton >Procedencia</StyledButton></TableCell>
-                  <TableCell><StyledButton>Residuo</StyledButton></TableCell>
+                  <TableCell>{reporte.id_report}</TableCell>
+                  <TableCell>{reporte.nombre_real_usuario + " "+ reporte.apellido_usuario}</TableCell>
+                  <TableCell>{reporte.rfc_usuario}</TableCell>
+                  <TableCell>{reporte.email_usuario}</TableCell>
+                  <TableCell>{reporte.telefono_usuario}</TableCell>
+                  <TableCell>{reporte.estado_usuario}</TableCell>
+                  <TableCell>{reporte.ciudad_usuario}</TableCell>
+                  <TableCell>{reporte.colonia_usuario}</TableCell>
+                  <TableCell>{reporte.calle_usuario}</TableCell>
+                  <TableCell>{reporte.cp_usuario}</TableCell>
+                  <TableCell>{reporte.fecha_inicio_reporte}</TableCell>
+                  <TableCell><StyledButton onClick={() => {
+                    setOpenModalCreateResidueReport(true)
+                  }} >Residuo</StyledButton></TableCell>
                   <TableCell><StyledButton onClick={() => {
                     setOpenModalFirmar(true)
                   }}>Firmar</StyledButton></TableCell>
                   <TableCell><StyledButton>Firmar</StyledButton></TableCell>
-                  <TableCell>Fecha inicio</TableCell>
-                  <TableCell>Fecha fin</TableCell>
+
                   <TableCell><StyledButton onClick={async () => {
                     await generateQR("TuTextoParaElQR");
-                    generatePdf()
+                    generatePdf(reporte)
                   }
                   }>Reporte</StyledButton></TableCell>
 
