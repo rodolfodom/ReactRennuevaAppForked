@@ -89,6 +89,13 @@ const generatePdf = (report, data) => {
   // Use this if you have a logo to add
   //doc.addImage('src/assets/Rennueva.jpg', 'JPEG', 10, 10, 100, 100);
 
+  doc.setFillColor(153, 255, 153); 
+
+  // Dibuja un rectángulo delgado en la coordenada y=0 (arriba) a lo largo del eje y.
+  // El rectángulo tiene 3 de ancho (el '3' en el método rect) y la altura podría ser la longitud de la página.
+  // rect(x, y, width, height)
+  doc.rect(7, 0, 3, doc.internal.pageSize.height, 'F'); // 'F' indica que el rectángulo debe estar relleno
+
   // Text on the top right side
   doc.setFontSize(8);
   doc.text("Responsiva de Recepcion de Residuos", 150, 10, { align: 'left' });
@@ -101,7 +108,10 @@ const generatePdf = (report, data) => {
   doc.setFontSize(16);
   doc.text("Datos del Generador", 14, 30);
   doc.setFontSize(12);
-  doc.text("FOLIO: " + report.id_report, 110, 30, { align: 'left' });
+  doc.setTextColor(255, 0, 0);
+  doc.text("FOLIO: " + report.id_report, 90, 30, { align: 'left' });
+  doc.setTextColor(0, 0, 0);
+
 
   const tableStyles = {
     cellPadding: 2,
@@ -156,14 +166,15 @@ const generatePdf = (report, data) => {
 
   var bodyData = []
   
-  bodyData.push(['Tipo de Residuos', 'Cantidad (KG)', 'Cantidad (M3)', 'Tipo de Residuos', ])
+  bodyData.push(['Tipo de Residuos', 'Cantidad (KG)', 'Cantidad (M3)', 'Procedencia de Residuos', ])
   var distancia = 185 
   for (let i = 0; i < data.length; i++) {
     bodyData.push([data[i].nombre_residuo, data[i].peso + " kg", data[i].volumen + " m³" , data[i].tipo_residuo])
+    
     distancia = distancia + 3
-  }
+  } 
  
-
+  //bodyData.push(["Fecha Recepcion", report.fecha_inicio_reporte, "Fecha Elaboracion", ""])
   
 
   // Table 3: Residuos
@@ -184,15 +195,26 @@ const generatePdf = (report, data) => {
   doc.text("comprobante al siguiente correo", 70, distancia +45, { align: "left" })
   doc.text("plasticos@rennueva.com", 70, distancia + 50, { align: "left" })
   
-  doc.text("FOLIO: " + report.id_report, 150, distancia + 30, { align: 'right' });
-  doc.text("Fecha: " + report.fecha_inicio_reporte, 185, distancia + 35, { align: 'right' });
+  // Antes de añadir el texto para el "FOLIO", cambia el color del texto a rojo.
+  doc.setTextColor(255, 0, 0); // Esto representa el color rojo en valores RGB
+
+  // Luego, agrega el texto para el "FOLIO". 
+  // El color rojo que estableciste anteriormente se aplicará aquí.
+  doc.text("FOLIO: " + report.id_report, 150, distancia + 30, { align: 'right' }); 
+
+  // ... (resto de tu código para generar el PDF)
+
+  // Si vas a seguir añadiendo más texto de diferentes colores, recuerda volver a establecer el color del texto.
+  // Por ejemplo, para volver al negro usarías:
+  doc.setTextColor(0, 0, 0);
+  doc.text("Fecha Recepcion: " + report.fecha_inicio_reporte, 200, distancia + 35, { align: 'right' });
   const startY = distancia + 10 ;
   const signatureWidth = 80;
   const spaceBetweenSignatures = 20;
 
   // Añade el texto y las líneas para el Receptor
-  doc.text("Nombre y Firma del Receptor:", 10, startY);
-  doc.line(10, startY + 5, 10 + signatureWidth, startY + 5);  // Línea de firma para el Receptor
+  doc.text("Nombre y Firma del Receptor:", 15, startY);
+  doc.line(15, startY + 5, 10 + signatureWidth, startY + 5);  // Línea de firma para el Receptor
 
   // Añade el texto y las líneas para el Generador
   doc.text("Nombre y Firma del Generador:", 10 + signatureWidth + spaceBetweenSignatures, startY);
@@ -208,7 +230,7 @@ const generatePdf = (report, data) => {
     // Modifica 'x', 'y', 'width' y 'height' para ubicar y dimensionar el QR como desees.
   }
 
-  doc.save('Responsiva.pdf');
+  doc.save("Responsiva_folio_" +report.id_report +".pdf");
 };
 
 
