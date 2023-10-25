@@ -36,7 +36,6 @@ import { ModalFirmar } from '../pages/ModalFirmar';
 
 
 
-
 const QRCode = require('qrcode');
 
 let qrImage;
@@ -47,6 +46,24 @@ const generateQR = async (text) => {
     qrImage = await QRCode.toDataURL(text);
   } catch (err) {
     console.error(err);
+  }
+};
+
+
+const getAllInfoReport = async (id_report) => {
+  try {
+    // Usamos 'await' para esperar a que la solicitud se complete y para obtener la respuesta
+    const response = await axios.post('http://127.0.0.1:8000/Rennueva/get-all-info-per-report/', {
+      reportId: id_report,
+    });
+
+    // Retorna directamente los datos de la respuesta
+    return response.data;
+  } catch (error) {
+    // Maneja cualquier error que ocurra durante la solicitud
+    console.error(error);
+    // Aquí puedes optar por lanzar el error o devolver algo específico en caso de un error
+    throw error; // Esto propaga el error al llamador para que pueda ser manejado más adelante
   }
 };
 
@@ -64,7 +81,7 @@ function loadImage(src, callback) {
   xhr.send();
 }
 
-const generatePdf = (report) => {
+const generatePdf = (report, data) => {
 
 
   const doc = new jsPDF();
@@ -81,7 +98,7 @@ const generatePdf = (report) => {
 
 
   // Title before the table
-  doc.setFontSize(18);
+  doc.setFontSize(16);
   doc.text("Datos del Generador", 14, 30);
   doc.setFontSize(12);
   doc.text("FOLIO: " + report.id_report, 110, 30, { align: 'left' });
@@ -120,8 +137,8 @@ const generatePdf = (report) => {
     styles: tableStyles,
   });
 
-  doc.setFontSize(18);
-  doc.text("Datos del Recoleccion", 14, 100);
+  doc.setFontSize(16);
+  doc.text("Datos del Recolector", 14, 100);
 
   // Table 2: Recolection
   doc.autoTable({
@@ -134,31 +151,42 @@ const generatePdf = (report) => {
     theme: 'plain',
     styles: tableStyles,
   });
-  doc.setFontSize(18);
+  doc.setFontSize(16);
   doc.text("Datos del Residuo", 14, 140);
+
+  var bodyData = []
+  
+  bodyData.push(['Tipo de Residuos', 'Cantidad (KG)', 'Cantidad (M3)', 'Tipo de Residuos', ])
+  var distancia = 185 
+  for (let i = 0; i < data.length; i++) {
+    bodyData.push([data[i].nombre_residuo, data[i].peso + " kg", data[i].volumen + " m³" , data[i].tipo_residuo])
+    distancia = distancia + 3
+  }
+ 
+
+  
+
   // Table 3: Residuos
   doc.autoTable({
     startY: 145,
     tableWidth: 190,
-    body: [
-      ['Tipo de Residuos', 'PET', 'Cantidad', '0.7 m³ / 12 kg'],
-      ['Agricultura', 'Construcción', 'Embalaje', 'Postconsumo'],
-      ['Fecha Recepción:', '17/11/2022', 'Fecha Elaboración:', '24/11/2022'],
-    ],
+    body: bodyData,
     theme: 'plain',
     styles: tableStyles,
   });
+  
 
-  doc.setFontSize(10);
-  doc.text("Certificacion del generador:", 90, 185, { align: 'left' });
-  doc.setFontSize(8);
-  doc.text("Declaro que el contenido de esta responsiva esta total y correctamente descrito ", 90, 190, { align: 'left' });
-  doc.text("mediante el nombre del residui, bien clasificado y que se han previsto las con-", 90, 195, { align: "left" })
-  doc.text("diciones de seguridad para su transporte de acuerdo con la legislacion vigente.", 90, 200, { align: "left" })
-  doc.text("Entregado a Tecnologiaas Rennueva S.A de C.V el mismo para su reciclaje.", 90, 205, { align: "left" })
-
-
-  const startY = 260;
+  // doc.setFontSize(10);
+  // doc.text("Certificacion del generador:", 90, distancia, { align: 'left' });
+   doc.setFontSize(8);
+  doc.text("Solicite, con su numero de folio, el", 70, distancia + 35, { align: 'left' });
+  doc.text("deslose de los materiales y", 70, distancia +40, { align: "left" })
+  doc.text("comprobante al siguiente correo", 70, distancia +45, { align: "left" })
+  doc.text("plasticos@rennueva.com", 70, distancia + 50, { align: "left" })
+  
+  doc.text("FOLIO: " + report.id_report, 150, distancia + 30, { align: 'right' });
+  doc.text("Fecha: " + report.fecha_inicio_reporte, 185, distancia + 35, { align: 'right' });
+  const startY = distancia + 10 ;
   const signatureWidth = 80;
   const spaceBetweenSignatures = 20;
 
@@ -169,14 +197,14 @@ const generatePdf = (report) => {
   // Añade el texto y las líneas para el Generador
   doc.text("Nombre y Firma del Generador:", 10 + signatureWidth + spaceBetweenSignatures, startY);
   doc.line(10 + signatureWidth + spaceBetweenSignatures, startY + 5, 10 + 2 * signatureWidth + spaceBetweenSignatures, startY + 5);  // Línea de firma para el Generador
-
-  doc.setFontSize(5);
-  doc.text("Tecnologias Rennueva S.A de C.V, Mimosas 49 bis, Colonia Santa Maria insurgentes, C.P. 06430, Cuauhtemoc, Ciudad de Mexico, Mexico ", 14, 280)
-  doc.text("Tel. (55)8437 7300 y (55)8437 7272, info@rennueva.com", 14, 285);
-  doc.text("Todos los datos recabados en este documento seran tratados conforme a la Ley General de Proteccion de Datos Personales", 14, 290);
+  doc.line(1, startY + 13, 400, startY + 13);  // Línea de nombre para el Generador
+  doc.setFontSize(6);
+  doc.text("Tecnologias Rennueva S.A de C.V, Mimosas 49 bis, Colonia Santa Maria insurgentes, C.P. 06430, Cuauhtemoc, Ciudad de Mexico, Mexico ", 14, distancia + 75)
+  doc.text("Tel. (55)8437 7300 y (55)8437 7272, info@rennueva.com", 14, distancia + 80);
+  doc.text("Todos los datos recabados en este documento seran tratados conforme a la Ley General de Proteccion de Datos Personales", 14, distancia + 85);
 
   if (qrImage) {
-    doc.addImage(qrImage, 'PNG', 12, 175, 65, 65);
+    doc.addImage(qrImage, 'PNG', 12, distancia + 25 , 45, 45);
     // Modifica 'x', 'y', 'width' y 'height' para ubicar y dimensionar el QR como desees.
   }
 
@@ -260,7 +288,6 @@ function MenuReport() {
       <ModalFirmar />
     )
   }
-
 
 
 
@@ -351,7 +378,11 @@ function MenuReport() {
 
                                 <TableCell><StyledButton onClick={async () => {
                                   await generateQR("TuTextoParaElQR");
-                                  generatePdf(reporte)
+                                  const data  = await getAllInfoReport(reporte.id_report)    
+                                  console.log("DATA de la funcion1")
+                                  console.log(data)
+                                  generatePdf(reporte, data)
+                              
                                 }
                                 }>Reporte</StyledButton></TableCell>
 
