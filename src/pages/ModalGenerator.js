@@ -10,6 +10,7 @@ function ModalGenerator({ children, mode }) {
     const [datos, setDatos] = useState([]);
     const [groups, setGroups] = useState([])
     const [users, setUsers] = useState([])
+    const [companies, setCompanies] = useState([""])
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -24,8 +25,12 @@ function ModalGenerator({ children, mode }) {
     const [postal_code, setPostalCode] = useState("");
     const [rfc, setRfc] = useState("");
     const [phone, setPhone] = useState("");
+    const [address_num_int, setAddressNumInt] = useState("");
+    const [address_num_ext, setAddressNumExt] = useState("");
+    const [isPasswordVisible, setIsPasswordVisible] = useState(true);
+    const [old_user, setOldUser] = useState("");
 
-    const { openModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
+    const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
     const closeModal = () => {
         if (openModalCreateGenerator) {
             setOpenModalCreateGenerator(false);
@@ -41,76 +46,76 @@ function ModalGenerator({ children, mode }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (mode === "CREAR") {
+            const nuevoDato = {
+                user: e.target.user.value,
+                password: e.target.password.value,
+                email: e.target.email.value,
+                first_name: e.target.nombre.value,
+                last_name: e.target.apellido.value,
+                group: "Generador",
+                rfc: e.target.rfc.value,
+                company: company,
+                phone: e.target.phone.value,
+                address_state: e.target.state.value,
+                address_city: e.target.city.value,
+                address_locality: e.target.locality.value,
+                address_street: e.target.street.value,
+                address_postal_code: e.target.postal_code.value,
+                address_num_int: e.target.address_num_int.value,
+                address_lat: 0,
+                address_lng: 0,
+            };
 
-        const nuevoDato = {
-            user: e.target.user.value,
-            password: e.target.password.value,
-            email: e.target.email.value,
-            first_name: e.target.nombre.value,
-            last_name: e.target.apellido.value,
-            group: "Generador",
-            rfc: e.target.rfc.value,
-            company: e.target.company.value,
-            phone: e.target.phone.value,
-            address_state: e.target.state.value,
-            address_city: e.target.city.value,
-            address_locality: e.target.locality.value,
-            address_street: e.target.street.value,
-            address_postal_code: e.target.postal_code.value,
-            address_lat: 0,
-            address_lng: 0,
-        };
-
-        const antiguo_user = document.getElementById("mySelect")
-        var user_ant = antiguo_user ? antiguo_user.value : null;
-
-        const editarDato = {
-            user: e.target.user.value,
-            password: e.target.password.value,
-            email: e.target.email.value,
-            first_name: e.target.nombre.value,
-            last_name: e.target.apellido.value,
-
-            group: "Generador",
-            rfc: e.target.rfc.value,
-            company: e.target.company.value,
-            phone: e.target.phone.value,
-            address_state: e.target.state.value,
-            address_city: e.target.city.value,
-            address_locality: e.target.locality.value,
-            address_street: e.target.street.value,
-            address_postal_code: e.target.postal_code.value,
-            address_lat: 0,
-            address_lng: 0,
-
-            antiguoUser: user_ant
-        };
-
-        const deleteDato = {
-            user: user_ant
-        }
-
-        const crear = mode === "CREAR" ? (
             axios
                 .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
+                    setTextOpenModalText("Usuario creado correctamente")
                     e.target.reset();
                     closeModal()
+
                 })
                 .catch(error => {
                     console.error(error);
                 })
-        ) : null
 
-        const editar = mode === "EDITAR" ? (
+        }
+        if (mode === "EDITAR") {
+
+            const editarDato = {
+                user: e.target.user.value,
+                //password: e.target.password.value,
+                email: e.target.email.value,
+                first_name: e.target.nombre.value,
+                last_name: e.target.apellido.value,
+                group: "Generador",
+                rfc: e.target.rfc.value,
+                company: company,
+                phone: e.target.phone.value,
+                address_state: e.target.state.value,
+                address_city: e.target.city.value,
+                address_locality: e.target.locality.value,
+                address_street: e.target.street.value,
+                address_postal_code: e.target.postal_code.value,
+                address_num_int: e.target.address_num_int.value,
+                address_lat: 0,
+                address_lng: 0,
+
+                antiguoUser: old_user,
+            };
+            console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
+            console.log(editarDato)
+
             axios
                 .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
+                    setOpenModalText(true);
+                    setTextOpenModalText("Usuario editado correctamente")
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -118,14 +123,23 @@ function ModalGenerator({ children, mode }) {
                 .catch(error => {
                     console.error(error);
                 })
-        ) : null
 
-        const borrar = mode === "BORRAR" ? (
+        }
+        if (mode === "BORRAR") {
+            const antiguo_user = document.getElementById("user-select")
+            var user_ant = antiguo_user ? antiguo_user.value : null;
+
+            const deleteDato = {
+                user: user
+            }
+
             axios
                 .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
+                    setOpenModalText(true);
+                    setTextOpenModalText("Usuario borrado correctamente")
                     e.target.reset();
                     closeModal()
 
@@ -133,13 +147,22 @@ function ModalGenerator({ children, mode }) {
                 .catch(error => {
                     console.error(error);
                 })
-        ) : null
+        }
 
         // Limpiar los campos del formulario
         e.target.reset();
     };
 
+
     useEffect(() => {
+
+        // Basado en el modo, decidir si el campo de la contraseña debe ser visible
+        if (mode === 'CREAR') {
+            setIsPasswordVisible(true);
+        } else {
+            setIsPasswordVisible(false); // Esto cubre 'editar' y 'borrar'
+        }
+
         axios
             .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
             .then(response => {
@@ -156,231 +179,256 @@ function ModalGenerator({ children, mode }) {
 
 
     useEffect(() => {
-        axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-users/')
-            .then(response => {
-                const data = response.data;
-                setUsers(data)
-                console.log("######################GRUPOS##################################")
+        const fetchUsers = axios.get('http://127.0.0.1:8000/Rennueva/get-all-users/')
+        const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
 
+        Promise.all([fetchUsers, fetchCompanies])
+            .then((res) => {
+                const usersData = res[0].data;
+                const companiesData = res[1].data;
+                setUsers(usersData);
+                setCompanies(companiesData);
+                console.log("######################USUARIOS##################################")
             })
-            .catch(error => {
-                console.error(error);
-            });
+            .catch((err) => console.log(err));
+                
+            }, []);
 
-    }, []);
+        const handleSelectChange = (event) => {
+            const selectedOption = event.target.value; // Obtener la opción seleccionada
+            console.log(selectedOption)
+            // Buscar el dato seleccionado en el arreglo de datos
+            const datoEncontrado = users.find((users) => users.user === selectedOption);
+            console.log(datoEncontrado)
+            setUser(datoEncontrado.user);
+            setPassword(datoEncontrado.password);
+            setEmail(datoEncontrado.email);
+            setFirstName(datoEncontrado.first_name);
+            setLastName(datoEncontrado.last_name);
+            setGroup(datoEncontrado.group);
+            setRfc(datoEncontrado.rfc);
+            setCompany(datoEncontrado.company);
+            setPhone(datoEncontrado.phone);
+            setState(datoEncontrado.address_state);
+            setCity(datoEncontrado.address_city);
+            setLocality(datoEncontrado.address_locality);
+            setStreet(datoEncontrado.address_street);
+            setPostalCode(datoEncontrado.address_postal_code);
+            setAddressNumInt(datoEncontrado.address_num_int);
+            setOldUser(selectedOption);
 
-    const handleSelectChange = (event) => {
-        const selectedOption = event.target.value; // Obtener la opción seleccionada
-        console.log(selectedOption)
-        // Buscar el dato seleccionado en el arreglo de datos
-        const datoEncontrado = users.find((users) => users.user === selectedOption);
-        console.log(datoEncontrado)
-        setUser(datoEncontrado.user);
-        setPassword(datoEncontrado.password);
-        setEmail(datoEncontrado.email);
-        setFirstName(datoEncontrado.first_name);
-        setLastName(datoEncontrado.last_name);
-        setGroup(datoEncontrado.group);
-        setRfc(datoEncontrado.rfc);
-        setCompany(datoEncontrado.company);
-        setPhone(datoEncontrado.phone);
-        setState(datoEncontrado.address_state);
-        setCity(datoEncontrado.address_city);
-        setLocality(datoEncontrado.address_locality);
-        setStreet(datoEncontrado.address_street);
-        setPostalCode(datoEncontrado.address_postal_code);
 
 
-
-    }
-
-    const handleInputChange = (e, setState, mode) => {
-        const currentInputValue = e.target.value;
-
-        if (mode !== "BORRAR") {
-            setState(currentInputValue);
         }
-    };
 
-    return ReactDOM.createPortal(
-        <Modal open={true} onClose={closeModal} >
-            <Box className="ModalContent" sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: 400,
-                bgcolor: 'background.paper',
-                boxShadow: 24,
-                p: 4,
-                borderRadius: 2,
+        const handleInputChange = (e, setState, mode) => {
+            const currentInputValue = e.target.value;
 
-            }}>
-                <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
-                <form onSubmit={handleSubmit} >
-                    <Box mb={2}>
-                        <Title> Usuario</Title>
-                        {mode === "EDITAR" || mode === "BORRAR" ? (
-                            <FormControl fullWidth>
-                                <InputLabel id="user-select-label">Usuario</InputLabel>
-                                <Select
-                                    labelId="user-select-label"
-                                    id="user-select"
-                                    onChange={(e) => handleSelectChange(e, setUser)}
+            if (mode !== "BORRAR") {
+                setState(currentInputValue);
+            }
+        };
+        return ReactDOM.createPortal(
+            <Modal open={true} onClose={closeModal} >
+                <Box className="ModalContent" sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: 2,
+
+                }}>
+                    <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
+                    <form onSubmit={handleSubmit} >
+                        <Box mb={2}>
+                            <Title> Usuario</Title>
+                            {mode === "EDITAR" || mode === "BORRAR" ? (
+                                <FormControl fullWidth>
+                                    <InputLabel id="user-select-label">Usuario</InputLabel>
+                                    <Select
+                                        labelId="user-select-label"
+                                        id="user-select"
+                                        onChange={(e) => {
+
+                                            handleSelectChange(e, setUser)
+
+
+                                        }}
+                                        required
+                                        //value={user}
+                                        w
+                                    >
+                                        {users.map((name, index) => (
+                                            <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            ) : null}
+                        </Box>
+                        <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
+                            <TextField
+                                label="Nombre"
+                                name="nombre"
+                                required
+                                fullWidth
+                                value={first_name}
+                                onChange={(e) => handleInputChange(e, setFirstName, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Apellido"
+                                name="apellido"
+                                required
+                                fullWidth
+                                value={last_name}
+                                onChange={(e) => handleInputChange(e, setLastName, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="RFC"
+                                name="rfc"
+                                required
+                                fullWidth
+                                value={rfc}
+                                onChange={(e) => handleInputChange(e, setRfc, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Nombre de Usuario"
+                                name="user"
+                                required
+                                fullWidth
+                                value={user}
+                                onChange={(e) => handleInputChange(e, setUser, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Email Usuario"
+                                name="email"
+                                type="email"
+                                required
+                                fullWidth
+                                value={email}
+                                onChange={(e) => handleInputChange(e, setEmail, mode)}
+                                margin="dense"
+                            />
+                            {
+                                isPasswordVisible && (
+                                    <TextField
+                                        label="Password"
+                                        name="password"
+                                        type="password"
+                                        required
+                                        fullWidth
+                                        value={password}
+                                        onChange={(e) => handleInputChange(e, setPassword, mode)}
+                                        margin="dense"
+                                    />
+                                )
+                            }
+
+                            <FormControl fullWidth mt={2} mb={2}>
+                                
+
+
+
+                                <TextField
+                                    label="Celular"
+                                    name="phone"
                                     required
+                                    fullWidth
+                                    value={phone}
+                                    onChange={(e) => handleInputChange(e, setPhone, mode)}
+                                    margin="dense"
+                                />
+                            </FormControl>
+                            <FormControl fullWidth mt={2} mb={2}>
+                                <Title>Compañia</Title>
+                                <Select
+                                    labelId="company-select-label"
+                                    id="company-select"
+                                    required
+                                    value={company}
+                                    onChange={(e) => handleInputChange(e, setCompany, mode)}
                                 >
-                                    {users.map((name, index) => (
-                                        <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                                    {companies.map((name, index) => (
+                                        <MenuItem key={index} value={name.company_name}>{name.company_name}</MenuItem>
                                     ))}
                                 </Select>
+                                <Title>Ubicacion</Title>
+                                <TextField
+                                    label="Estado"
+                                    name="state"
+                                    required
+                                    fullWidth
+                                    value={state}
+                                    onChange={(e) => handleInputChange(e, setState, mode)}
+                                    margin="dense"
+                                />
+                                <TextField
+                                    label="Ciudad"
+                                    name="city"
+                                    required
+                                    fullWidth
+                                    value={city}
+                                    onChange={(e) => handleInputChange(e, setCity, mode)}
+                                    margin="dense"
+                                />
+                                <TextField
+                                    label="Colonia"
+                                    name="locality"
+                                    required
+                                    fullWidth
+                                    value={locality}
+                                    onChange={(e) => handleInputChange(e, setLocality, mode)}
+                                    margin="dense"
+                                />
+                                <TextField
+                                    label="Calle "
+                                    name="street"
+                                    required
+                                    fullWidth
+                                    value={street}
+                                    onChange={(e) => handleInputChange(e, setStreet, mode)}
+                                    margin="dense"
+                                />
+                                <TextField
+                                    label="Numero interior"
+                                    name="address_num_int"
+                                    required
+                                    fullWidth
+                                    value={address_num_int}
+                                    onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
+                                    margin="dense"
+                                />
+
+
+                                <TextField
+                                    label="Codigo postal"
+                                    name="postal_code"
+                                    required
+                                    fullWidth
+                                    value={postal_code}
+                                    onChange={(e) => handleInputChange(e, setPostalCode, mode)}
+                                    margin="dense"
+                                />
                             </FormControl>
-                        ) : null}
-                    </Box>
-                    <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
-                        <TextField
-                            label="Nombre"
-                            name="nombre"
-                            required
-                            fullWidth
-                            value={first_name}
-                            onChange={(e) => handleInputChange(e, setFirstName, mode)}
-                            margin="dense"
-                        />
-                        <TextField
-                            label="Apellido"
-                            name="apellido"
-                            required
-                            fullWidth
-                            value={last_name}
-                            onChange={(e) => handleInputChange(e, setLastName, mode)}
-                            margin="dense"
-                        />
-                        <TextField
-                            label="RFC"
-                            name="rfc"
-                            required
-                            fullWidth
-                            value={rfc}
-                            onChange={(e) => handleInputChange(e, setRfc, mode)}
-                            margin="dense"
-                        />
-                        <TextField
-                            label="Nombre de Usuario"
-                            name="user"
-                            required
-                            fullWidth
-                            value={user}
-                            onChange={(e) => handleInputChange(e, setUser, mode)}
-                            margin="dense"
-                        />
-                        <TextField
-                            label="Email"
-                            name="email"
-                            type="email"
-                            required
-                            fullWidth
-                            value={email}
-                            onChange={(e) => handleInputChange(e, setEmail, mode)}
-                            margin="dense"
-                        />
-                        <TextField
-                            label="Password"
-                            name="password"
-                            type="password"
-                            required
-                            fullWidth
-                            value={password}
-                            onChange={(e) => handleInputChange(e, setPassword, mode)}
-                            margin="dense"
-                        />
-                        <FormControl fullWidth mt={2} mb={2}>
-                            
+                        </Box>
+
+                        <Button type="submit" variant="contained" fullWidth>{mode}</Button>
+                    </form>
+                </Box>
 
 
-                            <TextField
-                                label="Compañia"
-                                name="company"
-                                required
-                                fullWidth
-                                value={company}
-                                onChange={(e) => handleInputChange(e, setCompany, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Celular"
-                                name="phone"
-                                required
-                                fullWidth
-                                value={phone}
-                                onChange={(e) => handleInputChange(e, setPhone, mode)}
-                                margin="dense"
-                            />
-                            <Title>Ubicacion</Title>
-                            <TextField
-                                label="Estado"
-                                name="state"
-                                required
-                                fullWidth
-                                value={state}
-                                onChange={(e) => handleInputChange(e, setState, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Ciudad"
-                                name="city"
-                                required
-                                fullWidth
-                                value={city}
-                                onChange={(e) => handleInputChange(e, setCity, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Colonia"
-                                name="locality"
-                                required
-                                fullWidth
-                                value={locality}
-                                onChange={(e) => handleInputChange(e, setLocality, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Calle y Numero"
-                                name="street"
-                                required
-                                fullWidth
-                                value={street}
-                                onChange={(e) => handleInputChange(e, setStreet, mode)}
-                                margin="dense"
-                            />
+            </Modal>,
 
+            document.getElementById('modal')
 
-                            <TextField
-                                label="Codigo postal"
-                                name="postal_code"
-                                required
-                                fullWidth
-                                value={postal_code}
-                                onChange={(e) => handleInputChange(e, setPostalCode, mode)}
-                                margin="dense"
-                            />
-
-
-
-
-                        </FormControl>
-                    </Box>
-
-                    <Button type="submit" variant="contained" fullWidth>{mode}</Button>
-                </form>
-            </Box>
-
-
-        </Modal>,
-
-        document.getElementById('modal')
-
-    );
-}
+        );
+    }
 
 export { ModalGenerator };
