@@ -10,14 +10,19 @@ import BarsChart from "../../components/BarsChart";
 import BarsChartGroup from "../../components/BarsChartGroup";
 import GroupTable from "../../components/GroupTable";
 
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 import { ThemeProvider,createTheme, Box, Grid, Paper, Container, Toolbar, CssBaseline } from '@mui/material';
 
 import Title from '../../components/Title';
 
 
 function MenuGroups() {
-  const { openModalCreateGroup, openModalEditGroup, openModalDeleteGroup, setOpenModalEditGroup, setOpenModalDeleteGroup } = useContext(TodoContext);
+  const { openModalCreateGroup, openModalText,setOpenModalText, textOpenModalText,openModalEditGroup, openModalDeleteGroup, setOpenModalEditGroup, setOpenModalDeleteGroup } = useContext(TodoContext);
  
   const defaultTheme = createTheme();
 
@@ -86,6 +91,24 @@ function MenuGroups() {
             <ModalGroup mode={"BORRAR"}>
               La funcionalidad de borrar TODO
             </ModalGroup>
+          )}
+           {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
           )}
         </Box>
       </Box>

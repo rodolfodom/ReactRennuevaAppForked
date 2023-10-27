@@ -9,9 +9,10 @@ import Title from '../components/Title';
 function ModalResidue({ children, mode }) {
   const [residues, setResidues] = useState([]);
   const [residue, setResidue] = useState("");
+  const [oldResidue, setOldResidue] = useState("");
   const [descripcion, setDescripcion] = useState("");
 
-  const { openModalCreateResidue , setOpenModalCreateResidue, openModalEditResidue, setOpenModalEditResidue, openModalDeleteResidue, setOpenModalDeleteResidue } = useContext(TodoContext);
+  const { openModalCreateResidue, setOpenModalText, setTextOpenModalText, setOpenModalCreateResidue, openModalEditResidue, setOpenModalEditResidue, openModalDeleteResidue, setOpenModalDeleteResidue } = useContext(TodoContext);
 
   const closeModal = () => {
     if (openModalCreateResidue) {
@@ -30,80 +31,83 @@ function ModalResidue({ children, mode }) {
     e.preventDefault();
 
 
-  
-     const nuevoDato = {
+
+    const nuevoDato = {
       nombre: e.target.name.value,
       descripcion: e.target.descripcion.value,
-     };
+    };
 
-  //   const antiguo_user = document.getElementById("mySelect")
-  //   var user_ant = antiguo_user ? antiguo_user.value : null;
+    //   const antiguo_user = document.getElementById("mySelect")
+    //   var user_ant = antiguo_user ? antiguo_user.value : null;
 
-  //   const editarDato = {
-  //     user: e.target.user.value,
+    //   const editarDato = {
+    //     user: e.target.user.value,
 
-  //   };
+    //   };
 
-  //   const deleteDato = {
-  //     user : user_ant
-  //   }
+    //   const deleteDato = {
+    //     user : user_ant
+    //   }
+    if (mode === "CREAR") {
+      axios
+        .post('http://127.0.0.1:8000/Rennueva/create-residue/', {
+          nombre: e.target.nombre.value,
+          descripcion: e.target.descripcion.value,
+        })
+        .then(response => {
+          const data = response.data;
+          console.log(data)
+          setOpenModalText(true);
+          setTextOpenModalText("Residuo creado correctamente")
+          closeModal()
+          // setOpenModalText(true);
+          e.target.reset();
 
-      const crear = mode === "CREAR" ? (
-        axios
-          .post('http://127.0.0.1:8000/Rennueva/create-residue/', {
-            nombre: e.target.nombre.value,
-            descripcion: e.target.descripcion.value,
-           })
-          .then(response => {
-            const data = response.data;
-            console.log(data)
-            // setOpenModalText(true);
-            e.target.reset();
-            
 
-          })
-          .catch(error => {
-            console.error(error);
-          })
-      ) : null
+        })
+        .catch(error => {
+          console.error(error);
+        })
+    }
+    if (mode === "EDITAR") {
+      axios
+        .put('http://127.0.0.1:8000/Rennueva/update-residue/', { antiguoNombre : oldResidue, nombre: e.target.nombre.value, descripcion: e.target.descripcion.value})
+        .then(response => {
+          const data = response.data;
+          console.log(data)
+          setOpenModalText(true);
+          setTextOpenModalText("Residuo editado correctamente")
+          e.target.reset();
+          closeModal()
+          // Limpiar los campos del formulario
+        })
+        .catch(error => {
+          console.error(error);
+        })
+    }
+    if (mode === "BORRAR") {
+      axios
+        .put('http://127.0.0.1:8000/Rennueva/delete-residue/', { nombre: e.target.nombre.value})
+        .then(response => {
+          const data = response.data;
+          console.log(data)
+          setOpenModalText(true);
+          setTextOpenModalText("Residuo borrado correctamente")
+          e.target.reset();
+          e.target.reset();
+          closeModal()
 
-  //     const editar = mode === "EDITAR" ? (
-  //       axios
-  //         .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
-  //         .then(response => {
-  //           const data = response.data;
-  //           console.log(data)
-  //           e.target.reset();
-  //           closeModal()
-  //           // Limpiar los campos del formulario
-  //         })
-  //         .catch(error => {
-  //           console.error(error);
-  //         })
-  //     ) : null
-
-  //     const borrar = mode === "BORRAR" ? (
-  //       axios
-  //         .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
-  //         .then(response => {
-  //           const data = response.data;
-  //           console.log(data)
-  //           e.target.reset();
-  //           closeModal()
-
-  //         })
-  //         .catch(error => {
-  //           console.error(error);
-  //         })
-  //     ) : null
-
-    // Limpiar los campos del formulario
+        })
+        .catch(error => {
+          console.error(error);
+        })
+    }
     e.target.reset();
-   };
+  };
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
+      .get('http://127.0.0.1:8000/Rennueva/get-all-residue/')
       .then(response => {
         const data = response.data;
         setResidues(data)
@@ -117,19 +121,22 @@ function ModalResidue({ children, mode }) {
   }, []);
 
 
-//   const handleSelectChange = (event) => {
-//     const selectedOption = event.target.value; // Obtener la opción seleccionada
-//     console.log(selectedOption)
-//     // Buscar el dato seleccionado en el arreglo de datos
-//      const datoEncontrado = groups.find((groups) => groups.name === selectedOption);
-//     // console.log(datoEncontrado)
+  const handleSelectChange = (event) => {
+    const selectedOption = event.target.value; // Obtener la opción seleccionada
+    console.log(selectedOption)
+    setOldResidue(selectedOption)
+    // Buscar el dato seleccionado en el arreglo de datos
+    const datoEncontrado = residues.find((residues) => residues.nombre === selectedOption);
+    console.log("dato encontrado")
+    console.log(datoEncontrado)
 
-//     setGroup(datoEncontrado.group);
+    setResidue(datoEncontrado.nombre);
+    setDescripcion(datoEncontrado.descripcion);
 
 
 
 
-//   }
+  }
 
   const handleInputChange = (e, setState, mode) => {
     const currentInputValue = e.target.value;
@@ -159,44 +166,44 @@ function ModalResidue({ children, mode }) {
             <Title> Residuos</Title>
             {mode === "EDITAR" || mode === "BORRAR" ? (
               <FormControl fullWidth>
-                <InputLabel id="user-select-label">Grupo</InputLabel>
+                <InputLabel id="residue-select-label">Residuo</InputLabel>
                 <Select
-                  labelId="user-select-label"
-                  id="user-select"
-                  // onChange={(e) => handleSelectChange(e, setUser)}
+                  labelId="residue-select-label"
+                  id="residue-select"
+                  onChange={(e) => handleSelectChange(e, setResidue)}
                   required
                 >
                   {residues.map((name, index) => (
-                    <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                    <MenuItem key={index} value={name.nombre}>{name.nombre}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
             ) : null}
           </Box>
-          <Box mt={2} mb={2} sx={{overflowY: 'auto', maxHeight : 500}}>
+          <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
 
-          <FormControl fullWidth mt={2} mb={2}>
+            <FormControl fullWidth mt={2} mb={2}>
 
-          <TextField
-            label="Nombre Residuo"
-            name="nombre"
-            required
-            fullWidth
-            value={residue}
-            onChange={(e) => handleInputChange(e, setResidue,mode)}
-            margin="dense"
-          />
-          <TextField
-            label="Descripcion"
-            name="descripcion"
-            required
-            fullWidth
-            value={descripcion}
-            onChange={(e) => handleInputChange(e, setDescripcion,mode)}
-            margin="dense"
-          />
+              <TextField
+                label="Nombre Residuo"
+                name="nombre"
+                required
+                fullWidth
+                value={residue}
+                onChange={(e) => handleInputChange(e, setResidue, mode)}
+                margin="dense"
+              />
+              <TextField
+                label="Descripcion"
+                name="descripcion"
+                required
+                fullWidth
+                value={descripcion}
+                onChange={(e) => handleInputChange(e, setDescripcion, mode)}
+                margin="dense"
+              />
 
-          </FormControl>
+            </FormControl>
           </Box>
 
           <Button type="submit" variant="contained" fullWidth>{mode}</Button>

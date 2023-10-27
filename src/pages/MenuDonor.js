@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TodoContext } from '../context/index.js';
-import { ModalUser } from './Users/ModalUser';
+
 import GeneratorTable from "../components/GeneratorTable";
 import BarsChartVehicle from "../components/BarsChartVehicle";
 import {
@@ -15,15 +15,24 @@ import {
 } from '@mui/material';
 import Title from '../components/Title';
 import CUDButtons from "../containers/CUDButtons";
+import { ModalDonor } from "./ModalDonor.js";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
 
 function MenuDonor() {
-  const { 
-    openModalCreate, 
-    setOpenModalCreate, 
+  const {
+    openModalCreateDonor,
+    setOpenModalCreate,
     setOpenModalEdit,
-    openModalEdit, 
-    setOpenModalDelete, 
-    openModalDelete 
+    openModalEditDonor,
+    setOpenModalDelete,
+    openModalDeleteDonor,
+    openModalText, setOpenModalText , textOpenModalText
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -59,7 +68,7 @@ function MenuDonor() {
                   }}
                 >
                   <Title>Donadores</Title>
-                  <CUDButtons model="Generator" />
+                  <CUDButtons model="Donor" />
                   <Title>Donadores Creados</Title>
                   <GeneratorTable />
                 </Paper>
@@ -79,20 +88,38 @@ function MenuDonor() {
             </Grid>
           </Container>
 
-          {openModalCreate && (
-            <ModalUser mode={"CREAR"}>
+          {openModalCreateDonor && (
+            <ModalDonor mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalDonor >
           )}
-          {openModalEdit && (
-            <ModalUser mode={"EDITAR"}>
+          {openModalEditDonor && (
+            <ModalDonor mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalDonor >
           )}
-          {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+          {openModalDeleteDonor && (
+            <ModalDonor mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalDonor >
+          )}
+          {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
           )}
         </Box>
       </Box>

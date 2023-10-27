@@ -9,8 +9,10 @@ import Title from '../../components/Title';
 function ModalGroup({ children, mode }) {
   const [groups, setGroups] = useState([]);
   const [group, setGroup] = useState("");
+  const [old_group, setOldGroup] = useState("");
+  const [isVisible, setIsVisible] = useState(true);
 
-  const { openModalCreateGroup , setOpenModalCreateGroup, openModalEditGroup, setOpenModalEditGroup, openModalDeleteGroup, setOpenModalDeleteGroup } = useContext(TodoContext);
+  const { openModalCreateGroup, setOpenModalText, setTextOpenModalText, setOpenModalCreateGroup, openModalEditGroup, setOpenModalEditGroup, openModalDeleteGroup, setOpenModalDeleteGroup } = useContext(TodoContext);
 
   const closeModal = () => {
     if (openModalCreateGroup) {
@@ -28,82 +30,86 @@ function ModalGroup({ children, mode }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const nuevoDato = {
+      name: group,
+    };
 
-  
-     const nuevoDato = {
-      name: e.target.name.value,
+    const antiguo_user = document.getElementById("mySelect")
+    var user_ant = antiguo_user ? antiguo_user.value : null;
 
-     };
+    const editarDato = {
+      name: group,
+      antiguoName: old_group ? old_group : user_ant,
+    };
+    const borrarDato = {
+      name: old_group ? old_group : user_ant,
+    };
 
-  //   const antiguo_user = document.getElementById("mySelect")
-  //   var user_ant = antiguo_user ? antiguo_user.value : null;
+    if (mode === "CREAR") {
+      axios
+        .post('http://127.0.0.1:8000/Rennueva/create-django-group/', nuevoDato)
+        .then(response => {
+          const data = response.data;
+          console.log(data)
+          // setOpenModalText(true);
+          setOpenModalText(true);
+          setTextOpenModalText("Grupo creado correctamente")
+          e.target.reset();
+          closeModal()
 
-  //   const editarDato = {
-  //     user: e.target.user.value,
+        })
+        .catch(error => {
+          console.error(error);
+        })
+    }
+    if (mode === "EDITAR") {
+      axios
+        .put('http://127.0.0.1:8000/Rennueva/update-django-group/', editarDato)
+        .then(response => {
+          const data = response.data;
+          console.log(data)
+          e.target.reset();
+          setOpenModalText(true);
+          setTextOpenModalText("Grupo editado correctamente")
+          closeModal()
+          // Limpiar los campos del formulario
+        })
+        .catch(error => {
+          console.error(error);
+        })
+    }
+    if (mode === "BORRAR") {
+      axios
+        .put('http://127.0.0.1:8000/Rennueva/delete-django-group/', borrarDato)
+        .then(response => {
+          const data = response.data;
+          console.log(data)
+          e.target.reset();
+          setOpenModalText(true);
+          setTextOpenModalText("Donador borrado correctamente")
+          closeModal()
 
-  //   };
-
-  //   const deleteDato = {
-  //     user : user_ant
-  //   }
-
-      const crear = mode === "CREAR" ? (
-        axios
-          .post('http://127.0.0.1:8000/Rennueva/create-django-group/', nuevoDato)
-          .then(response => {
-            const data = response.data;
-            console.log(data)
-            // setOpenModalText(true);
-            e.target.reset();
-            
-
-          })
-          .catch(error => {
-            console.error(error);
-          })
-      ) : null
-
-  //     const editar = mode === "EDITAR" ? (
-  //       axios
-  //         .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
-  //         .then(response => {
-  //           const data = response.data;
-  //           console.log(data)
-  //           e.target.reset();
-  //           closeModal()
-  //           // Limpiar los campos del formulario
-  //         })
-  //         .catch(error => {
-  //           console.error(error);
-  //         })
-  //     ) : null
-
-  //     const borrar = mode === "BORRAR" ? (
-  //       axios
-  //         .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
-  //         .then(response => {
-  //           const data = response.data;
-  //           console.log(data)
-  //           e.target.reset();
-  //           closeModal()
-
-  //         })
-  //         .catch(error => {
-  //           console.error(error);
-  //         })
-  //     ) : null
+        })
+        .catch(error => {
+          console.error(error);
+        })
+    }
 
     // Limpiar los campos del formulario
     e.target.reset();
-   };
+  };
 
   useEffect(() => {
+    if (mode === "BORRAR") {
+      setIsVisible(false)
+    }
     axios
       .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
       .then(response => {
         const data = response.data;
         setGroups(data)
         console.log("######################GRUPOS##################################")
+        console.log(data)
 
       })
       .catch(error => {
@@ -118,10 +124,12 @@ function ModalGroup({ children, mode }) {
     const selectedOption = event.target.value; // Obtener la opción seleccionada
     console.log(selectedOption)
     // Buscar el dato seleccionado en el arreglo de datos
-     const datoEncontrado = groups.find((groups) => groups.name === selectedOption);
-    // console.log(datoEncontrado)
+    const datoEncontrado = groups.find((groups) => groups.name === selectedOption);
+    console.log("#DFSDFSDFSDDAto encotntrado")
+    setOldGroup(datoEncontrado.name)
+    
 
-    setGroup(datoEncontrado.group);
+
 
 
 
@@ -160,31 +168,33 @@ function ModalGroup({ children, mode }) {
                 <Select
                   labelId="user-select-label"
                   id="user-select"
-                  // onChange={(e) => handleSelectChange(e, setUser)}
+                  onChange={(e) => handleSelectChange(e, group)}
                   required
                 >
                   {groups.map((name, index) => (
-                    <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                    <MenuItem key={index} value={name.name}>{name.name}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
             ) : null}
           </Box>
-          <Box mt={2} mb={2} sx={{overflowY: 'auto', maxHeight : 500}}>
+          <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
 
-          <FormControl fullWidth mt={2} mb={2}>
+            <FormControl fullWidth mt={2} mb={2}>
+              {isVisible ? (
+                <TextField
+                  label="Nombre Grupo"
+                  name="name"
+                  required
+                  fullWidth
+                  value={group}
+                  onChange={(e) => handleInputChange(e, setGroup, mode)}
+                  margin="dense"
 
-          <TextField
-            label="Nombre Grupo"
-            name="name"
-            required
-            fullWidth
-            value={group}
-            onChange={(e) => handleInputChange(e, setGroup,mode)}
-            margin="dense"
-          />
+                />
+              ) : null}
+            </FormControl>
 
-          </FormControl>
           </Box>
 
           <Button type="submit" variant="contained" fullWidth>{mode}</Button>

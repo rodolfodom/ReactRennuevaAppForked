@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import '../../styles/user/CreateUser.css';
-import { TodoContext } from '../../context/index.js';
+import '../styles/user/CreateUser.css';
+import { TodoContext } from '../context/index.js';
 import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
-import Title from '../../components/Title';
+import Title from '../components/Title';
 
-function ModalUser({ children, mode }) {
+function ModalDonor({ children, mode }) {
   const [datos, setDatos] = useState([""]);
   const [groups, setGroups] = useState([""])
   const [users, setUsers] = useState([""])
@@ -27,19 +27,19 @@ function ModalUser({ children, mode }) {
   const [phone, setPhone] = useState("");
   const [address_num_int, setAddressNumInt] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
-  const [old_user, setOldUser] = useState("");
 
 
-  const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
+  const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreateDonor, setOpenModalCreateDonor,
+  openModalEditDonor, setOpenModalEditDonor, openModalDeleteDonor , setOpenModalDeleteDonor} = useContext(TodoContext);
   const closeModal = () => {
-    if (openModalCreate) {
-      setOpenModalCreate(false);
+    if (openModalCreateDonor) {
+      setOpenModalCreateDonor(false);
     }
-    if (openModalEdit) {
-      setOpenModalEdit(false);
+    if (openModalEditDonor) {
+      setOpenModalEditDonor(false);
     }
-    if (openModalDelete) {
-      setOpenModalDelete(false);
+    if (openModalDeleteDonor) {
+      setOpenModalDeleteDonor(false);
     }
   };
 
@@ -53,7 +53,7 @@ function ModalUser({ children, mode }) {
         email: e.target.email.value,
         first_name: e.target.nombre.value,
         last_name: e.target.apellido.value,
-        group: group,
+        group: "Donadores",
         rfc: e.target.rfc.value,
         company: company,
         phone: e.target.phone.value,
@@ -73,7 +73,7 @@ function ModalUser({ children, mode }) {
           const data = response.data;
           console.log(data)
           setOpenModalText(true);
-          setTextOpenModalText("Usuario creado correctamente")
+          setTextOpenModalText("Donador creado correctamente")
           e.target.reset();
           closeModal()
 
@@ -84,14 +84,17 @@ function ModalUser({ children, mode }) {
 
     }
     if (mode === "EDITAR") {
-      
+
+
+
+
       const editarDato = {
         user: e.target.user.value,
         //password: e.target.password.value,
         email: e.target.email.value,
         first_name: e.target.nombre.value,
         last_name: e.target.apellido.value,
-        group: group,
+        group: "Donadores",
         rfc: e.target.rfc.value,
         company: company,
         phone: e.target.phone.value,
@@ -104,10 +107,8 @@ function ModalUser({ children, mode }) {
         address_lat: 0,
         address_lng: 0,
 
-        antiguoUser: old_user,
+        antiguoUser: user
       };
-      console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
-      console.log(editarDato)
 
       axios
         .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
@@ -115,7 +116,7 @@ function ModalUser({ children, mode }) {
           const data = response.data;
           console.log(data)
           setOpenModalText(true);
-          setTextOpenModalText("Usuario editado correctamente")
+          setTextOpenModalText("Donador editado correctamente")
           e.target.reset();
           closeModal()
           // Limpiar los campos del formulario
@@ -139,7 +140,7 @@ function ModalUser({ children, mode }) {
           const data = response.data;
           console.log(data)
           setOpenModalText(true);
-          setTextOpenModalText("Usuario borrado correctamente")
+          setTextOpenModalText("Donador borrado correctamente")
           e.target.reset();
           closeModal()
 
@@ -196,8 +197,7 @@ function ModalUser({ children, mode }) {
     console.log(selectedOption)
     // Buscar el dato seleccionado en el arreglo de datos
     const datoEncontrado = users.find((users) => users.user === selectedOption);
-    console.log("DATO3333333333333333333333333333")
-    console.log(datoEncontrado.address_num_int)
+    console.log(datoEncontrado)
     setUser(datoEncontrado.user);
     setPassword(datoEncontrado.password);
     setEmail(datoEncontrado.email);
@@ -213,7 +213,6 @@ function ModalUser({ children, mode }) {
     setStreet(datoEncontrado.address_street);
     setPostalCode(datoEncontrado.address_postal_code);
     setAddressNumInt(datoEncontrado.address_num_int);
-    setOldUser(selectedOption);
 
 
 
@@ -331,23 +330,6 @@ function ModalUser({ children, mode }) {
                 />
               )
             }
-
-            <FormControl fullWidth mt={2} mb={2}>
-              <InputLabel id="rol-select-label">Grupo</InputLabel>
-              <Select
-                labelId="rol-select-label"
-                id="rol-select"
-                required
-                value={group}
-                onChange={(e) => handleInputChange(e, setGroup, mode)}
-              >
-                {groups.map((name, index) => (
-                  <MenuItem key={index} value={name.name}>{name.name}</MenuItem>
-                ))}
-              </Select>
-
-
-
               <TextField
                 label="Celular"
                 name="phone"
@@ -357,7 +339,7 @@ function ModalUser({ children, mode }) {
                 onChange={(e) => handleInputChange(e, setPhone, mode)}
                 margin="dense"
               />
-            </FormControl>
+          
             <FormControl fullWidth mt={2} mb={2}>
               <Title>Compañia</Title>
               <Select
@@ -443,4 +425,4 @@ function ModalUser({ children, mode }) {
   );
 }
 
-export { ModalUser };
+export { ModalDonor };

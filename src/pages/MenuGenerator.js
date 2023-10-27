@@ -15,6 +15,13 @@ import {
 } from '@mui/material';
 import Title from '../components/Title';
 import CUDButtons from "../containers/CUDButtons";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
 
 function MenuGenerator() {
   const { 
@@ -31,6 +38,9 @@ function MenuGenerator() {
     setOpenModalEditGenerator,
     openModalDeleteGenerator,
     setOpenModalDeleteGenerator,
+    openModalText,
+    setOpenModalText,
+    textOpenModalText
 
     
   } = useContext(TodoContext);
@@ -102,6 +112,24 @@ function MenuGenerator() {
             <ModalGenerator mode={"BORRAR"}>
               La funcionalidad de borrar TODO
             </ ModalGenerator >
+          )}
+           {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
           )}
         </Box>
       </Box>
