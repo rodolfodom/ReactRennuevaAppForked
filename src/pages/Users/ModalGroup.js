@@ -127,6 +127,7 @@ function ModalGroup({ children, mode }) {
     const datoEncontrado = groups.find((groups) => groups.name === selectedOption);
     console.log("#DFSDFSDFSDDAto encotntrado")
     setOldGroup(datoEncontrado.name)
+    
 
 
 

@@ -9,6 +9,12 @@ import CUDButtons from "../containers/CUDButtons";
 import { ThemeProvider, createTheme, Box, Grid, Paper, Container, Toolbar, CssBaseline } from '@mui/material';
 import Title from '../components/Title';
 import { ModalResidue } from "./ModalResidue";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 function MenuResidue() {
   const {
@@ -17,7 +23,10 @@ function MenuResidue() {
     setOpenModalEditResidue,
     openModalEditResidue,
     setOpenModalDeleteResidue,
-    openModalDeleteResidue
+    openModalDeleteResidue,
+    textOpenModalText,
+    setOpenModalText,
+    openModalText
   } = useContext(TodoContext);
 
   const defaultTheme = createTheme();
@@ -84,6 +93,25 @@ function MenuResidue() {
               La funcionalidad de borrar TODO
             </ ModalResidue >
           )}
+           {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
+          )}
+          
         </Box>
       </Box>
     </ThemeProvider>

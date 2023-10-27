@@ -27,6 +27,7 @@ function ModalUser({ children, mode }) {
   const [phone, setPhone] = useState("");
   const [address_num_int, setAddressNumInt] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
+  const [old_user, setOldUser] = useState("");
 
 
   const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
@@ -83,10 +84,7 @@ function ModalUser({ children, mode }) {
 
     }
     if (mode === "EDITAR") {
-
-
-
-
+      
       const editarDato = {
         user: e.target.user.value,
         //password: e.target.password.value,
@@ -106,8 +104,10 @@ function ModalUser({ children, mode }) {
         address_lat: 0,
         address_lng: 0,
 
-        antiguoUser: user
+        antiguoUser: old_user,
       };
+      console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
+      console.log(editarDato)
 
       axios
         .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
@@ -196,7 +196,8 @@ function ModalUser({ children, mode }) {
     console.log(selectedOption)
     // Buscar el dato seleccionado en el arreglo de datos
     const datoEncontrado = users.find((users) => users.user === selectedOption);
-    console.log(datoEncontrado)
+    console.log("DATO3333333333333333333333333333")
+    console.log(datoEncontrado.address_num_int)
     setUser(datoEncontrado.user);
     setPassword(datoEncontrado.password);
     setEmail(datoEncontrado.email);
@@ -212,6 +213,7 @@ function ModalUser({ children, mode }) {
     setStreet(datoEncontrado.address_street);
     setPostalCode(datoEncontrado.address_postal_code);
     setAddressNumInt(datoEncontrado.address_num_int);
+    setOldUser(selectedOption);
 
 
 
