@@ -73,7 +73,7 @@ function ModalGenerator({ children, mode }) {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Usuario creado correctamente")
+                    setTextOpenModalText("Generador creado correctamente")
                     e.target.reset();
                     closeModal()
 
@@ -115,7 +115,7 @@ function ModalGenerator({ children, mode }) {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Usuario editado correctamente")
+                    setTextOpenModalText("Generador editado correctamente")
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -139,7 +139,7 @@ function ModalGenerator({ children, mode }) {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Usuario borrado correctamente")
+                    setTextOpenModalText("Generador borrado correctamente")
                     e.target.reset();
                     closeModal()
 
