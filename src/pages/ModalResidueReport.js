@@ -1,22 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { Modal, TextField, Button, Box, FormControl, InputLabel, Select, MenuItem, IconButton, Stack } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import axios from 'axios';
+import { TodoContext } from '../context/index.js';
 
 function ModalResidueReport({ onClose  , userselect, report} ) { // Asegúrate de manejar el evento de cierre adecuadamente
     const [residues, setResidues] = useState([]);
+    const [reportResidues, setReportResidues] = useState([]);
     const [entries, setEntries] = useState([{ user: userselect, report: report, residue: '', peso: '', volumen: '' }]);
     console.log("##################################################################SDFDFDSFDSFDSGHMN")
     console.log(userselect)
     console.log(report)
+    const { openModalCreateResidueReport, setOpenModalCreateResidueReport,openModalEditResidueReport, setOpenModalEditResidueReport ,openModalDeleteResidueReport, setOpenModalDeleteReportResidue  } = useContext(TodoContext);
+
+    const closeModal = () => {
+        console.log("##################################################################SDFDFDSFDSFDSGHMN")
+        console.log("Cerrar moda")
+        if (openModalCreateResidueReport) {
+          setOpenModalCreateResidueReport(false);
+        }
+        if (openModalEditResidueReport) {
+          setOpenModalEditResidueReport(false);
+        }
+        if (openModalDeleteResidueReport) {
+          setOpenModalDeleteReportResidue(false);
+        }
+      };
 
     useEffect(() => {
+
+        // const fetchResidues = axios.get('http://127.0.0.1:8000/Rennueva/get-all-residue/');
+        // const fetchReportResidues = axios.post('http://127.0.0.1:8000/Rennueva/get-all-residues-per-report/', "14");
+
+
+        // Promise.all([fetchResidues, fetchReportResidues]) 
+        //     .then((res) => {
+        //         setResidues(res[0].data);
+        //         setReportResidues(res[1].data);
+        //         console.log("todos los residuos") 
+        //         console.log(res[1].data)
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
+        const getResidues = {
+            reportId: "14"
+          }
         axios.get('http://127.0.0.1:8000/Rennueva/get-all-residue/')
             .then(response => {
                 const data = response.data;
                 setResidues(data); // Asumiendo que 'data' es un array.
+            })
+            .catch(error => {
+                console.error('Hubo un problema al obtener los residuos:', error);
+            });
+
+            axios.post('http://127.0.0.1:8000/Rennueva/get-all-residues-per-report/',getResidues)
+            .then(response => {
+                const data = response.data;
+                setEntries(data); // Asumiendo que 'data' es un array.
+                console.log("todos los residuos")
+                console.log(data)
             })
             .catch(error => {
                 console.error('Hubo un problema al obtener los residuos:', error);
@@ -49,6 +95,8 @@ function ModalResidueReport({ onClose  , userselect, report} ) { // Asegúrate d
         const values = [...entries];
         values.splice(index, 1);
         setEntries(values);
+        console.log("###########dfdfdfdf#######asdasdasdas########asdasdasd#####################SDFDFDSFDSFDSGHMN")
+        console.log(values)
     };
 
     const handleSubmit = (e) => {
@@ -60,9 +108,10 @@ function ModalResidueReport({ onClose  , userselect, report} ) { // Asegúrate d
           .then(response => {
             const data = response.data;
             console.log(data)
+
             // setOpenModalText(true);
             e.target.reset();
-            
+            closeModal()          
 
           })
           .catch(error => {
@@ -73,14 +122,14 @@ function ModalResidueReport({ onClose  , userselect, report} ) { // Asegúrate d
     };
 
     return ReactDOM.createPortal(
-        <Modal open={true} onClose={onClose}>
+        <Modal open={true} onClose={closeModal}>
             <Box
                 sx={{
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                     width: 700, bgcolor: 'background.paper', boxShadow: 24, p: 4, borderRadius: 2,
                 }}
             >
-                <Button onClick={onClose} sx={{ position: 'absolute', right: 2, top: 2 }}>
+                <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>
                     &times;
                 </Button>
                 <form onSubmit={handleSubmit}>
