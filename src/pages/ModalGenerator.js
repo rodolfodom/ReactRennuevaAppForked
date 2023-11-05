@@ -29,6 +29,7 @@ function ModalGenerator({ children, mode }) {
     const [address_num_ext, setAddressNumExt] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
+    const [razonSocial , setRazonSocial] = useState("");
 
     const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
     const closeModal = () => {
@@ -55,7 +56,7 @@ function ModalGenerator({ children, mode }) {
                 last_name: e.target.apellido.value,
                 group: "Generador",
                 rfc: e.target.rfc.value,
-                company: company,
+                company: "Rennueva",
                 phone: e.target.phone.value,
                 address_state: e.target.state.value,
                 address_city: e.target.city.value,
@@ -63,8 +64,11 @@ function ModalGenerator({ children, mode }) {
                 address_street: e.target.street.value,
                 address_postal_code: e.target.postal_code.value,
                 address_num_int: e.target.address_num_int.value,
+
                 address_lat: 0,
                 address_lng: 0,
+                
+                razon_social: e.target.razon_social.value,
             };
 
             axios
@@ -73,7 +77,7 @@ function ModalGenerator({ children, mode }) {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Usuario creado correctamente")
+                    setTextOpenModalText("Generador creado correctamente")
                     e.target.reset();
                     closeModal()
 
@@ -93,7 +97,7 @@ function ModalGenerator({ children, mode }) {
                 last_name: e.target.apellido.value,
                 group: "Generador",
                 rfc: e.target.rfc.value,
-                company: company,
+                company: "Rennueva",
                 phone: e.target.phone.value,
                 address_state: e.target.state.value,
                 address_city: e.target.city.value,
@@ -105,6 +109,8 @@ function ModalGenerator({ children, mode }) {
                 address_lng: 0,
 
                 antiguoUser: old_user,
+
+                razon_social: e.target.razon_social.value,
             };
             console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
             console.log(editarDato)
@@ -115,7 +121,7 @@ function ModalGenerator({ children, mode }) {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Usuario editado correctamente")
+                    setTextOpenModalText("Generador editado correctamente")
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -139,7 +145,7 @@ function ModalGenerator({ children, mode }) {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Usuario borrado correctamente")
+                    setTextOpenModalText("Generador borrado correctamente")
                     e.target.reset();
                     closeModal()
 
@@ -179,7 +185,7 @@ function ModalGenerator({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get('http://127.0.0.1:8000/Rennueva/get-all-users/')
+        const fetchUsers = axios.post('http://127.0.0.1:8000/Rennueva/get-all-users/', { group: "Generador" })
         const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
@@ -207,7 +213,7 @@ function ModalGenerator({ children, mode }) {
             setLastName(datoEncontrado.last_name);
             setGroup(datoEncontrado.group);
             setRfc(datoEncontrado.rfc);
-            setCompany(datoEncontrado.company);
+            setCompany("Rennueva");
             setPhone(datoEncontrado.phone);
             setState(datoEncontrado.address_state);
             setCity(datoEncontrado.address_city);
@@ -298,6 +304,15 @@ function ModalGenerator({ children, mode }) {
                                 margin="dense"
                             />
                             <TextField
+                                label="Razon Social"
+                                name="razon_social"
+                                required
+                                fullWidth
+                                value={razonSocial}
+                                onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
+                                margin="dense"
+                            />
+                            <TextField
                                 label="Nombre de Usuario"
                                 name="user"
                                 required
@@ -347,18 +362,7 @@ function ModalGenerator({ children, mode }) {
                                 />
                             </FormControl>
                             <FormControl fullWidth mt={2} mb={2}>
-                                <Title>Compañia</Title>
-                                <Select
-                                    labelId="company-select-label"
-                                    id="company-select"
-                                    required
-                                    value={company}
-                                    onChange={(e) => handleInputChange(e, setCompany, mode)}
-                                >
-                                    {companies.map((name, index) => (
-                                        <MenuItem key={index} value={name.company_name}>{name.company_name}</MenuItem>
-                                    ))}
-                                </Select>
+                                
                                 <Title>Ubicacion</Title>
                                 <TextField
                                     label="Estado"

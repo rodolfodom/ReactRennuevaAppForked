@@ -55,7 +55,7 @@ function ModalUser({ children, mode }) {
         last_name: e.target.apellido.value,
         group: group,
         rfc: e.target.rfc.value,
-        company: company,
+        company: "Rennueva",
         phone: e.target.phone.value,
         address_state: e.target.state.value,
         address_city: e.target.city.value,
@@ -93,7 +93,7 @@ function ModalUser({ children, mode }) {
         last_name: e.target.apellido.value,
         group: group,
         rfc: e.target.rfc.value,
-        company: company,
+        company: "Rennueva",
         phone: e.target.phone.value,
         address_state: e.target.state.value,
         address_city: e.target.city.value,
@@ -165,7 +165,7 @@ function ModalUser({ children, mode }) {
 
     // Definir las peticiones pero no ejecutarlas todavía
     const fetchGroups = axios.get('http://127.0.0.1:8000/Rennueva/get-all-groups/');
-    const fetchUsers = axios.get('http://127.0.0.1:8000/Rennueva/get-all-users/');
+    const fetchUsers = axios.post('http://127.0.0.1:8000/Rennueva/get-all-users/', { group: "Administrador" });
     const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
     // Ejecutar todas las peticiones en paralelo y establecer los estados una vez que todas hayan terminado
     Promise.all([fetchGroups, fetchUsers, fetchCompanies])
@@ -205,7 +205,7 @@ function ModalUser({ children, mode }) {
     setLastName(datoEncontrado.last_name);
     setGroup(datoEncontrado.groups[0]);
     setRfc(datoEncontrado.rfc);
-    setCompany(datoEncontrado.company);
+    setCompany("Rennueva");
     setPhone(datoEncontrado.phone);
     setState(datoEncontrado.address_state);
     setCity(datoEncontrado.address_city);
@@ -358,19 +358,8 @@ function ModalUser({ children, mode }) {
                 margin="dense"
               />
             </FormControl>
-            <FormControl fullWidth mt={2} mb={2}>
-              <Title>Compañia</Title>
-              <Select
-                labelId="company-select-label"
-                id="company-select"
-                required
-                value={company}
-                onChange={(e) => handleInputChange(e, setCompany, mode)}
-              >
-                {companies.map((name, index) => (
-                  <MenuItem key={index} value={name.company_name}>{name.company_name}</MenuItem>
-                ))}
-              </Select>
+           
+              
               <Title>Ubicacion</Title>
               <TextField
                 label="Estado"
@@ -428,7 +417,7 @@ function ModalUser({ children, mode }) {
                 onChange={(e) => handleInputChange(e, setPostalCode, mode)}
                 margin="dense"
               />
-            </FormControl>
+           
           </Box>
 
           <Button type="submit" variant="contained" fullWidth>{mode}</Button>

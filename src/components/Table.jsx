@@ -28,7 +28,7 @@ const UserTable = ({ datos }) => {
     useEffect(() => {
         // Realiza una petición GET a una URL específica
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-users/')
+            .post('http://127.0.0.1:8000/Rennueva/get-all-users/', {"group" : "Administrador"})
             .then(response => {
                 const data = response.data;
                 setClientes(data);
