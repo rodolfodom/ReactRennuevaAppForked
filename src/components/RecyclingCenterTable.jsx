@@ -18,9 +18,11 @@ const RecyclingCenterTable = () => {
 
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-recyclingCenter/')
+            .get('http://127.0.0.1:8000/Rennueva/get-all-recycling-center/')
             .then(response => {
                 setClientes(response.data);
+                console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");
+                console.log(response.data);
             })
             .catch(error => {
                 console.error(error);
@@ -42,12 +44,14 @@ const RecyclingCenterTable = () => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell>Nombre</TableCell>
+                <TableCell>ID</TableCell>
+                <TableCell>Nombre del Centro de Reciclaje</TableCell>
                 <TableCell>Razon Social</TableCell>
                 <TableCell>RFC</TableCell>
-                <TableCell>Calle</TableCell>
-                <TableCell>Celular</TableCell>
+                <TableCell>Telefono</TableCell>
                 <TableCell>Email</TableCell>
+                <TableCell>Calle</TableCell>
+                <TableCell>Num Interio</TableCell>
                 <TableCell>Dirección</TableCell>
                 <TableCell>Ciudad</TableCell>
                 <TableCell>Estado</TableCell>
@@ -57,16 +61,18 @@ const RecyclingCenterTable = () => {
             <TableBody>
               {clientes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((cliente, index) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                  <TableCell>{cliente.nombre}</TableCell>
-                  <TableCell>{cliente.razonSocial}</TableCell>
-                  <TableCell>{cliente.rfc}</TableCell>
-                  <TableCell>{cliente.calle}</TableCell>
-                  <TableCell>{cliente.celular}</TableCell>
-                  <TableCell>{cliente.correo}</TableCell>
-                  <TableCell>{cliente.direccion}</TableCell>
-                  <TableCell>{cliente.ciudad}</TableCell>
-                  <TableCell>{cliente.estado}</TableCell>
-                  <TableCell>{cliente.codigoPostal}</TableCell>
+                  <TableCell>{cliente.RecyclingCenterId}</TableCell>
+                  <TableCell>{cliente.RecyclingCenterName}</TableCell>
+                  <TableCell>{cliente.RecyclingCenterRazonSocial}</TableCell>
+                  <TableCell>{cliente.RecyclingCenterRfc}</TableCell>
+                  <TableCell>{cliente.RecyclingCenterPhone}</TableCell>
+                  <TableCell>{cliente.RecyclingCenterEmail}</TableCell>
+                  <TableCell>{cliente.AddressStreet}</TableCell>
+                  <TableCell>{cliente.AddressNumInt}</TableCell>
+                  <TableCell>{cliente.AddressLocality}</TableCell>
+                  <TableCell>{cliente.AddressCity}</TableCell>
+                  <TableCell>{cliente.AddressState}</TableCell>
+                  <TableCell>{cliente.AddressPostalCode}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

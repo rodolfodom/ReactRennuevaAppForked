@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
 import Title from '../components/Title';
 
-function ModalGenerator({ children, mode }) {
+function ModalRecyclingCenter({ children, mode }) {
     const [datos, setDatos] = useState([]);
     const [groups, setGroups] = useState([])
     const [users, setUsers] = useState([])
@@ -30,17 +30,23 @@ function ModalGenerator({ children, mode }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
     const [razonSocial , setRazonSocial] = useState("");
+    const [centerName , setCenterName] = useState("");
+    const [idCenter , setIdCenter] = useState("");
 
-    const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
+    const { openModalText, setTextOpenModalText, setOpenModalText,
+         openModalCreateRecyclingCenter, setOpenModalCreateRecyclingCenter, openModalEditRecyclingCenter, 
+         openModalDeleteRecyclingCenter, setOpenModalEditRecyclingCenter, setOpenModalDeleteRecyclingCenter 
+        } = useContext(TodoContext);
+
     const closeModal = () => {
-        if (openModalCreateGenerator) {
-            setOpenModalCreateGenerator(false);
+        if (openModalCreateRecyclingCenter) {
+            setOpenModalCreateRecyclingCenter(false);
         }
-        if (openModalEditGenerator) {
-            setOpenModalEditGenerator(false);
+        if (openModalEditRecyclingCenter) {
+            setOpenModalEditRecyclingCenter(false);
         }
-        if (openModalDeleteGenerator) {
-            setOpenModalDeleteGenerator(false);
+        if (openModalDeleteRecyclingCenter) {
+            setOpenModalDeleteRecyclingCenter(false);
         }
     };
 
@@ -49,35 +55,30 @@ function ModalGenerator({ children, mode }) {
         e.preventDefault();
         if (mode === "CREAR") {
             const nuevoDato = {
-                user: e.target.user.value,
-                password: e.target.password.value,
-                email: e.target.email.value,
-                first_name: e.target.nombre.value,
-                last_name: e.target.apellido.value,
-                group: "Generador",
-                rfc: e.target.rfc.value,
-                company: "Rennueva",
-                phone: e.target.phone.value,
-                address_state: e.target.state.value,
-                address_city: e.target.city.value,
-                address_locality: e.target.locality.value,
-                address_street: e.target.street.value,
-                address_postal_code: e.target.postal_code.value,
-                address_num_int: e.target.address_num_int.value,
+                recycling_center_name : e.target.nombre.value,
+                recycling_center_razon_social : e.target.razon_social.value,
+                recycling_center_rfc : e.target.rfc.value,
+                recycling_center_phone : e.target.phone.value,
+                recycling_center_email : e.target.email.value,
+                address_street : e.target.street.value,
+                address_num_int : e.target.address_num_int.value,
+                address_locality : e.target.locality.value,
+                address_city : e.target.city.value,
+                address_state : e.target.state.value,
+                address_postal_code : e.target.postal_code.value,
+                address_lat : 0,
+                address_lng : 0,
 
-                address_lat: 0,
-                address_lng: 0,
-                
-                razon_social: e.target.razon_social.value,
+
             };
 
             axios
-                .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
+                .post('http://127.0.0.1:8000/Rennueva/create-recycling-center/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Generador creado correctamente")
+                    setTextOpenModalText("Centro de Reciclaje creado correctamente")
                     e.target.reset();
                     closeModal()
 
@@ -90,38 +91,33 @@ function ModalGenerator({ children, mode }) {
         if (mode === "EDITAR") {
 
             const editarDato = {
-                user: e.target.user.value,
-                //password: e.target.password.value,
-                email: e.target.email.value,
-                first_name: e.target.nombre.value,
-                last_name: e.target.apellido.value,
-                group: "Generador",
-                rfc: e.target.rfc.value,
-                company: "Rennueva",
-                phone: e.target.phone.value,
-                address_state: e.target.state.value,
-                address_city: e.target.city.value,
-                address_locality: e.target.locality.value,
-                address_street: e.target.street.value,
-                address_postal_code: e.target.postal_code.value,
-                address_num_int: e.target.address_num_int.value,
-                address_lat: 0,
-                address_lng: 0,
+                recycling_center_name : e.target.nombre.value,
+                recycling_center_razon_social : e.target.razon_social.value,
+                recycling_center_rfc : e.target.rfc.value,
+                recycling_center_phone : e.target.phone.value,
+                recycling_center_email : e.target.email.value,
+                address_street : e.target.street.value,
+                address_num_int : e.target.address_num_int.value,
+                address_locality : e.target.locality.value,
+                address_city : e.target.city.value,
+                address_state : e.target.state.value,
+                address_postal_code : e.target.postal_code.value,
+                address_lat : 0,
+                address_lng : 0,
+                recycling_center_id : idCenter,
 
-                antiguoUser: old_user,
 
-                razon_social: e.target.razon_social.value,
             };
             console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
             console.log(editarDato)
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
+                .post('http://127.0.0.1:8000/Rennueva/update-recycling-center/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Generador editado correctamente")
+                    setTextOpenModalText("Centro Reciclaje editado correctamente")
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -136,16 +132,16 @@ function ModalGenerator({ children, mode }) {
             var user_ant = antiguo_user ? antiguo_user.value : null;
 
             const deleteDato = {
-                user: user
+                recycling_center_id : idCenter,
             }
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
+                .post('http://127.0.0.1:8000/Rennueva/delete-recycling-center/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Generador borrado correctamente")
+                    setTextOpenModalText("Centro Reciclaje borrado correctamente")
                     e.target.reset();
                     closeModal()
 
@@ -185,7 +181,7 @@ function ModalGenerator({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.post('http://127.0.0.1:8000/Rennueva/get-all-users/', { group: "Generador" })
+        const fetchUsers = axios.get("http://127.0.0.1:8000/Rennueva/get-all-recycling-center/")
         const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
@@ -202,27 +198,28 @@ function ModalGenerator({ children, mode }) {
 
         const handleSelectChange = (event) => {
             const selectedOption = event.target.value; // Obtener la opción seleccionada
+            console.log("opcion Seleccionada")
             console.log(selectedOption)
             // Buscar el dato seleccionado en el arreglo de datos
-            const datoEncontrado = users.find((users) => users.user === selectedOption);
+            const datoEncontrado = users.find((users) => users.RecyclingCenterName === selectedOption);
+            console.log("Dato Encontrado")
             console.log(datoEncontrado)
-            setUser(datoEncontrado.user);
-            setPassword(datoEncontrado.password);
-            setEmail(datoEncontrado.email);
-            setFirstName(datoEncontrado.first_name);
-            setLastName(datoEncontrado.last_name);
-            setGroup(datoEncontrado.group);
-            setRfc(datoEncontrado.rfc);
-            setCompany("Rennueva");
-            setPhone(datoEncontrado.phone);
-            setState(datoEncontrado.address_state);
-            setCity(datoEncontrado.address_city);
-            setLocality(datoEncontrado.address_locality);
-            setStreet(datoEncontrado.address_street);
-            setPostalCode(datoEncontrado.address_postal_code);
-            setAddressNumInt(datoEncontrado.address_num_int);
-            setOldUser(selectedOption);
-
+            setCenterName(datoEncontrado.RecyclingCenterName);
+            setRfc(datoEncontrado.RecyclingCenterRFC);
+            setRazonSocial(datoEncontrado.RecyclingCenterRazonSocial);
+            setEmail(datoEncontrado.RecyclingCenterEmail);
+            setPhone(datoEncontrado.RecyclingCenterPhone);
+            setState(datoEncontrado.AddressState);
+            setCity(datoEncontrado.AddressCity);
+            setLocality(datoEncontrado.AddressLocality);
+            setStreet(datoEncontrado.AddressStreet);
+            setPostalCode(datoEncontrado.AddressPostalCode);
+            setAddressNumInt(datoEncontrado.AddressNumInt);
+            setAddressNumExt(datoEncontrado.AddressNumExt);
+            setIdCenter(datoEncontrado.RecyclingCenterId);
+            
+            // Actualizar el estado con el dato encontrado
+           
 
 
         }
@@ -251,16 +248,16 @@ function ModalGenerator({ children, mode }) {
                     <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
                     <form onSubmit={handleSubmit} >
                         <Box mb={2}>
-                            <Title> Usuario</Title>
+                            <Title> Centro de Reciclaje</Title>
                             {mode === "EDITAR" || mode === "BORRAR" ? (
                                 <FormControl fullWidth>
-                                    <InputLabel id="user-select-label">Usuario</InputLabel>
+                                    <InputLabel id="user-select-label">Centro Reciclaje</InputLabel>
                                     <Select
                                         labelId="user-select-label"
                                         id="user-select"
                                         onChange={(e) => {
 
-                                            handleSelectChange(e, setUser)
+                                            handleSelectChange(e, setCenterName)
 
 
                                         }}
@@ -269,7 +266,7 @@ function ModalGenerator({ children, mode }) {
                                         w
                                     >
                                         {users.map((name, index) => (
-                                            <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                                            <MenuItem key={index} value={name.RecyclingCenterName}>{name.RecyclingCenterName}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -277,21 +274,12 @@ function ModalGenerator({ children, mode }) {
                         </Box>
                         <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
                             <TextField
-                                label="Nombre"
+                                label="Nombre Centro Reciclaje"
                                 name="nombre"
                                 required
                                 fullWidth
-                                value={first_name}
-                                onChange={(e) => handleInputChange(e, setFirstName, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Apellido"
-                                name="apellido"
-                                required
-                                fullWidth
-                                value={last_name}
-                                onChange={(e) => handleInputChange(e, setLastName, mode)}
+                                value={centerName}
+                                onChange={(e) => handleInputChange(e, setCenterName, mode)}
                                 margin="dense"
                             />
                             <TextField
@@ -313,15 +301,6 @@ function ModalGenerator({ children, mode }) {
                                 margin="dense"
                             />
                             <TextField
-                                label="Nombre de Usuario"
-                                name="user"
-                                required
-                                fullWidth
-                                value={user}
-                                onChange={(e) => handleInputChange(e, setUser, mode)}
-                                margin="dense"
-                            />
-                            <TextField
                                 label="Email Usuario"
                                 name="email"
                                 type="email"
@@ -331,24 +310,6 @@ function ModalGenerator({ children, mode }) {
                                 onChange={(e) => handleInputChange(e, setEmail, mode)}
                                 margin="dense"
                             />
-                            {
-                                isPasswordVisible && (
-                                    <TextField
-                                        label="Password"
-                                        name="password"
-                                        type="password"
-                                        required
-                                        fullWidth
-                                        value={password}
-                                        onChange={(e) => handleInputChange(e, setPassword, mode)}
-                                        margin="dense"
-                                    />
-                                )
-                            }
-
-                            <FormControl fullWidth mt={2} mb={2}>
-                                
-
 
 
                                 <TextField
@@ -360,7 +321,7 @@ function ModalGenerator({ children, mode }) {
                                     onChange={(e) => handleInputChange(e, setPhone, mode)}
                                     margin="dense"
                                 />
-                            </FormControl>
+                           
                             <FormControl fullWidth mt={2} mb={2}>
                                 
                                 <Title>Ubicacion</Title>
@@ -435,4 +396,4 @@ function ModalGenerator({ children, mode }) {
         );
     }
 
-export { ModalGenerator };
+export { ModalRecyclingCenter };

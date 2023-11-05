@@ -15,15 +15,22 @@ import {
 } from '@mui/material';
 import Title from '../components/Title';
 import CUDButtons from "../containers/CUDButtons";
+import { ModalRecyclingCenter } from "./ModalRecyclingCenter.js";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 function MenuRecyclingCenter() {
   const { 
-    openModalCreate, 
-    setOpenModalCreate, 
-    setOpenModalEdit,
-    openModalEdit, 
-    setOpenModalDelete, 
-    openModalDelete 
+    openModalCreateRecyclingCenter, 
+    setOpenModalCreateRecyclingCenter, 
+    setOpenModalEditRecyclingCenter,
+    openModalEditRecyclingCenter, 
+    setOpenModalDeleteRecyclingCenter, 
+    openModalDeleteRecyclingCenter ,openModalText, setOpenModalText ,textOpenModalText,setTextOpenModalText
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -79,20 +86,38 @@ function MenuRecyclingCenter() {
             </Grid>
           </Container>
 
-          {openModalCreate && (
-            <ModalUser mode={"CREAR"}>
+          {openModalCreateRecyclingCenter && (
+            <ModalRecyclingCenter mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalRecyclingCenter >
           )}
-          {openModalEdit && (
-            <ModalUser mode={"EDITAR"}>
+          {openModalEditRecyclingCenter && (
+            <ModalRecyclingCenter mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalRecyclingCenter >
           )}
-          {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+          {openModalDeleteRecyclingCenter && (
+            <ModalRecyclingCenter mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalRecyclingCenter >
+          )}
+           {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
           )}
         </Box>
       </Box>
