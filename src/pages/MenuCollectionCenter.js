@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TodoContext } from '../context/index.js';
-import { ModalUser } from './Users/ModalUser';
+import { ModalCollectionCenter } from './ModalCollectionCenter';
 import RecyclingCenterTable from "../components/RecyclingCenterTable";
 import BarsChartVehicle from "../components/BarsChartVehicle";
 import {
@@ -15,15 +15,22 @@ import {
 } from '@mui/material';
 import Title from '../components/Title';
 import CUDButtons from "../containers/CUDButtons";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import CollectionCenterTable from "../components/CollectionCenterTable.jsx";
 
 function MenuCollectionCenter() {
   const { 
-    openModalCreate, 
-    setOpenModalCreate, 
-    setOpenModalEdit,
-    openModalEdit, 
-    setOpenModalDelete, 
-    openModalDelete 
+    openModalCreateCollectionCenter, 
+    setOpenModalCreateCollectionCenter, 
+    setOpenModalEditCollectionCenter,
+    openModalEditCollectionCenter, 
+    setOpenModalDeleteCollectionCenter, 
+    openModalDeleteCollectionCenter , openModalText, setOpenModalText ,textOpenModalText,setTextOpenModalText
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -59,9 +66,9 @@ function MenuCollectionCenter() {
                   }}
                 >
                   <Title>Centros de Recoleccion</Title>
-                  <CUDButtons model="RecyclingCenter" />
+                  <CUDButtons model="CollectionCenter" />
                   <Title>Centros Creados</Title>
-                  <RecyclingCenterTable />
+                  <CollectionCenterTable />
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -79,20 +86,38 @@ function MenuCollectionCenter() {
             </Grid>
           </Container>
 
-          {openModalCreate && (
-            < ModalUser mode={"CREAR"}>
+          {openModalCreateCollectionCenter && (
+            < ModalCollectionCenter mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalCollectionCenter >
           )}
-          {openModalEdit && (
-            < ModalUser mode={"EDITAR"}>
+          {openModalEditCollectionCenter && (
+            < ModalCollectionCenter mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalCollectionCenter >
           )}
-          {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+          {openModalDeleteCollectionCenter && (
+            <ModalCollectionCenter mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalCollectionCenter >
+          )}
+          {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
           )}
         </Box>
       </Box>
