@@ -13,17 +13,30 @@ import {
   Toolbar,
   CssBaseline,
 } from '@mui/material';
-import Title from '../components/Title';
+
 import CUDButtons from "../containers/CUDButtons";
+import { ModalVehicle } from "./ModalVehicle.js";
+import Title from '../components/Title';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 function MenuVehicle() {
   const { 
-    openModalCreate, 
-    setOpenModalCreate, 
-    setOpenModalEdit,
-    openModalEdit, 
-    setOpenModalDelete, 
-    openModalDelete 
+    openModalCreateVehicle, 
+    setOpenModalCreateVehicle, 
+    setOpenModalEditVehicle,
+    openModalEditVehicle, 
+    setOpenModalDeleteVehicle, 
+    openModalDeleteVehicle,
+    openModalText,
+    setOpenModalText,
+    textOpenModalText,
+    setTextOpenModalText
+
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -79,20 +92,38 @@ function MenuVehicle() {
             </Grid>
           </Container>
 
-          {openModalCreate && (
-            <ModalUser mode={"CREAR"}>
+          {openModalCreateVehicle && (
+            <ModalVehicle mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalVehicle >
           )}
-          {openModalEdit && (
-            <ModalUser mode={"EDITAR"}>
+          {openModalEditVehicle && (
+            <ModalVehicle mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalVehicle >
           )}
-          {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+          {openModalDeleteVehicle && (
+            <ModalVehicle mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalVehicle >
+          )}
+          {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
           )}
         </Box>
       </Box>
