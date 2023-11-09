@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import Title from '../components/Title';
 import CUDButtons from "../containers/CUDButtons";
+import { ModalDriver } from "./ModalDriver.js";
 
 function MenuDriver() {
   const { 
@@ -80,19 +81,19 @@ function MenuDriver() {
           </Container>
 
           {openModalCreate && (
-            <ModalUser mode={"CREAR"}>
+            <ModalDriver mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalDriver >
           )}
           {openModalEdit && (
-            <ModalUser mode={"EDITAR"}>
+            <ModalDriver mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalDriver >
           )}
           {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+            <ModalDriver mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalDriver >
           )}
         </Box>
       </Box>

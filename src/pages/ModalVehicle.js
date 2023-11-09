@@ -7,7 +7,7 @@ import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabe
 import Title from '../components/Title';
 
 function ModalVehicle({ children, mode }) {
-  const [residues, setVehicles] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [residue, setVehicle] = useState("");
   const [oldVehicle, setOldVehicle] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -82,7 +82,7 @@ function ModalVehicle({ children, mode }) {
     }
     if (mode === "EDITAR") {
       axios
-        .put('http://127.0.0.1:8000/Rennueva/update-vehicle/', { antiguoNombre : oldVehicle, nombre: e.target.nombre.value, descripcion: e.target.descripcion.value})
+        .put('http://127.0.0.1:8000/Rennueva/update-vehicle/', editarDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -98,7 +98,7 @@ function ModalVehicle({ children, mode }) {
     }
     if (mode === "BORRAR") {
       axios
-        .put('http://127.0.0.1:8000/Rennueva/delete-vehicle/', { nombre: e.target.nombre.value})
+        .post('http://127.0.0.1:8000/Rennueva/delete-vehicle/', { placas: oldVehicle})
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -137,13 +137,13 @@ function ModalVehicle({ children, mode }) {
     console.log(selectedOption)
     setOldVehicle(selectedOption)
     // Buscar el dato seleccionado en el arreglo de datos
-    const datoEncontrado = residues.find((residues) => residues.nombre === selectedOption);
+    const datoEncontrado = vehicles.find((vehicles) => vehicles.placas === selectedOption);
     console.log("dato encontrado")
     console.log(datoEncontrado)
 
-    setVehicle(datoEncontrado.nombre);
-    setDescripcion(datoEncontrado.descripcion);
-
+    setNombre(datoEncontrado.modelo);
+    setPlacas(datoEncontrado.placas);
+    setCapacidad(datoEncontrado.capacidad);
 
 
 
@@ -177,14 +177,14 @@ function ModalVehicle({ children, mode }) {
             <Title> Vehiculos</Title>
             {mode === "EDITAR" || mode === "BORRAR" ? (
               <FormControl fullWidth>
-                <InputLabel id="residue-select-label">Vehiculo</InputLabel>
+                <InputLabel id="vehicle-select-label">Vehiculo</InputLabel>
                 <Select
-                  labelId="residue-select-label"
-                  id="residue-select"
+                  labelId="vehicle-select-label"
+                  id="vehicle-select"
                   onChange={(e) => handleSelectChange(e, oldVehicle)}
                   required
                 >
-                  {residues.map((name, index) => (
+                  {vehicles.map((name, index) => (
                     <MenuItem key={index} value={name.placas}>{name.placas}</MenuItem>
                   ))}
                 </Select>
