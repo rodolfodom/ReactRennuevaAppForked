@@ -14,7 +14,7 @@ function TodoProvider({ children }) {
   const [openModalEditGroup, setOpenModalEditGroup] = React.useState(false);
   const [openModalDeleteGroup, setOpenModalDeleteGroup] = React.useState(false);
   const [openModalCreateCarrier, setOpenModalCreateCarrier] = React.useState(false);
-  const [openModalEditCarrier, setOpenModalEditCarreir] = React.useState(false);
+  const [openModalEditCarrier, setOpenModalEditCarrier] = React.useState(false);
   const [openModalDeleteCarrier, setOpenModalDeleteCarrier] = React.useState(false);
   const [openModalCreateCollectionCenter, setOpenModalCreateCollectionCenter] = React.useState(false);
   const [openModalEditCollectionCenter, setOpenModalEditCollectionCenter] = React.useState(false);
@@ -74,7 +74,7 @@ function TodoProvider({ children }) {
       openModalEditGroup, setOpenModalEditGroup,
       openModalDeleteGroup, setOpenModalDeleteGroup,
       openModalCreateCarrier, setOpenModalCreateCarrier,
-      openModalEditCarrier, setOpenModalEditCarreir,
+      openModalEditCarrier, setOpenModalEditCarrier,
       openModalDeleteCarrier, setOpenModalDeleteCarrier,
       openModalCreateCollectionCenter, setOpenModalCreateCollectionCenter,
       openModalEditCollectionCenter, setOpenModalEditCollectionCenter,
