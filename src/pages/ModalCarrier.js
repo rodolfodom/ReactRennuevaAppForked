@@ -35,7 +35,7 @@ function ModalCarrier({ children, mode }) {
     const [razon_social, setRazonSocial] = useState("");
     
 
-    const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreateCarrier, setOpenModalCreateCarrier, openModalEditCarrier, openModalDeleteCarrier, setOpenModalEditCarrier, setOpenModalDeleteCarrier } = useContext(TodoContext);
+    const { setUpdateCarrierInfo ,openModalText, setTextOpenModalText, setOpenModalText, openModalCreateCarrier, setOpenModalCreateCarrier, openModalEditCarrier, openModalDeleteCarrier, setOpenModalEditCarrier, setOpenModalDeleteCarrier } = useContext(TodoContext);
     const closeModal = () => {
         if (openModalCreateCarrier) {
             setOpenModalCreateCarrier(false);
@@ -71,6 +71,7 @@ function ModalCarrier({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Transportista creado correctamente")
+                    setUpdateCarrierInfo(true)
                     e.target.reset();
                     closeModal()
 
@@ -107,6 +108,7 @@ function ModalCarrier({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Transportista editado correctamente")
+                    setUpdateCarrierInfo(true)
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -131,6 +133,7 @@ function ModalCarrier({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Transportista borrado correctamente")
+                    setUpdateCarrierInfo(true)
                     e.target.reset();
                     closeModal()
 

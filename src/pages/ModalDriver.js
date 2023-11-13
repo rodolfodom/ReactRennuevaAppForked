@@ -31,7 +31,7 @@ function ModalDriver({ children, mode }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
 
-    const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreateDriver, setOpenModalCreateDriver, openModalEditDriver, openModalDeleteDriver, setOpenModalEditDriver, setOpenModalDeleteDriver } = useContext(TodoContext);
+    const {setUpdateDriverInfo, openModalText, setTextOpenModalText, setOpenModalText, openModalCreateDriver, setOpenModalCreateDriver, openModalEditDriver, openModalDeleteDriver, setOpenModalEditDriver, setOpenModalDeleteDriver } = useContext(TodoContext);
     const closeModal = () => {
         if (openModalCreateDriver) {
             setOpenModalCreateDriver(false);
@@ -66,6 +66,7 @@ function ModalDriver({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Conductor creado correctamente")
+                    setUpdateDriverInfo(true);
                     e.target.reset();
                     closeModal()
 
@@ -99,6 +100,7 @@ function ModalDriver({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Donador editado correctamente")
+                    setUpdateDriverInfo(true);
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -123,6 +125,7 @@ function ModalDriver({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Donador borrado correctamente")
+                    setUpdateDriverInfo(true);
                     e.target.reset();
                     closeModal()
 

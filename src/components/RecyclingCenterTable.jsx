@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import axios from 'axios';
 import { 
   Paper, 
@@ -10,11 +10,13 @@ import {
   TableRow, 
   TablePagination 
 } from '@mui/material';
+import { TodoContext } from '../context';
 
 const RecyclingCenterTable = () => {
     const [clientes, setClientes] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const { updateRecyclingCenterInfo, setUpdateRecyclingCenterInfo } = useContext(TodoContext);
 
     useEffect(() => {
         axios
@@ -23,11 +25,12 @@ const RecyclingCenterTable = () => {
                 setClientes(response.data);
                 console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");
                 console.log(response.data);
+                setUpdateRecyclingCenterInfo(false);
             })
             .catch(error => {
                 console.error(error);
             });
-    }, []);
+    }, [updateRecyclingCenterInfo]);
   
     const handleChangePage = (event, newPage) => {
       setPage(newPage);

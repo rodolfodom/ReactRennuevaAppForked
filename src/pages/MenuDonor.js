@@ -22,6 +22,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import DonorTable from "../components/DonorTable.jsx";
 
 
 function MenuDonor() {
@@ -70,7 +71,7 @@ function MenuDonor() {
                   <Title>Donadores</Title>
                   <CUDButtons model="Donor" />
                   <Title>Donadores Creados</Title>
-                  <GeneratorTable />
+                  <DonorTable />
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6}>

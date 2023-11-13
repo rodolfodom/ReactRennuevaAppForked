@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import axios from 'axios';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from '@mui/material';
-
+import { TodoContext } from '../context/index.js';
 const DriverTable = ({ datos }) => {
   const [clientes, setClientes] = useState([]);
+  const {updateDriverInfo, setUpdateDriverInfo} = useContext(TodoContext);
 
   useEffect(() => {
     axios
@@ -11,11 +12,12 @@ const DriverTable = ({ datos }) => {
       .then(response => {
         const data = response.data;
         setClientes(data);
+        setUpdateDriverInfo(false);
       })
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [updateDriverInfo]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);

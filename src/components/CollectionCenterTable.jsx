@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { 
   Paper, 
@@ -10,12 +10,13 @@ import {
   TableRow, 
   TablePagination 
 } from '@mui/material';
+import { TodoContext } from '../context';
 
 const CollectionCenterTable = () => {
     const [clientes, setClientes] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-
+    const { updateCollectionCenterInfo, setUpdateCollectionCenterInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
             .get('http://127.0.0.1:8000/Rennueva/get-all-collection-center/')
@@ -23,11 +24,12 @@ const CollectionCenterTable = () => {
                 setClientes(response.data);
                 console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");
                 console.log(response.data);
+                setUpdateCollectionCenterInfo(false);
             })
             .catch(error => {
                 console.error(error);
             });
-    }, []);
+    }, [updateCollectionCenterInfo]);
   
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
