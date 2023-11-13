@@ -5,6 +5,11 @@ import { TodoContext } from '../context/index.js';
 import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel, Grid } from '@mui/material';
 import Title from '../components/Title';
+import Switch from '@mui/material/Switch';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 
 function ModalReport({ children, mode }) {
     const [datos, setDatos] = useState([]);
@@ -25,7 +30,50 @@ function ModalReport({ children, mode }) {
     const [rfc, setRfc] = useState("");
     const [phone, setPhone] = useState("");
     const [nameGenerator, setNameGenerator] = useState([]);
-    const { openModalCreateReport, setOpenModalCreateReport, openModalEditReport, setOpenModalEditReport, openModalDeleteReport, setOpenModalDeleteReport } = useContext(TodoContext);
+    const { setOpenModalText, setTextOpenModalText, updateReportInfo, setUpdateReportInfo, openModalCreateReport, setOpenModalCreateReport, openModalEditReport, setOpenModalEditReport, openModalDeleteReport, setOpenModalDeleteReport } = useContext(TodoContext);
+
+    const AntSwitch = styled(Switch)(({ theme }) => ({
+        width: 28,
+        height: 16,
+        padding: 0,
+        display: 'flex',
+        '&:active': {
+            '& .MuiSwitch-thumb': {
+                width: 15,
+            },
+            '& .MuiSwitch-switchBase.Mui-checked': {
+                transform: 'translateX(9px)',
+            },
+        },
+        '& .MuiSwitch-switchBase': {
+            padding: 2,
+            '&.Mui-checked': {
+                transform: 'translateX(12px)',
+                color: '#fff',
+                '& + .MuiSwitch-track': {
+                    opacity: 1,
+                    backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
+                },
+            },
+        },
+        '& .MuiSwitch-thumb': {
+            boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+            width: 12,
+            height: 12,
+            borderRadius: 6,
+            transition: theme.transitions.create(['width'], {
+                duration: 200,
+            }),
+        },
+        '& .MuiSwitch-track': {
+            borderRadius: 16 / 2,
+            opacity: 1,
+            backgroundColor:
+                theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+            boxSizing: 'border-box',
+        },
+    }));
+
     useEffect(() => {
         axios
             .get('http://127.0.0.1:8000/Rennueva/get-all-generator/')
@@ -82,10 +130,24 @@ function ModalReport({ children, mode }) {
             console.log(user)
             axios
                 .post('http://127.0.0.1:8000/Rennueva/create-initial-report/', {
-                    username : user,
-                }) 
+                    username: user,
+                    street: street,
+                    locality: locality,
+                    city: city,
+                    state: state,
+                    postalCode: postal_code,
+                    
+
+                })
                 .then(response => {
                     console.log(response);
+                    setUpdateReportInfo(true);
+                    setOpenModalText(true);
+                    setTextOpenModalText("Reporte creado correctamente")
+                    closeModal()
+                    e.target.reset();
+
+
                 })
                 .catch(error => {
                     console.error(error);
@@ -94,7 +156,7 @@ function ModalReport({ children, mode }) {
     };
 
 
-    
+
     const handleInputChange = (e, setState, mode) => {
         const currentInputValue = e.target.value;
 
@@ -109,7 +171,7 @@ function ModalReport({ children, mode }) {
         console.log("NAme Generador")
         console.log(nameGenerator)
         // Buscar el dato seleccionado en el arreglo de datos
-        const datoEncontrado = nameGenerator.find((users) => users.name  === selectedOption);
+        const datoEncontrado = nameGenerator.find((users) => users.name === selectedOption);
         console.log(datoEncontrado)
         setUser(datoEncontrado.user);
         setPassword(datoEncontrado.password);
@@ -129,8 +191,23 @@ function ModalReport({ children, mode }) {
 
 
     }
+    const [isSameLocation, setIsSameLocation] = useState(true);
 
-    
+    const handleSwitchChange = (event) => {
+        setIsSameLocation(event.target.checked);
+    }
+
+    useEffect(() => {
+        if (!isSameLocation) {
+            setState('');
+            setCity('');
+            setLocality('');
+            setStreet('');
+            setPostalCode('');
+
+
+        }
+    }, [isSameLocation]);
 
     return ReactDOM.createPortal(
         <Modal open={true} onClose={closeModal}>
@@ -149,96 +226,97 @@ function ModalReport({ children, mode }) {
             }}>
                 <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
                 <form onSubmit={handleSubmit} >
-                <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 600 }}>
+                    <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 600 }}>
 
-                    <Box mb={2}>
-                        <Title>Crear Responsiva</Title>
-                        <FormControl fullWidth mt={2} mb={2}>
-                            <InputLabel id="rol-select-label">Generador</InputLabel>
-                            <Select
-                                labelId="rol-select-label"
-                                id="rol-select"
-                                required
-                                onChange={(e) => handleSelectChange(e, setUser)}
-                            >
-                                {nameGenerator.map((name, index) => (
-                                    <MenuItem key={index} value={name.name}>{name.name + " " + name.rfc}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
-                    <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
-
-                        <Grid container spacing={2}>
-
-                        <Grid item xs={12} sm={6}>
-                            
-                            <TextField
-                                label="Nombre"
-                                name="nombre"
-                                required
-                                fullWidth
-                                value={first_name}
-                                onChange={(e) => handleInputChange(e, setFirstName, mode)}
-                                margin="dense"
-                            />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                            <TextField
-                                label="Apellido"
-                                name="apellido"
-                                required
-                                fullWidth
-                                value={last_name}
-                                onChange={(e) => handleInputChange(e, setLastName, mode)}
-                                margin="dense"
-                            />
-                            </Grid>
-                            <Grid item xs={12} sm={12}>
-                            <TextField
-                                label="RFC"
-                                name="rfc"
-                                required
-                                fullWidth
-                                value={rfc}
-                                onChange={(e) => handleInputChange(e, setRfc, mode)}
-                                margin="dense"
-                            />
-                            </Grid>
-                            <Grid item xs={12} sm={12}>
-                            <TextField
-                                label="Nombre de Usuario"
-                                name="user"
-                                required
-                                fullWidth
-                                value={user}
-                                onChange={(e) => handleInputChange(e, setUser, mode)}
-                                margin="dense"
-                            />
-                            </Grid>
-                            <Grid item xs={12} sm={12}>
-                            <TextField
-                                label="Email"
-                                name="email"
-                                type="email"
-                                required
-                                fullWidth
-                                value={email}
-                                onChange={(e) => handleInputChange(e, setEmail, mode)}
-                                margin="dense"
-                            />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Compañia"
-                                    name="company"
+                        <Box mb={2}>
+                            <Title>Crear Responsiva</Title>
+                            <FormControl fullWidth mt={2} mb={2}>
+                                <InputLabel id="rol-select-label">Generador</InputLabel>
+                                <Select
+                                    labelId="rol-select-label"
+                                    id="rol-select"
                                     required
-                                    fullWidth
-                                    value={company}
-                                    margin="dense"
-                                />
-                            </Grid>
-                            {/* <Grid item xs={12} sm={6}>
+                                    onChange={(e) => handleSelectChange(e, setUser)}
+                                >
+                                    {nameGenerator.map((name, index) => (
+                                        <MenuItem key={index} value={name.name}>{name.name + " " + name.rfc}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                        </Box>
+                        <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
+
+                            <Grid container spacing={2}>
+
+                                <Grid item xs={12} sm={6}>
+
+                                    <TextField
+                                        label="Nombre"
+                                        name="nombre"
+                                        required
+                                        fullWidth
+                                        value={first_name}
+                                        onChange={(e) => handleInputChange(e, setFirstName, mode)}
+                                        margin="dense"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        label="Apellido"
+                                        name="apellido"
+                                        required
+                                        fullWidth
+                                        value={last_name}
+                                        onChange={(e) => handleInputChange(e, setLastName, mode)}
+                                        margin="dense"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        label="RFC"
+                                        name="rfc"
+                                        required
+                                        fullWidth
+                                        value={rfc}
+                                        onChange={(e) => handleInputChange(e, setRfc, mode)}
+                                        margin="dense"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        label="Nombre de Usuario"
+                                        name="user"
+                                        required
+                                        fullWidth
+                                        value={user}
+                                        onChange={(e) => handleInputChange(e, setUser, mode)}
+                                        margin="dense"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        label="Email"
+                                        name="email"
+                                        type="email"
+                                        required
+                                        fullWidth
+                                        value={email}
+                                        onChange={(e) => handleInputChange(e, setEmail, mode)}
+                                        margin="dense"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        label="Compañia"
+                                        name="company"
+                                        required
+                                        fullWidth
+                                        value={company}
+                                        margin="dense"
+                                    />
+                                </Grid>
+                                {/* <Grid item xs={12} sm={6}>
                                 <TextField
                                     label="Celular"
                                     name="phone"
@@ -250,80 +328,96 @@ function ModalReport({ children, mode }) {
                                     margin="dense"
                                 />
                             </Grid> */}
-                            <Grid item xs={12} sm={12}>
-                                <Title>Ubicacion</Title>
+                                <Grid item xs={12} sm={12}>
+                                    <Title>Ubicacion</Title>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Estado"
-                                    name="state"
-                                    required
-                                    fullWidth
-                                    value={state}
+                                    <Grid item xs={12} sm={12}>
+                                        <Title>Misma ubicacion de RFC: </Title>
+                                    </Grid>
+                                    <Stack direction="row" spacing={2} alignItems="center">
+                                        <Typography>No</Typography>
+                                        <AntSwitch onChange={handleSwitchChange}
+                                            checked={isSameLocation} inputProps={{ 'aria-label': 'ant design' }} />
+                                        <Typography>Si</Typography>
+                                    </Stack>
 
-                                    margin="dense"
-                                />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Ciudad"
-                                    name="city"
-                                    required
-                                    fullWidth
-                                    value={city}
-
-                                    margin="dense"
-                                />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Colonia"
-                                    name="locality"
-                                    required
-                                    fullWidth
-                                    value={locality}
+                                    <TextField
+                                        label="Estado"
+                                        name="state"
+                                        required
+                                        fullWidth
+                                        value={state}
 
-                                    margin="dense"
-                                />
+                                        margin="dense"
+                                    />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Calle y Numero"
-                                    name="street"
-                                    required
-                                    fullWidth
-                                    value={street}
+                                    <TextField
+                                        label="Ciudad"
+                                        name="city"
+                                        required
+                                        fullWidth
+                                        value={city}
 
-                                    margin="dense"
-                                />
+                                        margin="dense"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        label="Colonia"
+                                        name="locality"
+                                        required
+                                        fullWidth
+                                        value={locality}
+
+                                        margin="dense"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        label="Calle y Numero"
+                                        name="street"
+                                        required
+                                        fullWidth
+                                        value={street}
+
+                                        margin="dense"
+                                    />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
 
-                                <TextField
-                                    label="Codigo postal"
-                                    name="postal_code"
-                                    required
-                                    fullWidth
-                                    value={postal_code}
+                                    <TextField
+                                        label="Codigo postal"
+                                        name="postal_code"
+                                        required
+                                        fullWidth
+                                        value={postal_code}
 
-                                    margin="dense"
-                                />
+                                        margin="dense"
+                                    />
                                 </Grid>
 
 
-                            <Grid item xs={12} sm={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button type="submit" variant="contained" sx={{ width: '500px' }} >{mode}</Button>
+
+
                             </Grid>
-                           
-                        </Grid>
+
+                        </Box>
+
+
+
+
+
+
                     </Box>
-
-
-
-
-
-
-                </Box>
+                    <Grid item xs={12} sm={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Button type="submit" variant="contained" sx={{ width: '500px' }} >{mode}</Button>
+                    </Grid>
                 </form>
 
             </Box>

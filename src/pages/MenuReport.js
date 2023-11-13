@@ -32,6 +32,12 @@ import { styled } from '@mui/system';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { ModalFirmar } from '../pages/ModalFirmar';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 
 
@@ -260,7 +266,12 @@ function MenuReport() {
     setOpenModalEditResidueReport,
     openModalEditResidueReport,
     setOpenModalDeleteResidueReport,
-    openModalDeleteResidueReport
+    openModalDeleteResidueReport,
+    textOpenModalText,
+    setOpenModalText,
+    openModalText,
+    updateReportInfo,
+    setUpdateReportInfo,
 
 
 
@@ -290,11 +301,12 @@ function MenuReport() {
         setReport(response.data);
         console.log("##################################################");
         console.log(response.data)
+        setUpdateReportInfo(false);
       })
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [updateReportInfo]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -466,7 +478,24 @@ function MenuReport() {
               La funcionalidad de borrar TODO
             </ ModalResidueReport >
           )}
-
+           {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
+          )}
         </Box>
       </Box>
     </ThemeProvider>
