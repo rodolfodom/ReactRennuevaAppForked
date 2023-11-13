@@ -18,7 +18,7 @@ function ModalVehicle({ children, mode }) {
 
 
 
-  const { openModalCreateVehicle, setOpenModalText, setTextOpenModalText, setOpenModalCreateVehicle, openModalEditVehicle, setOpenModalEditVehicle, openModalDeleteVehicle, setOpenModalDeleteVehicle } = useContext(TodoContext);
+  const {  setUpdateVehicleInfo ,openModalCreateVehicle, setOpenModalText, setTextOpenModalText, setOpenModalCreateVehicle, openModalEditVehicle, setOpenModalEditVehicle, openModalDeleteVehicle, setOpenModalDeleteVehicle } = useContext(TodoContext);
 
   const closeModal = () => {
     if (openModalCreateVehicle) {
@@ -70,6 +70,7 @@ function ModalVehicle({ children, mode }) {
           console.log(data)
           setOpenModalText(true);
           setTextOpenModalText("Vehiculo creado correctamente")
+          setUpdateVehicleInfo(true)
           closeModal()
           // setOpenModalText(true);
           e.target.reset();
@@ -88,6 +89,7 @@ function ModalVehicle({ children, mode }) {
           console.log(data)
           setOpenModalText(true);
           setTextOpenModalText("Vehiculo editado correctamente")
+          setUpdateVehicleInfo(true)
           e.target.reset();
           closeModal()
           // Limpiar los campos del formulario
@@ -104,6 +106,7 @@ function ModalVehicle({ children, mode }) {
           console.log(data)
           setOpenModalText(true);
           setTextOpenModalText("Vehiculo borrado correctamente")
+          setUpdateVehicleInfo(true)
           e.target.reset();
           e.target.reset();
           closeModal()

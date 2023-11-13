@@ -16,6 +16,7 @@ function ModalDriver({ children, mode }) {
     const [email, setEmail] = useState("");
     const [first_name, setFirstName] = useState("");
     const [last_name, setLastName] = useState("");
+    const [license, setLicense] = useState("");
     const [group, setGroup] = useState("");
     const [company, setCompany] = useState("");
     const [state, setState] = useState("");
@@ -30,16 +31,16 @@ function ModalDriver({ children, mode }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
 
-    const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreateDonor, setOpenModalCreateDonor, openModalEditDonor, openModalDeleteDonor, setOpenModalEditDonor, setOpenModalDeleteDonor } = useContext(TodoContext);
+    const {setUpdateDriverInfo, openModalText, setTextOpenModalText, setOpenModalText, openModalCreateDriver, setOpenModalCreateDriver, openModalEditDriver, openModalDeleteDriver, setOpenModalEditDriver, setOpenModalDeleteDriver } = useContext(TodoContext);
     const closeModal = () => {
-        if (openModalCreateDonor) {
-            setOpenModalCreateDonor(false);
+        if (openModalCreateDriver) {
+            setOpenModalCreateDriver(false);
         }
-        if (openModalEditDonor) {
-            setOpenModalEditDonor(false);
+        if (openModalEditDriver) {
+            setOpenModalEditDriver(false);
         }
-        if (openModalDeleteDonor) {
-            setOpenModalDeleteDonor(false);
+        if (openModalDeleteDriver) {
+            setOpenModalDeleteDriver(false);
         }
     };
 
@@ -48,32 +49,24 @@ function ModalDriver({ children, mode }) {
         e.preventDefault();
         if (mode === "CREAR") {
             const nuevoDato = {
-                user: e.target.user.value,
+                user: e.target.email.value,
                 password: e.target.password.value,
                 email: e.target.email.value,
                 first_name: e.target.nombre.value,
                 last_name: e.target.apellido.value,
-                group: "Donador",
-                rfc: e.target.rfc.value,
-                company: company,
                 phone: e.target.phone.value,
-                address_state: e.target.state.value,
-                address_city: e.target.city.value,
-                address_locality: e.target.locality.value,
-                address_street: e.target.street.value,
-                address_postal_code: e.target.postal_code.value,
-                address_num_int: e.target.address_num_int.value,
-                address_lat: 0,
-                address_lng: 0,
+                license: e.target.license.value,
+              
             };
 
             axios
-                .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
+                .post('http://127.0.0.1:8000/Rennueva/create-driver/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Donador creado correctamente")
+                    setTextOpenModalText("Conductor creado correctamente")
+                    setUpdateDriverInfo(true);
                     e.target.reset();
                     closeModal()
 
@@ -86,36 +79,28 @@ function ModalDriver({ children, mode }) {
         if (mode === "EDITAR") {
 
             const editarDato = {
-                user: e.target.user.value,
-                //password: e.target.password.value,
+                user: e.target.email.value,
+                
                 email: e.target.email.value,
                 first_name: e.target.nombre.value,
                 last_name: e.target.apellido.value,
-                group: "Donador",
-                rfc: e.target.rfc.value,
-                company: company,
                 phone: e.target.phone.value,
-                address_state: e.target.state.value,
-                address_city: e.target.city.value,
-                address_locality: e.target.locality.value,
-                address_street: e.target.street.value,
-                address_postal_code: e.target.postal_code.value,
-                address_num_int: e.target.address_num_int.value,
-                address_lat: 0,
-                address_lng: 0,
+                license: e.target.license.value,
+                
 
-                antiguoUser: old_user,
+                old_license: old_user,
             };
             console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
             console.log(editarDato)
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
+                .put('http://127.0.0.1:8000/Rennueva/update-driver/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Donador editado correctamente")
+                    setUpdateDriverInfo(true);
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -130,16 +115,17 @@ function ModalDriver({ children, mode }) {
             var user_ant = antiguo_user ? antiguo_user.value : null;
 
             const deleteDato = {
-                user: user
+                license: old_user
             }
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
+                .post('http://127.0.0.1:8000/Rennueva/delete-driver/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Donador borrado correctamente")
+                    setUpdateDriverInfo(true);
                     e.target.reset();
                     closeModal()
 
@@ -164,7 +150,7 @@ function ModalDriver({ children, mode }) {
         }
 
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
+            .get('http://127.0.0.1:8000/Rennueva/get-all-drivers/')
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -179,7 +165,7 @@ function ModalDriver({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get('http://127.0.0.1:8000/Rennueva/get-all-users/')
+        const fetchUsers = axios.get('http://127.0.0.1:8000/Rennueva/get-all-drivers/')
         const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
@@ -198,7 +184,7 @@ function ModalDriver({ children, mode }) {
             const selectedOption = event.target.value; // Obtener la opción seleccionada
             console.log(selectedOption)
             // Buscar el dato seleccionado en el arreglo de datos
-            const datoEncontrado = users.find((users) => users.user === selectedOption);
+            const datoEncontrado = users.find((users) => users.license === selectedOption);
             console.log(datoEncontrado)
             setUser(datoEncontrado.user);
             setPassword(datoEncontrado.password);
@@ -209,12 +195,8 @@ function ModalDriver({ children, mode }) {
             setRfc(datoEncontrado.rfc);
             setCompany(datoEncontrado.company);
             setPhone(datoEncontrado.phone);
-            setState(datoEncontrado.address_state);
-            setCity(datoEncontrado.address_city);
-            setLocality(datoEncontrado.address_locality);
-            setStreet(datoEncontrado.address_street);
-            setPostalCode(datoEncontrado.address_postal_code);
-            setAddressNumInt(datoEncontrado.address_num_int);
+            setLicense(datoEncontrado.license);
+            
             setOldUser(selectedOption);
 
 
@@ -245,10 +227,10 @@ function ModalDriver({ children, mode }) {
                     <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
                     <form onSubmit={handleSubmit} >
                         <Box mb={2}>
-                            <Title> Usuario</Title>
+                            <Title> Conductores</Title>
                             {mode === "EDITAR" || mode === "BORRAR" ? (
                                 <FormControl fullWidth>
-                                    <InputLabel id="user-select-label">Usuario</InputLabel>
+                                    <InputLabel id="user-select-label">Conductor</InputLabel>
                                     <Select
                                         labelId="user-select-label"
                                         id="user-select"
@@ -263,7 +245,7 @@ function ModalDriver({ children, mode }) {
                                         w
                                     >
                                         {users.map((name, index) => (
-                                            <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                                            <MenuItem key={index} value={name.license}>{name.license}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -288,24 +270,8 @@ function ModalDriver({ children, mode }) {
                                 onChange={(e) => handleInputChange(e, setLastName, mode)}
                                 margin="dense"
                             />
-                            <TextField
-                                label="RFC"
-                                name="rfc"
-                                required
-                                fullWidth
-                                value={rfc}
-                                onChange={(e) => handleInputChange(e, setRfc, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Nombre de Usuario"
-                                name="user"
-                                required
-                                fullWidth
-                                value={user}
-                                onChange={(e) => handleInputChange(e, setUser, mode)}
-                                margin="dense"
-                            />
+                            
+                            
                             <TextField
                                 label="Email Usuario"
                                 name="email"
@@ -332,10 +298,6 @@ function ModalDriver({ children, mode }) {
                             }
 
                             <FormControl fullWidth mt={2} mb={2}>
-                                
-
-
-
                                 <TextField
                                     label="Celular"
                                     name="phone"
@@ -345,78 +307,17 @@ function ModalDriver({ children, mode }) {
                                     onChange={(e) => handleInputChange(e, setPhone, mode)}
                                     margin="dense"
                                 />
-                            </FormControl>
-                            <FormControl fullWidth mt={2} mb={2}>
-                                <Title>Compañia</Title>
-                                <Select
-                                    labelId="company-select-label"
-                                    id="company-select"
-                                    required
-                                    value={company}
-                                    onChange={(e) => handleInputChange(e, setCompany, mode)}
-                                >
-                                    {companies.map((name, index) => (
-                                        <MenuItem key={index} value={name.company_name}>{name.company_name}</MenuItem>
-                                    ))}
-                                </Select>
-                                <Title>Ubicacion</Title>
                                 <TextField
-                                    label="Estado"
-                                    name="state"
+                                    label="Licencia"
+                                    name="license"
                                     required
                                     fullWidth
-                                    value={state}
-                                    onChange={(e) => handleInputChange(e, setState, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Ciudad"
-                                    name="city"
-                                    required
-                                    fullWidth
-                                    value={city}
-                                    onChange={(e) => handleInputChange(e, setCity, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Colonia"
-                                    name="locality"
-                                    required
-                                    fullWidth
-                                    value={locality}
-                                    onChange={(e) => handleInputChange(e, setLocality, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Calle "
-                                    name="street"
-                                    required
-                                    fullWidth
-                                    value={street}
-                                    onChange={(e) => handleInputChange(e, setStreet, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Numero interior"
-                                    name="address_num_int"
-                                    required
-                                    fullWidth
-                                    value={address_num_int}
-                                    onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
-                                    margin="dense"
-                                />
-
-
-                                <TextField
-                                    label="Codigo postal"
-                                    name="postal_code"
-                                    required
-                                    fullWidth
-                                    value={postal_code}
-                                    onChange={(e) => handleInputChange(e, setPostalCode, mode)}
+                                    value={license}
+                                    onChange={(e) => handleInputChange(e, setLicense, mode)}
                                     margin="dense"
                                 />
                             </FormControl>
+                            
                         </Box>
 
                         <Button type="submit" variant="contained" fullWidth>{mode}</Button>

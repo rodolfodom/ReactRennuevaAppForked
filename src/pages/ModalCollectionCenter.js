@@ -33,7 +33,7 @@ function ModalCollectionCenter({ children, mode }) {
     const [centerName , setCenterName] = useState("");
     const [idCenter , setIdCenter] = useState("");
 
-    const { openModalText, setTextOpenModalText, setOpenModalText,
+    const { setUpdateCollectionCenterInfo,openModalText, setTextOpenModalText, setOpenModalText,
          openModalCreateCollectionCenter, setOpenModalCreateCollectionCenter, openModalEditCollectionCenter, 
          openModalDeleteCollectionCenter, setOpenModalEditCollectionCenter, setOpenModalDeleteCollectionCenter 
         } = useContext(TodoContext);
@@ -79,6 +79,7 @@ function ModalCollectionCenter({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Centro de Recoleccion creado correctamente")
+                    setUpdateCollectionCenterInfo(true);
                     e.target.reset();
                     closeModal()
 
@@ -118,6 +119,7 @@ function ModalCollectionCenter({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Centro Recoleccion editado correctamente")
+                    setUpdateCollectionCenterInfo(true);
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -142,6 +144,7 @@ function ModalCollectionCenter({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Centro Recoleccion borrado correctamente")
+                    setUpdateCollectionCenterInfo(true);
                     e.target.reset();
                     closeModal()
 

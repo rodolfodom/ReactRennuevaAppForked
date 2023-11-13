@@ -15,15 +15,27 @@ import {
 } from '@mui/material';
 import Title from '../components/Title';
 import CUDButtons from "../containers/CUDButtons";
+import { ModalCarrier } from "./ModalCarrier.js";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import CarrierTable from "../components/CarrierTable.jsx";
 
 function MenuCarrier() {
   const { 
-    openModalCreate, 
-    setOpenModalCreate, 
-    setOpenModalEdit,
-    openModalEdit, 
-    setOpenModalDelete, 
-    openModalDelete 
+    openModalCreateCarrier, 
+    setOpenModalCreateCarrier, 
+    setOpenModalEditCarrier,
+    openModalEditCarrier, 
+    setOpenModalDeleteCarrier, 
+    openModalDeleteCarrier ,
+    openModalText,
+    setOpenModalText,
+    textOpenModalText
+
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -59,9 +71,9 @@ function MenuCarrier() {
                   }}
                 >
                   <Title>Transportista</Title>
-                  <CUDButtons model="Generator" />
+                  <CUDButtons model="Carrier" />
                   <Title>Transportistas Creados</Title>
-                  <GeneratorTable />
+                  <CarrierTable />
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -79,20 +91,38 @@ function MenuCarrier() {
             </Grid>
           </Container>
 
-          {openModalCreate && (
-            <ModalUser mode={"CREAR"}>
+          {openModalCreateCarrier && (
+            <ModalCarrier mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalUser >
+            </ ModalCarrier >
           )}
-          {openModalEdit && (
-            <ModalUser mode={"EDITAR"}>
+          {openModalEditCarrier && (
+            <ModalCarrier mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalUser >
+            </ ModalCarrier >
           )}
-          {openModalDelete && (
-            <ModalUser mode={"BORRAR"}>
+          {openModalDeleteCarrier && (
+            <ModalCarrier mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalUser >
+            </ ModalCarrier >
+          )}
+          {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
           )}
         </Box>
       </Box>

@@ -6,16 +6,18 @@ import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
 import Title from '../components/Title';
 
-function ModalGenerator({ children, mode }) {
+function ModalCarrier({ children, mode }) {
     const [datos, setDatos] = useState([]);
     const [groups, setGroups] = useState([])
     const [users, setUsers] = useState([])
+    const [carriers, setCarriers] = useState([])
     const [companies, setCompanies] = useState([""])
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [first_name, setFirstName] = useState("");
     const [last_name, setLastName] = useState("");
+    const [license, setLicense] = useState("");
     const [group, setGroup] = useState("");
     const [company, setCompany] = useState("");
     const [state, setState] = useState("");
@@ -29,18 +31,20 @@ function ModalGenerator({ children, mode }) {
     const [address_num_ext, setAddressNumExt] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
-    const [razonSocial , setRazonSocial] = useState("");
+    const [comments, setComments] = useState("");
+    const [razon_social, setRazonSocial] = useState("");
+    
 
-    const { setUpdateGeneratorInfo ,openModalText, setTextOpenModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
+    const { setUpdateCarrierInfo ,openModalText, setTextOpenModalText, setOpenModalText, openModalCreateCarrier, setOpenModalCreateCarrier, openModalEditCarrier, openModalDeleteCarrier, setOpenModalEditCarrier, setOpenModalDeleteCarrier } = useContext(TodoContext);
     const closeModal = () => {
-        if (openModalCreateGenerator) {
-            setOpenModalCreateGenerator(false);
+        if (openModalCreateCarrier) {
+            setOpenModalCreateCarrier(false);
         }
-        if (openModalEditGenerator) {
-            setOpenModalEditGenerator(false);
+        if (openModalEditCarrier) {
+            setOpenModalEditCarrier(false);
         }
-        if (openModalDeleteGenerator) {
-            setOpenModalDeleteGenerator(false);
+        if (openModalDeleteCarrier) {
+            setOpenModalDeleteCarrier(false);
         }
     };
 
@@ -49,36 +53,25 @@ function ModalGenerator({ children, mode }) {
         e.preventDefault();
         if (mode === "CREAR") {
             const nuevoDato = {
-                user: e.target.user.value,
                 password: e.target.password.value,
                 email: e.target.email.value,
                 first_name: e.target.nombre.value,
                 last_name: e.target.apellido.value,
-                group: "Generador",
-                rfc: e.target.rfc.value,
-                company: "Rennueva",
                 phone: e.target.phone.value,
-                address_state: e.target.state.value,
-                address_city: e.target.city.value,
-                address_locality: e.target.locality.value,
-                address_street: e.target.street.value,
-                address_postal_code: e.target.postal_code.value,
-                address_num_int: e.target.address_num_int.value,
-
-                address_lat: 0,
-                address_lng: 0,
-                
+                company_name: e.target.company.value,
+                rfc: e.target.rfc.value,
+                comments: e.target.comments.value,
                 razon_social: e.target.razon_social.value,
             };
 
             axios
-                .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
+                .post('http://127.0.0.1:8000/Rennueva/create-carrier/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Generador creado correctamente")
-                    setUpdateGeneratorInfo(true)
+                    setTextOpenModalText("Transportista creado correctamente")
+                    setUpdateCarrierInfo(true)
                     e.target.reset();
                     closeModal()
 
@@ -91,39 +84,31 @@ function ModalGenerator({ children, mode }) {
         if (mode === "EDITAR") {
 
             const editarDato = {
-                user: e.target.user.value,
-                //password: e.target.password.value,
+                
+                
                 email: e.target.email.value,
                 first_name: e.target.nombre.value,
                 last_name: e.target.apellido.value,
-                group: "Generador",
-                rfc: e.target.rfc.value,
-                company: "Rennueva",
                 phone: e.target.phone.value,
-                address_state: e.target.state.value,
-                address_city: e.target.city.value,
-                address_locality: e.target.locality.value,
-                address_street: e.target.street.value,
-                address_postal_code: e.target.postal_code.value,
-                address_num_int: e.target.address_num_int.value,
-                address_lat: 0,
-                address_lng: 0,
-
-                antiguoUser: old_user,
-
+                company_name: e.target.company.value,
+                rfc: e.target.rfc.value,
+                comments: e.target.comments.value,
                 razon_social: e.target.razon_social.value,
+                
+
+                old_user: old_user,
             };
             console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
             console.log(editarDato)
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
+                .put('http://127.0.0.1:8000/Rennueva/update-carrier/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Generador editado correctamente")
-                    setUpdateGeneratorInfo(true)
+                    setTextOpenModalText("Transportista editado correctamente")
+                    setUpdateCarrierInfo(true)
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -138,17 +123,17 @@ function ModalGenerator({ children, mode }) {
             var user_ant = antiguo_user ? antiguo_user.value : null;
 
             const deleteDato = {
-                user: user
+                user: old_user
             }
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
+                .put('http://127.0.0.1:8000/Rennueva/delete-carrier/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
                     setOpenModalText(true);
-                    setTextOpenModalText("Generador borrado correctamente")
-                    setUpdateGeneratorInfo(true)
+                    setTextOpenModalText("Transportista borrado correctamente")
+                    setUpdateCarrierInfo(true)
                     e.target.reset();
                     closeModal()
 
@@ -173,7 +158,7 @@ function ModalGenerator({ children, mode }) {
         }
 
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
+            .get('http://127.0.0.1:8000/Rennueva/get-all-drivers/')
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -188,14 +173,14 @@ function ModalGenerator({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.post('http://127.0.0.1:8000/Rennueva/get-all-users/', { group: "Generador" })
+        const fetchUsers = axios.get('http://127.0.0.1:8000/Rennueva/get-all-carrier/')
         const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {
                 const usersData = res[0].data;
                 const companiesData = res[1].data;
-                setUsers(usersData);
+                setCarriers(usersData);
                 setCompanies(companiesData);
                 console.log("######################USUARIOS##################################")
             })
@@ -207,7 +192,7 @@ function ModalGenerator({ children, mode }) {
             const selectedOption = event.target.value; // Obtener la opción seleccionada
             console.log(selectedOption)
             // Buscar el dato seleccionado en el arreglo de datos
-            const datoEncontrado = users.find((users) => users.user === selectedOption);
+            const datoEncontrado = carriers.find((users) => users.email === selectedOption);
             console.log(datoEncontrado)
             setUser(datoEncontrado.user);
             setPassword(datoEncontrado.password);
@@ -216,14 +201,11 @@ function ModalGenerator({ children, mode }) {
             setLastName(datoEncontrado.last_name);
             setGroup(datoEncontrado.group);
             setRfc(datoEncontrado.rfc);
-            setCompany("Rennueva");
             setPhone(datoEncontrado.phone);
-            setState(datoEncontrado.address_state);
-            setCity(datoEncontrado.address_city);
-            setLocality(datoEncontrado.address_locality);
-            setStreet(datoEncontrado.address_street);
-            setPostalCode(datoEncontrado.address_postal_code);
-            setAddressNumInt(datoEncontrado.address_num_int);
+            setLicense(datoEncontrado.license);
+            setComments(datoEncontrado.comments);
+            setRazonSocial(datoEncontrado.razon_social);
+            setCompany(datoEncontrado.company_name);
             setOldUser(selectedOption);
 
 
@@ -254,10 +236,10 @@ function ModalGenerator({ children, mode }) {
                     <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
                     <form onSubmit={handleSubmit} >
                         <Box mb={2}>
-                            <Title> Usuario</Title>
+                            <Title> Conductores</Title>
                             {mode === "EDITAR" || mode === "BORRAR" ? (
                                 <FormControl fullWidth>
-                                    <InputLabel id="user-select-label">Usuario</InputLabel>
+                                    <InputLabel id="user-select-label">Conductor</InputLabel>
                                     <Select
                                         labelId="user-select-label"
                                         id="user-select"
@@ -269,10 +251,10 @@ function ModalGenerator({ children, mode }) {
                                         }}
                                         required
                                         //value={user}
-                                        w
+                                        
                                     >
-                                        {users.map((name, index) => (
-                                            <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                                        {carriers.map((name, index) => (
+                                            <MenuItem key={index} value={name.email}>{name.email}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -297,33 +279,8 @@ function ModalGenerator({ children, mode }) {
                                 onChange={(e) => handleInputChange(e, setLastName, mode)}
                                 margin="dense"
                             />
-                            <TextField
-                                label="RFC"
-                                name="rfc"
-                                required
-                                fullWidth
-                                value={rfc}
-                                onChange={(e) => handleInputChange(e, setRfc, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Razon Social"
-                                name="razon_social"
-                                required
-                                fullWidth
-                                value={razonSocial}
-                                onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Nombre de Usuario"
-                                name="user"
-                                required
-                                fullWidth
-                                value={user}
-                                onChange={(e) => handleInputChange(e, setUser, mode)}
-                                margin="dense"
-                            />
+                            
+                            
                             <TextField
                                 label="Email Usuario"
                                 name="email"
@@ -350,10 +307,6 @@ function ModalGenerator({ children, mode }) {
                             }
 
                             <FormControl fullWidth mt={2} mb={2}>
-                                
-
-
-
                                 <TextField
                                     label="Celular"
                                     name="phone"
@@ -363,67 +316,44 @@ function ModalGenerator({ children, mode }) {
                                     onChange={(e) => handleInputChange(e, setPhone, mode)}
                                     margin="dense"
                                 />
-                            </FormControl>
-                            <FormControl fullWidth mt={2} mb={2}>
-                                
-                                <Title>Ubicacion</Title>
                                 <TextField
-                                    label="Estado"
-                                    name="state"
+                                    label="RFC"
+                                    name="rfc"
                                     required
                                     fullWidth
-                                    value={state}
-                                    onChange={(e) => handleInputChange(e, setState, mode)}
+                                    value={rfc}
+                                    onChange={(e) => handleInputChange(e, setRfc, mode)}
                                     margin="dense"
                                 />
                                 <TextField
-                                    label="Ciudad"
-                                    name="city"
+                                    label="Comentarios"
+                                    name="comments"
                                     required
                                     fullWidth
-                                    value={city}
-                                    onChange={(e) => handleInputChange(e, setCity, mode)}
+                                    value={comments}
+                                    onChange={(e) => handleInputChange(e, setComments, mode)}
                                     margin="dense"
                                 />
                                 <TextField
-                                    label="Colonia"
-                                    name="locality"
+                                    label="Compañia"
+                                    name="company"
                                     required
                                     fullWidth
-                                    value={locality}
-                                    onChange={(e) => handleInputChange(e, setLocality, mode)}
+                                    value={company}
+                                    onChange={(e) => handleInputChange(e, setCompany, mode)}
                                     margin="dense"
                                 />
                                 <TextField
-                                    label="Calle "
-                                    name="street"
+                                    label="Razon Social"
+                                    name="razon_social"
                                     required
                                     fullWidth
-                                    value={street}
-                                    onChange={(e) => handleInputChange(e, setStreet, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Numero interior"
-                                    name="address_num_int"
-                                    required
-                                    fullWidth
-                                    value={address_num_int}
-                                    onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
-                                    margin="dense"
-                                />
-
-
-                                <TextField
-                                    label="Codigo postal"
-                                    name="postal_code"
-                                    required
-                                    fullWidth
-                                    value={postal_code}
-                                    onChange={(e) => handleInputChange(e, setPostalCode, mode)}
+                                    value={razon_social}
+                                    onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
                                     margin="dense"
                                 />
                             </FormControl>
+                            
                         </Box>
 
                         <Button type="submit" variant="contained" fullWidth>{mode}</Button>
@@ -438,4 +368,4 @@ function ModalGenerator({ children, mode }) {
         );
     }
 
-export { ModalGenerator };
+export { ModalCarrier };

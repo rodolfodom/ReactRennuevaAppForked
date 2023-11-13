@@ -16,15 +16,27 @@ import {
 import Title from '../components/Title';
 import CUDButtons from "../containers/CUDButtons";
 import { ModalDriver } from "./ModalDriver.js";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import DriverTable from "../components/DriverTable.js";
+
+
 
 function MenuDriver() {
   const { 
-    openModalCreate, 
-    setOpenModalCreate, 
-    setOpenModalEdit,
-    openModalEdit, 
-    setOpenModalDelete, 
-    openModalDelete 
+    openModalText,
+    setOpenModalText,
+    textOpenModalText,
+    openModalCreateDriver, 
+    setOpenModalCreateDriver, 
+    setOpenModalEditDriver,
+    openModalEditDriver, 
+    setOpenModalDeleteDriver, 
+    openModalDeleteDriver 
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -62,7 +74,7 @@ function MenuDriver() {
                   <Title>Conductores</Title>
                   <CUDButtons model="Driver" />
                   <Title>Lista de Conductores</Title>
-                  <ResidueTable />
+                  <DriverTable />
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -80,20 +92,38 @@ function MenuDriver() {
             </Grid>
           </Container>
 
-          {openModalCreate && (
+          {openModalCreateDriver && (
             <ModalDriver mode={"CREAR"}>
               La funcionalidad de agregar TODO
             </ ModalDriver >
           )}
-          {openModalEdit && (
+          {openModalEditDriver && (
             <ModalDriver mode={"EDITAR"}>
               La funcionalidad de editar TODO
             </ ModalDriver >
           )}
-          {openModalDelete && (
+          {openModalDeleteDriver && (
             <ModalDriver mode={"BORRAR"}>
               La funcionalidad de borrar TODO
             </ ModalDriver >
+          )}
+          {openModalText && (
+            <Dialog
+              open={openModalText}
+              onClose={() => setOpenModalText(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{textOpenModalText}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {textOpenModalText}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenModalText(false)}>Aceptar</Button>
+              </DialogActions>
+            </Dialog>
           )}
         </Box>
       </Box>

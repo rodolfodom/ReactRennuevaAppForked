@@ -30,7 +30,7 @@ function ModalDonor({ children, mode }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
 
-    const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreateDonor, setOpenModalCreateDonor, openModalEditDonor, openModalDeleteDonor, setOpenModalEditDonor, setOpenModalDeleteDonor } = useContext(TodoContext);
+    const {  setUpdateDonorInfo,openModalText, setTextOpenModalText, setOpenModalText, openModalCreateDonor, setOpenModalCreateDonor, openModalEditDonor, openModalDeleteDonor, setOpenModalEditDonor, setOpenModalDeleteDonor } = useContext(TodoContext);
     const closeModal = () => {
         if (openModalCreateDonor) {
             setOpenModalCreateDonor(false);
@@ -74,7 +74,9 @@ function ModalDonor({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Donador creado correctamente")
+                    setUpdateDonorInfo(true);
                     e.target.reset();
+
                     closeModal()
 
                 })
@@ -116,6 +118,7 @@ function ModalDonor({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Donador editado correctamente")
+                    setUpdateDonorInfo(true);
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -140,6 +143,7 @@ function ModalDonor({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Donador borrado correctamente")
+                    setUpdateDonorInfo(true);
                     e.target.reset();
                     closeModal()
 

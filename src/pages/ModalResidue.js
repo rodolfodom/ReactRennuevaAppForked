@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import '../styles/user/CreateUser.css';
-import { TodoContext } from '../context/index.js';
 import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
 import Title from '../components/Title';
+import { TodoContext } from '../context/index.js';
 
 function ModalResidue({ children, mode }) {
   const [residues, setResidues] = useState([]);
@@ -12,7 +12,7 @@ function ModalResidue({ children, mode }) {
   const [oldResidue, setOldResidue] = useState("");
   const [descripcion, setDescripcion] = useState("");
 
-  const { openModalCreateResidue, setOpenModalText, setTextOpenModalText, setOpenModalCreateResidue, openModalEditResidue, setOpenModalEditResidue, openModalDeleteResidue, setOpenModalDeleteResidue } = useContext(TodoContext);
+  const { setUpdateResidueInfo,openModalCreateResidue, setOpenModalText, setTextOpenModalText, setOpenModalCreateResidue, openModalEditResidue, setOpenModalEditResidue, openModalDeleteResidue, setOpenModalDeleteResidue } = useContext(TodoContext);
 
   const closeModal = () => {
     if (openModalCreateResidue) {
@@ -59,6 +59,8 @@ function ModalResidue({ children, mode }) {
           console.log(data)
           setOpenModalText(true);
           setTextOpenModalText("Residuo creado correctamente")
+          setUpdateResidueInfo(true);
+          
           closeModal()
           // setOpenModalText(true);
           e.target.reset();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { 
   Paper, 
@@ -16,21 +16,21 @@ const RecyclingCenterTable = () => {
     const [clientes, setClientes] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const { updateRecyclingCenterInfo, setUpdateRecyclingCenterInfo } = useContext(TodoContext);
+    const { updateCarrierInfo, setUpdateCarrierInfo  } = useContext(TodoContext);
 
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-recycling-center/')
+            .get('http://127.0.0.1:8000/Rennueva/get-all-carrier/')
             .then(response => {
                 setClientes(response.data);
                 console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");
+                setUpdateCarrierInfo(false);
                 console.log(response.data);
-                setUpdateRecyclingCenterInfo(false);
             })
             .catch(error => {
                 console.error(error);
             });
-    }, [updateRecyclingCenterInfo]);
+    }, [updateCarrierInfo]);
   
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -47,35 +47,24 @@ const RecyclingCenterTable = () => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre del Centro de Reciclaje</TableCell>
-                <TableCell>Razon Social</TableCell>
-                <TableCell>RFC</TableCell>
-                <TableCell>Telefono</TableCell>
+                <TableCell>Nombre</TableCell>
                 <TableCell>Email</TableCell>
-                <TableCell>Calle</TableCell>
-                <TableCell>Num Interio</TableCell>
-                <TableCell>Dirección</TableCell>
-                <TableCell>Ciudad</TableCell>
-                <TableCell>Estado</TableCell>
-                <TableCell>Codigo Postal</TableCell>
+                <TableCell>Telefono</TableCell>
+                <TableCell>Compañia</TableCell>
+                <TableCell>RFC</TableCell>
+                <TableCell>Comentarios</TableCell>
+          
               </TableRow>
             </TableHead>
             <TableBody>
               {clientes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((cliente, index) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                  <TableCell>{cliente.RecyclingCenterId}</TableCell>
-                  <TableCell>{cliente.RecyclingCenterName}</TableCell>
-                  <TableCell>{cliente.RecyclingCenterRazonSocial}</TableCell>
-                  <TableCell>{cliente.RecyclingCenterRfc}</TableCell>
-                  <TableCell>{cliente.RecyclingCenterPhone}</TableCell>
-                  <TableCell>{cliente.RecyclingCenterEmail}</TableCell>
-                  <TableCell>{cliente.AddressStreet}</TableCell>
-                  <TableCell>{cliente.AddressNumInt}</TableCell>
-                  <TableCell>{cliente.AddressLocality}</TableCell>
-                  <TableCell>{cliente.AddressCity}</TableCell>
-                  <TableCell>{cliente.AddressState}</TableCell>
-                  <TableCell>{cliente.AddressPostalCode}</TableCell>
+                  <TableCell>{cliente.first_name} {cliente.last_name}</TableCell>
+                  <TableCell>{cliente.email}</TableCell>
+                  <TableCell>{cliente.phone}</TableCell>
+                  <TableCell>{cliente.company_name}</TableCell>
+                  <TableCell>{cliente.rfc}</TableCell>
+                  <TableCell>{cliente.comments}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

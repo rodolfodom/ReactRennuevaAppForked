@@ -24,6 +24,8 @@ import Title from '../../components/Title';
 function MenuGroups() {
   const { openModalCreateGroup, openModalText,setOpenModalText, textOpenModalText,openModalEditGroup, openModalDeleteGroup, setOpenModalEditGroup, setOpenModalDeleteGroup } = useContext(TodoContext);
  
+
+  
   const defaultTheme = createTheme();
 
   return (

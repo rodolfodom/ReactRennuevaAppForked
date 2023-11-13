@@ -33,7 +33,7 @@ function ModalRecyclingCenter({ children, mode }) {
     const [centerName , setCenterName] = useState("");
     const [idCenter , setIdCenter] = useState("");
 
-    const { openModalText, setTextOpenModalText, setOpenModalText,
+    const { setUpdateRecyclingCenterInfo,openModalText, setTextOpenModalText, setOpenModalText,
          openModalCreateRecyclingCenter, setOpenModalCreateRecyclingCenter, openModalEditRecyclingCenter, 
          openModalDeleteRecyclingCenter, setOpenModalEditRecyclingCenter, setOpenModalDeleteRecyclingCenter 
         } = useContext(TodoContext);
@@ -79,6 +79,7 @@ function ModalRecyclingCenter({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Centro de Reciclaje creado correctamente")
+                    setUpdateRecyclingCenterInfo(true)
                     e.target.reset();
                     closeModal()
 
@@ -118,6 +119,7 @@ function ModalRecyclingCenter({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Centro Reciclaje editado correctamente")
+                    setUpdateRecyclingCenterInfo(true)
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -142,6 +144,7 @@ function ModalRecyclingCenter({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Centro Reciclaje borrado correctamente")
+                    setUpdateRecyclingCenterInfo(true)
                     e.target.reset();
                     closeModal()
 

@@ -1,78 +1,72 @@
-import React , {useState, useEffect, useContext }from 'react';
-import '../styles/Table.css';
+import React, { useState, useEffect , useContext} from 'react';
 import axios from 'axios';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TablePagination from '@mui/material/TablePagination';
-import Paper from '@mui/material/Paper';
-import TableContainer from '@mui/material/TableContainer';
+import { 
+  Paper, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  TablePagination 
+} from '@mui/material';
 import { TodoContext } from '../context';
 
-
-const UserTable = ({ datos }) => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5); // Cambiar según tus necesidades
-  const {updateUserInfo, setUpdateUserInfo} = useContext(TodoContext);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+const DonorTable = () => {
     const [clientes, setClientes] = useState([]);
-
-
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const { updateDonorInfo, setUpdateDonorInfo } = useContext(TodoContext);
     useEffect(() => {
-        // Realiza una petición GET a una URL específica
         axios
-            .post('http://127.0.0.1:8000/Rennueva/get-all-users/', {"group" : "Administrador"})
+            .get('http://127.0.0.1:8000/Rennueva/get-all-generator/')
             .then(response => {
-                const data = response.data;
-                setClientes(data);
-                setUpdateUserInfo(false);
-
+                setClientes(response.data);
+                setUpdateDonorInfo(false);
             })
             .catch(error => {
                 console.error(error);
             });
-    }, [updateUserInfo]);
-
+    }, [updateDonorInfo]);
+  
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+  
     return (
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 300, minHeight : 300 }}> {/* Ajusta maxHeight según tus necesidades */}
-          <Table size="small">
+        <TableContainer sx={{ maxHeight: 300 , minHeight : 300 }}>
+          <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
+                {/* Añade aquí tus encabezados de tabla */}
                 <TableCell>Nombre</TableCell>
                 <TableCell>Correo</TableCell>
                 <TableCell>Nombre Usuario</TableCell>
                 <TableCell>RFC</TableCell>
-                <TableCell>Grupos</TableCell>
                 <TableCell>Compañia</TableCell>
                 <TableCell>Direccion Estado</TableCell>
                 <TableCell>Direccion Ciudad</TableCell>
                 <TableCell>Dirección Colonia</TableCell>
                 <TableCell>Dirección Calle</TableCell>
                 <TableCell>Dirección Codigo Postal</TableCell>
-                
               </TableRow>
             </TableHead>
             <TableBody>
               {clientes
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((cliente, index) => (
-
                   <TableRow key={index}>
+                    {/* Añade aquí tus celdas de datos */}
                     <TableCell>{`${cliente.first_name} ${cliente.last_name}`}</TableCell>
                     <TableCell>{cliente.email}</TableCell>
                     <TableCell>{cliente.user}</TableCell>
                     <TableCell>{cliente.rfc}</TableCell>
-                    <TableCell>{cliente.groups}</TableCell>
                     <TableCell>{cliente.company}</TableCell>
                     <TableCell>{cliente.address_state}</TableCell>
                     <TableCell>{cliente.address_city}</TableCell>
@@ -95,8 +89,6 @@ const UserTable = ({ datos }) => {
         />
       </Paper>
     );
+}
 
-    
-  }
-
-export default UserTable;
+export default DonorTable;
