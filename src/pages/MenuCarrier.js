@@ -22,6 +22,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import CarrierTable from "../components/CarrierTable.jsx";
 
 function MenuCarrier() {
   const { 
@@ -72,7 +73,7 @@ function MenuCarrier() {
                   <Title>Transportista</Title>
                   <CUDButtons model="Carrier" />
                   <Title>Transportistas Creados</Title>
-                  <GeneratorTable />
+                  <CarrierTable />
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6}>

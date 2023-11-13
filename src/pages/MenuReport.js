@@ -359,8 +359,8 @@ function MenuReport() {
                             <TableCell>calle</TableCell>
                             <TableCell>CP</TableCell>
                             <TableCell>Fecha inicio</TableCell>
-                            <TableCell>Residuo</TableCell>
                             <TableCell>Firma Receptor</TableCell>
+                            <TableCell>Residuos</TableCell>
                             <TableCell>Firma Generador</TableCell>
                             <TableCell>Reporte</TableCell>
 
@@ -387,15 +387,16 @@ function MenuReport() {
                                 <TableCell>{reporte.calle_usuario}</TableCell>
                                 <TableCell>{reporte.cp_usuario}</TableCell>
                                 <TableCell>{reporte.fecha_inicio_reporte}</TableCell>
+                                
+                                <TableCell><StyledButton onClick={() => {
+                                  setOpenModalFirmar(true)
+                                }}>Firmar</StyledButton></TableCell>
                                 <TableCell><StyledButton onClick={() => {
                                   setOpenModalCreateResidueReport(true)
                                   setUserSelectModal(reporte.nombre_usuario)
                                   setReportSelectModal(reporte.id_report)
 
                                 }} >Residuo</StyledButton></TableCell>
-                                <TableCell><StyledButton onClick={() => {
-                                  setOpenModalFirmar(true)
-                                }}>Firmar</StyledButton></TableCell>
                                 <TableCell><StyledButton>Firmar</StyledButton></TableCell>
 
                                 <TableCell><StyledButton onClick={async () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext} from 'react';
 import axios from 'axios';
 import { 
   Paper, 
@@ -10,22 +10,24 @@ import {
   TableRow, 
   TablePagination 
 } from '@mui/material';
+import { TodoContext } from '../context';
 
 const GeneratorTable = () => {
     const [clientes, setClientes] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-  
+    const { updateGeneratorInfo, setUpdateGeneratorInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
             .get('http://127.0.0.1:8000/Rennueva/get-all-generator/')
             .then(response => {
                 setClientes(response.data);
+                setUpdateGeneratorInfo(false);
             })
             .catch(error => {
                 console.error(error);
             });
-    }, []);
+    }, [updateGeneratorInfo]);
   
     const handleChangePage = (event, newPage) => {
       setPage(newPage);

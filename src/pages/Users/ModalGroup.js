@@ -12,7 +12,7 @@ function ModalGroup({ children, mode }) {
   const [old_group, setOldGroup] = useState("");
   const [isVisible, setIsVisible] = useState(true);
 
-  const { openModalCreateGroup, setOpenModalText, setTextOpenModalText, setOpenModalCreateGroup, openModalEditGroup, setOpenModalEditGroup, openModalDeleteGroup, setOpenModalDeleteGroup } = useContext(TodoContext);
+  const { setUpdateGroupInfo,openModalCreateGroup, setOpenModalText, setTextOpenModalText, setOpenModalCreateGroup, openModalEditGroup, setOpenModalEditGroup, openModalDeleteGroup, setOpenModalDeleteGroup } = useContext(TodoContext);
 
   const closeModal = () => {
     if (openModalCreateGroup) {
@@ -55,7 +55,9 @@ function ModalGroup({ children, mode }) {
           setOpenModalText(true);
           setTextOpenModalText("Grupo creado correctamente")
           e.target.reset();
+          setUpdateGroupInfo(true)
           closeModal()
+          
 
         })
         .catch(error => {
@@ -71,6 +73,7 @@ function ModalGroup({ children, mode }) {
           e.target.reset();
           setOpenModalText(true);
           setTextOpenModalText("Grupo editado correctamente")
+          setUpdateGroupInfo(true);
           closeModal()
           // Limpiar los campos del formulario
         })
@@ -87,6 +90,7 @@ function ModalGroup({ children, mode }) {
           e.target.reset();
           setOpenModalText(true);
           setTextOpenModalText("Donador borrado correctamente")
+          setUpdateGroupInfo(true)
           closeModal()
 
         })

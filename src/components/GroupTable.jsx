@@ -1,11 +1,13 @@
-import React , {useState, useEffect}from 'react';
+import React , {useState, useEffect, useContext}from 'react';
 import '../styles/Table.css';
 import axios from 'axios';
+import { TodoContext } from '../context';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from '@mui/material';
 
 
 const GroupTable = ({ datos }) => {
     const [clientes, setClientes] = useState([]);
+    const { updateGroupInfo, setUpdateGroupInfo } = useContext(TodoContext);
 
 
     useEffect(() => {
@@ -15,13 +17,13 @@ const GroupTable = ({ datos }) => {
             .then(response => {
                 const data = response.data;
                 setClientes(data);
-              
+                setUpdateGroupInfo(false);
 
             })
             .catch(error => {
                 console.error(error);
             });
-    }, []);
+    }, [updateGroupInfo]);
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);

@@ -61,7 +61,7 @@ function MenuVehicle() {
           <Toolbar />
           <Container maxWidth="lg">
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 <Paper
                   sx={{
                     p: 3,
@@ -77,18 +77,7 @@ function MenuVehicle() {
                   <VehicleTable />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Paper
-                  sx={{
-                    p: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 580,
-                  }}
-                >
-                  <BarsChartVehicle />
-                </Paper>
-              </Grid>
+              
             </Grid>
           </Container>
 

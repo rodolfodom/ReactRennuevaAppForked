@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext} from 'react';
 import axios from 'axios';
 import { 
   Paper, 
@@ -10,10 +10,12 @@ import {
   TableRow, 
   TablePagination 
 } from '@mui/material';
+import { TodoContext } from '../context/index';
 
 const VehicleTable = () => {
   const [vehicles, setVehicles] = useState([]);
   const [page, setPage] = useState(0);
+  const { updateVehicleInfo, setUpdateVehicleInfo } = useContext(TodoContext);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
@@ -21,11 +23,13 @@ const VehicleTable = () => {
       .get('http://127.0.0.1:8000/Rennueva/get-all-vehicle/')
       .then(response => {
         setVehicles(response.data);
+        setUpdateVehicleInfo(false);
+
       })
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [updateVehicleInfo]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

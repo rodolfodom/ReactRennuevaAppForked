@@ -1,4 +1,4 @@
-import React , {useState, useEffect}from 'react';
+import React , {useState, useEffect, useContext }from 'react';
 import '../styles/Table.css';
 import axios from 'axios';
 import Table from '@mui/material/Table';
@@ -9,11 +9,13 @@ import TableRow from '@mui/material/TableRow';
 import TablePagination from '@mui/material/TablePagination';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
+import { TodoContext } from '../context';
+
 
 const UserTable = ({ datos }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5); // Cambiar según tus necesidades
-
+  const {updateUserInfo, setUpdateUserInfo} = useContext(TodoContext);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -32,13 +34,13 @@ const UserTable = ({ datos }) => {
             .then(response => {
                 const data = response.data;
                 setClientes(data);
-              
+                setUpdateUserInfo(false);
 
             })
             .catch(error => {
                 console.error(error);
             });
-    }, []);
+    }, [updateUserInfo]);
 
     return (
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>

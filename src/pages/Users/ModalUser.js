@@ -6,6 +6,9 @@ import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
 import Title from '../../components/Title';
 
+
+
+
 function ModalUser({ children, mode }) {
   const [datos, setDatos] = useState([""]);
   const [groups, setGroups] = useState([""])
@@ -30,7 +33,7 @@ function ModalUser({ children, mode }) {
   const [old_user, setOldUser] = useState("");
 
 
-  const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
+  const { setUpdateUserInfo ,openModalText, setTextOpenModalText, setOpenModalText, openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
   const closeModal = () => {
     if (openModalCreate) {
       setOpenModalCreate(false);
@@ -65,6 +68,7 @@ function ModalUser({ children, mode }) {
         address_num_int: e.target.address_num_int.value,
         address_lat: 0,
         address_lng: 0,
+        razon_social : "Rennueva",
       };
 
       axios
@@ -74,6 +78,7 @@ function ModalUser({ children, mode }) {
           console.log(data)
           setOpenModalText(true);
           setTextOpenModalText("Usuario creado correctamente")
+          setUpdateUserInfo(true);
           e.target.reset();
           closeModal()
 
@@ -103,6 +108,7 @@ function ModalUser({ children, mode }) {
         address_num_int: e.target.address_num_int.value,
         address_lat: 0,
         address_lng: 0,
+        razon_social : "Rennueva",
 
         antiguoUser: old_user,
       };
@@ -116,6 +122,7 @@ function ModalUser({ children, mode }) {
           console.log(data)
           setOpenModalText(true);
           setTextOpenModalText("Usuario editado correctamente")
+          setUpdateUserInfo(true);
           e.target.reset();
           closeModal()
           // Limpiar los campos del formulario
@@ -140,6 +147,7 @@ function ModalUser({ children, mode }) {
           console.log(data)
           setOpenModalText(true);
           setTextOpenModalText("Usuario borrado correctamente")
+          setUpdateUserInfo(true);
           e.target.reset();
           closeModal()
 

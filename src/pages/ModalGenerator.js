@@ -31,7 +31,7 @@ function ModalGenerator({ children, mode }) {
     const [old_user, setOldUser] = useState("");
     const [razonSocial , setRazonSocial] = useState("");
 
-    const { openModalText, setTextOpenModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
+    const { setUpdateGeneratorInfo ,openModalText, setTextOpenModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
     const closeModal = () => {
         if (openModalCreateGenerator) {
             setOpenModalCreateGenerator(false);
@@ -78,6 +78,7 @@ function ModalGenerator({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Generador creado correctamente")
+                    setUpdateGeneratorInfo(true)
                     e.target.reset();
                     closeModal()
 
@@ -122,6 +123,7 @@ function ModalGenerator({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Generador editado correctamente")
+                    setUpdateGeneratorInfo(true)
                     e.target.reset();
                     closeModal()
                     // Limpiar los campos del formulario
@@ -146,6 +148,7 @@ function ModalGenerator({ children, mode }) {
                     console.log(data)
                     setOpenModalText(true);
                     setTextOpenModalText("Generador borrado correctamente")
+                    setUpdateGeneratorInfo(true)
                     e.target.reset();
                     closeModal()
 

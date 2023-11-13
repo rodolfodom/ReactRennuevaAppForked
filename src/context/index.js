@@ -46,6 +46,20 @@ function TodoProvider({ children }) {
   const [openModalEditResidueReport, setOpenModalEditResidueReport] = React.useState(false);
   const [openModalDeleteResidueReport, setOpenModalDeleteResidueReport] = React.useState(false);
   const [textOpenModalText, setTextOpenModalText] = React.useState("");
+  const [updateGroupInfo, setUpdateGroupInfo] = React.useState(false);
+  const [updateCarrierInfo, setUpdateCarrierInfo] = React.useState(false);
+  const [updateCollectionCenterInfo, setUpdateCollectionCenterInfo] = React.useState(false);
+  const [updateDonorInfo, setUpdateDonorInfo] = React.useState(false);
+  const [updateDriverInfo, setUpdateDriverInfo] = React.useState(false);
+  const [updateGeneratorInfo, setUpdateGeneratorInfo] = React.useState(false);
+  const [updateRecyclingCenterInfo, setUpdateRecyclingCenterInfo] = React.useState(false);
+  const [updateResidueInfo, setUpdateResidueInfo] = React.useState(false);
+  const [updateVehicleInfo, setUpdateVehicleInfo] = React.useState(false);
+  const [updateReportInfo, setUpdateReportInfo] = React.useState(false);
+  const [updateResidueReportInfo, setUpdateResidueReportInfo] = React.useState(false);
+  const [updateUserInfo, setUpdateUserInfo] = React.useState(false);
+   
+
 
 
   const users = [
@@ -105,7 +119,19 @@ function TodoProvider({ children }) {
       openModalCreateResidueReport, setOpenModalCreateResidueReport,
       openModalEditResidueReport, setOpenModalEditResidueReport,
       openModalDeleteResidueReport, setOpenModalDeleteResidueReport,
-      textOpenModalText, setTextOpenModalText
+      textOpenModalText, setTextOpenModalText,
+      updateGroupInfo, setUpdateGroupInfo,
+      updateCarrierInfo, setUpdateCarrierInfo,
+      updateCollectionCenterInfo, setUpdateCollectionCenterInfo,
+      updateDonorInfo, setUpdateDonorInfo,
+      updateDriverInfo, setUpdateDriverInfo,
+      updateGeneratorInfo, setUpdateGeneratorInfo,
+      updateRecyclingCenterInfo, setUpdateRecyclingCenterInfo,
+      updateResidueInfo, setUpdateResidueInfo,
+      updateVehicleInfo, setUpdateVehicleInfo,
+      updateReportInfo, setUpdateReportInfo,
+      updateResidueReportInfo, setUpdateResidueReportInfo,
+      updateUserInfo, setUpdateUserInfo,
 
     }} >
       {children}

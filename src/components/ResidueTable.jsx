@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext} from 'react';
 import axios from 'axios';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from '@mui/material';
+import { TodoContext } from '../context/index';
 
 const ResidueTable = ({ datos }) => {
   const [clientes, setClientes] = useState([]);
-
+  const {updateResidueInfo, setUpdateResidueInfo} = useContext(TodoContext);
+    
   useEffect(() => {
     axios
       .get('http://127.0.0.1:8000/Rennueva/get-all-residue/')
       .then(response => {
         const data = response.data;
         setClientes(data);
+        setUpdateResidueInfo(false); 
+
       })
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [updateResidueInfo]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
