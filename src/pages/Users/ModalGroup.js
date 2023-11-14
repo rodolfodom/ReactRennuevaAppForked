@@ -11,6 +11,7 @@ function ModalGroup({ children, mode }) {
   const [group, setGroup] = useState("");
   const [old_group, setOldGroup] = useState("");
   const [isVisible, setIsVisible] = useState(true);
+  const [groupKey, setGroupKey] = useState("")
 
   const { setUpdateGroupInfo,openModalCreateGroup, setOpenModalText, setTextOpenModalText, setOpenModalCreateGroup, openModalEditGroup, setOpenModalEditGroup, openModalDeleteGroup, setOpenModalDeleteGroup } = useContext(TodoContext);
 
@@ -32,6 +33,7 @@ function ModalGroup({ children, mode }) {
 
     const nuevoDato = {
       name: group,
+      group_key: groupKey
     };
 
     const antiguo_user = document.getElementById("mySelect")
@@ -40,6 +42,7 @@ function ModalGroup({ children, mode }) {
     const editarDato = {
       name: group,
       antiguoName: old_group ? old_group : user_ant,
+      group_key: groupKey
     };
     const borrarDato = {
       name: old_group ? old_group : user_ant,
@@ -196,8 +199,20 @@ function ModalGroup({ children, mode }) {
                   margin="dense"
 
                 />
+
+                
               ) : null}
             </FormControl>
+            <TextField
+                  label="Clave de Grupo"
+                  name="name"
+                  required
+                  fullWidth
+                  value={groupKey}
+                  onChange={(e) => handleInputChange(e, setGroupKey, mode)}
+                  margin="dense"
+
+                />
 
           </Box>
 

@@ -188,7 +188,7 @@ const ReportTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openModalFirmar, setOpenModalFirmar] = useState(false);
   const [report, setReport] = useState([]);
-  const { openModalCreateResidueReport, setOpenModalCreateResidueReport,openModalEditResidueReport, openModalDeleteResidueReport , } = useContext(TodoContext);
+  const { updateReportInfo,setUpdateReportInfo,openModalCreateResidueReport, setOpenModalCreateResidueReport,openModalEditResidueReport, openModalDeleteResidueReport , } = useContext(TodoContext);
 
 
   useEffect(() => {
@@ -198,11 +198,12 @@ const ReportTable = () => {
         setReport(response.data);
         console.log("##################################################");
         console.log(response.data)
+        setUpdateReportInfo(false);
       })
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [updateReportInfo]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

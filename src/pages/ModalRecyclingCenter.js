@@ -32,6 +32,7 @@ function ModalRecyclingCenter({ children, mode }) {
     const [razonSocial , setRazonSocial] = useState("");
     const [centerName , setCenterName] = useState("");
     const [idCenter , setIdCenter] = useState("");
+    const [key, setKey] = useState("")
 
     const { setUpdateRecyclingCenterInfo,openModalText, setTextOpenModalText, setOpenModalText,
          openModalCreateRecyclingCenter, setOpenModalCreateRecyclingCenter, openModalEditRecyclingCenter, 
@@ -68,6 +69,7 @@ function ModalRecyclingCenter({ children, mode }) {
                 address_postal_code : e.target.postal_code.value,
                 address_lat : 0,
                 address_lng : 0,
+                recycling_center_key : key
 
 
             };
@@ -322,6 +324,15 @@ function ModalRecyclingCenter({ children, mode }) {
                                     fullWidth
                                     value={phone}
                                     onChange={(e) => handleInputChange(e, setPhone, mode)}
+                                    margin="dense"
+                                />
+                                <TextField
+                                    label="Clave de Centro Reciclaje"
+                                    name="key"
+                                    required
+                                    fullWidth
+                                    value={key}
+                                    onChange={(e) => handleInputChange(e, setKey, mode)}
                                     margin="dense"
                                 />
                            
