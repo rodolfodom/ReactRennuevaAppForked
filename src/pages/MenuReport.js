@@ -115,7 +115,7 @@ const generatePdf = (report, data) => {
   doc.text("Datos del Generador", 14, 30);
   doc.setFontSize(12);
   doc.setTextColor(255, 0, 0);
-  doc.text("FOLIO: " + report.id_report, 90, 30, { align: 'left' });
+  doc.text("FOLIO: " + report.group_key +report.id_report, 90, 30, { align: 'left' });
   doc.setTextColor(0, 0, 0);
 
 
@@ -415,7 +415,8 @@ function MenuReport() {
                                   await generateQR("TuTextoParaElQR");
                                   const data  = await getAllInfoReport(reporte.id_report)    
                                   console.log("DATA de la funcion1")
-                                  console.log(data)
+                                  console.log(reporte)
+                                  
                                   generatePdf(reporte, data)
                               
                                 }

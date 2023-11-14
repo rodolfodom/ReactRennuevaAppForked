@@ -6,6 +6,10 @@ import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
 import Title from '../../components/Title';
 
+import { IconButton, InputAdornment } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 
 
 
@@ -29,11 +33,20 @@ function ModalUser({ children, mode }) {
   const [rfc, setRfc] = useState("");
   const [phone, setPhone] = useState("");
   const [address_num_int, setAddressNumInt] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(true);
-  const [old_user, setOldUser] = useState("");
+  const [old_user, setOldUser] = useState("")
+  const [razon_social, setRazonSocial] = useState("")
 
 
-  const { setUpdateUserInfo ,openModalText, setTextOpenModalText, setOpenModalText, openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+
+
+  const { setUpdateUserInfo, openModalText, setTextOpenModalText, setOpenModalText, openModalCreate, setOpenModalCreate, openModalEdit, openModalDelete, setOpenModalEdit, setOpenModalDelete } = useContext(TodoContext);
   const closeModal = () => {
     if (openModalCreate) {
       setOpenModalCreate(false);
@@ -50,14 +63,18 @@ function ModalUser({ children, mode }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (mode === "CREAR") {
+      var rfcValue = e.target.rfc.value
+      if (!rfcValue) {
+        rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
+      }
       const nuevoDato = {
-        user: e.target.user.value,
+        user: e.target.email.value,
         password: e.target.password.value,
         email: e.target.email.value,
         first_name: e.target.nombre.value,
         last_name: e.target.apellido.value,
         group: group,
-        rfc: e.target.rfc.value,
+        rfcValue: rfcValue,
         company: "Rennueva",
         phone: e.target.phone.value,
         address_state: e.target.state.value,
@@ -68,8 +85,9 @@ function ModalUser({ children, mode }) {
         address_num_int: e.target.address_num_int.value,
         address_lat: 0,
         address_lng: 0,
-        razon_social : "Rennueva",
+        razon_social: e.target.razon_social.value,
       };
+
 
       axios
         .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
@@ -89,7 +107,12 @@ function ModalUser({ children, mode }) {
 
     }
     if (mode === "EDITAR") {
-      
+
+      var rfcValue = e.target.rfc.value
+      if (!rfcValue) {
+        rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
+      }
+
       const editarDato = {
         user: e.target.user.value,
         //password: e.target.password.value,
@@ -97,7 +120,7 @@ function ModalUser({ children, mode }) {
         first_name: e.target.nombre.value,
         last_name: e.target.apellido.value,
         group: group,
-        rfc: e.target.rfc.value,
+        rfc: rfcValue,
         company: "Rennueva",
         phone: e.target.phone.value,
         address_state: e.target.state.value,
@@ -108,10 +131,11 @@ function ModalUser({ children, mode }) {
         address_num_int: e.target.address_num_int.value,
         address_lat: 0,
         address_lng: 0,
-        razon_social : "Rennueva",
+        razon_social: e.target.razon_social.value,
 
         antiguoUser: old_user,
       };
+
       console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
       console.log(editarDato)
 
@@ -134,7 +158,7 @@ function ModalUser({ children, mode }) {
     }
     if (mode === "BORRAR") {
       const antiguo_user = document.getElementById("user-select")
-      var user_ant = antiguo_user ? antiguo_user.value : null;   
+      var user_ant = antiguo_user ? antiguo_user.value : null;
 
       const deleteDato = {
         user: user
@@ -188,6 +212,9 @@ function ModalUser({ children, mode }) {
 
         setGroups(groupsData);
         setUsers(usersData);
+        console.log("###################### USER FETCHED ##################################")
+        console.log(usersData)
+
         setCompanies(companiesData);
 
 
@@ -205,7 +232,7 @@ function ModalUser({ children, mode }) {
     // Buscar el dato seleccionado en el arreglo de datos
     const datoEncontrado = users.find((users) => users.user === selectedOption);
     console.log("DATO3333333333333333333333333333")
-    console.log(datoEncontrado.address_num_int)
+    console.log(datoEncontrado.razon_social)
     setUser(datoEncontrado.user);
     setPassword(datoEncontrado.password);
     setEmail(datoEncontrado.email);
@@ -222,6 +249,7 @@ function ModalUser({ children, mode }) {
     setPostalCode(datoEncontrado.address_postal_code);
     setAddressNumInt(datoEncontrado.address_num_int);
     setOldUser(selectedOption);
+    setRazonSocial(datoEncontrado.razon_social)
 
 
 
@@ -235,6 +263,23 @@ function ModalUser({ children, mode }) {
       setState(currentInputValue);
     }
   };
+
+  const handlePhoneChange = (event) => {
+    const value = event.target.value;
+
+    // Permitir solo números y limitar la longitud a 10 caracteres
+    if (value === '' || (/^\d+$/.test(value) && value.length <= 10)) {
+      setPhone(value);
+    }
+  };
+  const handleRfcChange = (event) => {
+    const value = event.target.value.toUpperCase();
+
+    // Permitir solo letras y números y limitar la longitud a 12-13 caracteres
+    if (/^[0-9A-Z]*$/.test(value) && value.length <= 13) {
+      setRfc(value);
+    }
+  }
 
 
   return ReactDOM.createPortal(
@@ -265,7 +310,7 @@ function ModalUser({ children, mode }) {
 
                     handleSelectChange(e, setUser)
 
-                  
+
                   }}
                   required
                   //value={user}
@@ -300,19 +345,28 @@ function ModalUser({ children, mode }) {
             <TextField
               label="RFC"
               name="rfc"
-              required
               fullWidth
               value={rfc}
-              onChange={(e) => handleInputChange(e, setRfc, mode)}
+              onChange={handleRfcChange}
               margin="dense"
+              inputProps={{
+                maxLength: 13 // Opcional: si quieres forzar la longitud máxima en el HTML
+              }}
+              // Validación de error para la longitud del RFC
+              error={rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)}
+              helperText={
+                rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)
+                  ? "El RFC debe tener entre 12 y 13 caracteres"
+                  : ""
+              }
             />
             <TextField
-              label="Nombre de Usuario"
-              name="user"
+              label="Razon social"
+              name="razon_social"
               required
               fullWidth
-              value={user}
-              onChange={(e) => handleInputChange(e, setUser, mode)}
+              value={razon_social}
+              onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
               margin="dense"
             />
             <TextField
@@ -325,20 +379,31 @@ function ModalUser({ children, mode }) {
               onChange={(e) => handleInputChange(e, setEmail, mode)}
               margin="dense"
             />
-            {
-              isPasswordVisible && (
-                <TextField
-                  label="Password"
-                  name="password"
-                  type="password"
-                  required
-                  fullWidth
-                  value={password}
-                  onChange={(e) => handleInputChange(e, setPassword, mode)}
-                  margin="dense"
-                />
-              )
-            }
+
+            {mode === "CREAR" ? (
+              <TextField
+                label="Password"
+                name="password"
+                type={isPasswordVisible ? 'text' : 'password'}
+                required
+                fullWidth
+                value={password}
+                onChange={(e) => handleInputChange(e, setPassword, mode)}
+                margin="dense"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ) : null}
 
             <FormControl fullWidth mt={2} mb={2}>
               <InputLabel id="rol-select-label">Grupo</InputLabel>
@@ -362,70 +427,78 @@ function ModalUser({ children, mode }) {
                 required
                 fullWidth
                 value={phone}
-                onChange={(e) => handleInputChange(e, setPhone, mode)}
+                onChange={handlePhoneChange}
                 margin="dense"
+                inputProps={{
+                  // Opcional: usar el tipo "tel" para mejor semántica y compatibilidad móvil
+                  type: "tel",
+                  // maxLength: 10 // Opcional: si quieres forzar la longitud máxima en el HTML
+                }}
+                // Para mostrar un mensaje de error si la longitud es menor a 10
+                error={phone.length > 0 && phone.length < 10}
+                helperText={phone.length > 0 && phone.length < 10 ? "El número debe ser de 10 dígitos" : ""}
               />
             </FormControl>
-           
-              
-              <Title>Ubicacion</Title>
-              <TextField
-                label="Estado"
-                name="state"
-                required
-                fullWidth
-                value={state}
-                onChange={(e) => handleInputChange(e, setState, mode)}
-                margin="dense"
-              />
-              <TextField
-                label="Ciudad"
-                name="city"
-                required
-                fullWidth
-                value={city}
-                onChange={(e) => handleInputChange(e, setCity, mode)}
-                margin="dense"
-              />
-              <TextField
-                label="Colonia"
-                name="locality"
-                required
-                fullWidth
-                value={locality}
-                onChange={(e) => handleInputChange(e, setLocality, mode)}
-                margin="dense"
-              />
-              <TextField
-                label="Calle "
-                name="street"
-                required
-                fullWidth
-                value={street}
-                onChange={(e) => handleInputChange(e, setStreet, mode)}
-                margin="dense"
-              />
-              <TextField
-                label="Numero interior"
-                name="address_num_int"
-                required
-                fullWidth
-                value={address_num_int}
-                onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
-                margin="dense"
-              />
 
 
-              <TextField
-                label="Codigo postal"
-                name="postal_code"
-                required
-                fullWidth
-                value={postal_code}
-                onChange={(e) => handleInputChange(e, setPostalCode, mode)}
-                margin="dense"
-              />
-           
+            <Title>Ubicacion</Title>
+            <TextField
+              label="Estado"
+              name="state"
+              required
+              fullWidth
+              value={state}
+              onChange={(e) => handleInputChange(e, setState, mode)}
+              margin="dense"
+            />
+            <TextField
+              label="Ciudad"
+              name="city"
+              required
+              fullWidth
+              value={city}
+              onChange={(e) => handleInputChange(e, setCity, mode)}
+              margin="dense"
+            />
+            <TextField
+              label="Colonia"
+              name="locality"
+              required
+              fullWidth
+              value={locality}
+              onChange={(e) => handleInputChange(e, setLocality, mode)}
+              margin="dense"
+            />
+            <TextField
+              label="Calle "
+              name="street"
+              required
+              fullWidth
+              value={street}
+              onChange={(e) => handleInputChange(e, setStreet, mode)}
+              margin="dense"
+            />
+            <TextField
+              label="Numero interior"
+              name="address_num_int"
+              required
+              fullWidth
+              value={address_num_int}
+              onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
+              margin="dense"
+            />
+
+
+            <TextField
+              label="Codigo postal"
+              name="postal_code"
+              required
+              fullWidth
+              value={postal_code}
+              onChange={(e) => handleInputChange(e, setPostalCode, mode)}
+              margin="dense"
+            />
+
           </Box>
 
           <Button type="submit" variant="contained" fullWidth>{mode}</Button>
