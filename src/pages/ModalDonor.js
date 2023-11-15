@@ -65,6 +65,7 @@ function ModalDonor({ children, mode }) {
                 address_num_int: e.target.address_num_int.value,
                 address_lat: 0,
                 address_lng: 0,
+                razon_social: "eas"
             };
 
             axios
@@ -183,16 +184,19 @@ function ModalDonor({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get('http://127.0.0.1:8000/Rennueva/get-all-users/')
+        //const fetchUsers = axios.get('http://127.0.0.1:8000/Rennueva/get-all-users/')
         const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
 
-        Promise.all([fetchUsers, fetchCompanies])
+        Promise.all([ fetchCompanies])
             .then((res) => {
-                const usersData = res[0].data;
-                const companiesData = res[1].data;
-                setUsers(usersData);
+                //const usersData = res[0].data;
+                const companiesData = res[0].data;
+                //setUsers(usersData);
                 setCompanies(companiesData);
-                console.log("######################USUARIOS##################################")
+                console.log("######################Companuies##################################")
+                companiesData.map((name, index) => (
+                    console.log(name.company_name)
+                ))
             })
             .catch((err) => console.log(err));
                 

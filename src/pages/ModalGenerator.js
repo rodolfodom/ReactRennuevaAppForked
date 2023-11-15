@@ -6,6 +6,10 @@ import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
 import Title from '../components/Title';
 
+import { IconButton, InputAdornment } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 function ModalGenerator({ children, mode }) {
     const [datos, setDatos] = useState([]);
     const [groups, setGroups] = useState([])
@@ -29,9 +33,13 @@ function ModalGenerator({ children, mode }) {
     const [address_num_ext, setAddressNumExt] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
-    const [razonSocial , setRazonSocial] = useState("");
+    const [razonSocial, setRazonSocial] = useState("");
 
-    const { setUpdateGeneratorInfo ,openModalText, setTextOpenModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible);
+      };
+    
+    const { setUpdateGeneratorInfo, openModalText, setTextOpenModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
     const closeModal = () => {
         if (openModalCreateGenerator) {
             setOpenModalCreateGenerator(false);
@@ -47,15 +55,20 @@ function ModalGenerator({ children, mode }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+    
+            var rfcValue = e.target.rfc.value
+            if (!rfcValue) {
+              rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
+            }
         if (mode === "CREAR") {
-            const nuevoDato = {
-                user: e.target.user.value,
+            const nuevoDato = { 
+                user: e.target.email.value,
                 password: e.target.password.value,
                 email: e.target.email.value,
                 first_name: e.target.nombre.value,
                 last_name: e.target.apellido.value,
                 group: "Generador",
-                rfc: e.target.rfc.value,
+                rfc: rfcValue,
                 company: "Rennueva",
                 phone: e.target.phone.value,
                 address_state: e.target.state.value,
@@ -67,7 +80,7 @@ function ModalGenerator({ children, mode }) {
 
                 address_lat: 0,
                 address_lng: 0,
-                
+
                 razon_social: e.target.razon_social.value,
             };
 
@@ -91,7 +104,7 @@ function ModalGenerator({ children, mode }) {
         if (mode === "EDITAR") {
 
             const editarDato = {
-                user: e.target.user.value,
+                user: e.target.email.value,
                 //password: e.target.password.value,
                 email: e.target.email.value,
                 first_name: e.target.nombre.value,
@@ -200,242 +213,277 @@ function ModalGenerator({ children, mode }) {
                 console.log("######################USUARIOS##################################")
             })
             .catch((err) => console.log(err));
-                
-            }, []);
 
-        const handleSelectChange = (event) => {
-            const selectedOption = event.target.value; // Obtener la opción seleccionada
-            console.log(selectedOption)
-            // Buscar el dato seleccionado en el arreglo de datos
-            const datoEncontrado = users.find((users) => users.user === selectedOption);
-            console.log(datoEncontrado)
-            setUser(datoEncontrado.user);
-            setPassword(datoEncontrado.password);
-            setEmail(datoEncontrado.email);
-            setFirstName(datoEncontrado.first_name);
-            setLastName(datoEncontrado.last_name);
-            setGroup(datoEncontrado.group);
-            setRfc(datoEncontrado.rfc);
-            setCompany("Rennueva");
-            setPhone(datoEncontrado.phone);
-            setState(datoEncontrado.address_state);
-            setCity(datoEncontrado.address_city);
-            setLocality(datoEncontrado.address_locality);
-            setStreet(datoEncontrado.address_street);
-            setPostalCode(datoEncontrado.address_postal_code);
-            setAddressNumInt(datoEncontrado.address_num_int);
-            setOldUser(selectedOption);
+    }, []);
 
-
-
-        }
-
-        const handleInputChange = (e, setState, mode) => {
-            const currentInputValue = e.target.value;
-
-            if (mode !== "BORRAR") {
-                setState(currentInputValue);
-            }
-        };
-        return ReactDOM.createPortal(
-            <Modal open={true} onClose={closeModal} >
-                <Box className="ModalContent" sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 400,
-                    bgcolor: 'background.paper',
-                    boxShadow: 24,
-                    p: 4,
-                    borderRadius: 2,
-
-                }}>
-                    <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
-                    <form onSubmit={handleSubmit} >
-                        <Box mb={2}>
-                            <Title> Usuario</Title>
-                            {mode === "EDITAR" || mode === "BORRAR" ? (
-                                <FormControl fullWidth>
-                                    <InputLabel id="user-select-label">Usuario</InputLabel>
-                                    <Select
-                                        labelId="user-select-label"
-                                        id="user-select"
-                                        onChange={(e) => {
-
-                                            handleSelectChange(e, setUser)
-
-
-                                        }}
-                                        required
-                                        //value={user}
-                                        w
-                                    >
-                                        {users.map((name, index) => (
-                                            <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            ) : null}
-                        </Box>
-                        <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
-                            <TextField
-                                label="Nombre"
-                                name="nombre"
-                                required
-                                fullWidth
-                                value={first_name}
-                                onChange={(e) => handleInputChange(e, setFirstName, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Apellido"
-                                name="apellido"
-                                required
-                                fullWidth
-                                value={last_name}
-                                onChange={(e) => handleInputChange(e, setLastName, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="RFC"
-                                name="rfc"
-                                required
-                                fullWidth
-                                value={rfc}
-                                onChange={(e) => handleInputChange(e, setRfc, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Razon Social"
-                                name="razon_social"
-                                required
-                                fullWidth
-                                value={razonSocial}
-                                onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Nombre de Usuario"
-                                name="user"
-                                required
-                                fullWidth
-                                value={user}
-                                onChange={(e) => handleInputChange(e, setUser, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Email Usuario"
-                                name="email"
-                                type="email"
-                                required
-                                fullWidth
-                                value={email}
-                                onChange={(e) => handleInputChange(e, setEmail, mode)}
-                                margin="dense"
-                            />
-                            {
-                                isPasswordVisible && (
-                                    <TextField
-                                        label="Password"
-                                        name="password"
-                                        type="password"
-                                        required
-                                        fullWidth
-                                        value={password}
-                                        onChange={(e) => handleInputChange(e, setPassword, mode)}
-                                        margin="dense"
-                                    />
-                                )
-                            }
-
-                            <FormControl fullWidth mt={2} mb={2}>
-                                
+    const handleSelectChange = (event) => {
+        const selectedOption = event.target.value; // Obtener la opción seleccionada
+        console.log(selectedOption)
+        // Buscar el dato seleccionado en el arreglo de datos
+        const datoEncontrado = users.find((users) => users.user === selectedOption);
+        console.log(datoEncontrado)
+        setUser(datoEncontrado.user);
+        setPassword(datoEncontrado.password);
+        setEmail(datoEncontrado.email);
+        setFirstName(datoEncontrado.first_name);
+        setLastName(datoEncontrado.last_name);
+        setGroup(datoEncontrado.group);
+        setRfc(datoEncontrado.rfc);
+        setCompany("Rennueva");
+        setPhone(datoEncontrado.phone);
+        setState(datoEncontrado.address_state);
+        setCity(datoEncontrado.address_city);
+        setLocality(datoEncontrado.address_locality);
+        setStreet(datoEncontrado.address_street);
+        setPostalCode(datoEncontrado.address_postal_code);
+        setAddressNumInt(datoEncontrado.address_num_int);
+        setOldUser(selectedOption);
+        setRazonSocial(datoEncontrado.razon_social);
 
 
 
-                                <TextField
-                                    label="Celular"
-                                    name="phone"
-                                    required
-                                    fullWidth
-                                    value={phone}
-                                    onChange={(e) => handleInputChange(e, setPhone, mode)}
-                                    margin="dense"
-                                />
-                            </FormControl>
-                            <FormControl fullWidth mt={2} mb={2}>
-                                
-                                <Title>Ubicacion</Title>
-                                <TextField
-                                    label="Estado"
-                                    name="state"
-                                    required
-                                    fullWidth
-                                    value={state}
-                                    onChange={(e) => handleInputChange(e, setState, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Ciudad"
-                                    name="city"
-                                    required
-                                    fullWidth
-                                    value={city}
-                                    onChange={(e) => handleInputChange(e, setCity, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Colonia"
-                                    name="locality"
-                                    required
-                                    fullWidth
-                                    value={locality}
-                                    onChange={(e) => handleInputChange(e, setLocality, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Calle "
-                                    name="street"
-                                    required
-                                    fullWidth
-                                    value={street}
-                                    onChange={(e) => handleInputChange(e, setStreet, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Numero interior"
-                                    name="address_num_int"
-                                    required
-                                    fullWidth
-                                    value={address_num_int}
-                                    onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
-                                    margin="dense"
-                                />
-
-
-                                <TextField
-                                    label="Codigo postal"
-                                    name="postal_code"
-                                    required
-                                    fullWidth
-                                    value={postal_code}
-                                    onChange={(e) => handleInputChange(e, setPostalCode, mode)}
-                                    margin="dense"
-                                />
-                            </FormControl>
-                        </Box>
-
-                        <Button type="submit" variant="contained" fullWidth>{mode}</Button>
-                    </form>
-                </Box>
-
-
-            </Modal>,
-
-            document.getElementById('modal')
-
-        );
     }
+
+    const handleInputChange = (e, setState, mode) => {
+        const currentInputValue = e.target.value;
+
+        if (mode !== "BORRAR") {
+            setState(currentInputValue);
+        }
+    };
+    const handlePhoneChange = (event) => {
+        const value = event.target.value;
+    
+        // Permitir solo números y limitar la longitud a 10 caracteres
+        if (value === '' || (/^\d+$/.test(value) && value.length <= 10)) {
+          setPhone(value);
+        }
+      };
+      const handleRfcChange = (event) => {
+        const value = event.target.value.toUpperCase();
+    
+        // Permitir solo letras y números y limitar la longitud a 12-13 caracteres
+        if (/^[0-9A-Z]*$/.test(value) && value.length <= 13) {
+          setRfc(value);
+        }
+      }
+    return ReactDOM.createPortal(
+        <Modal open={true} onClose={closeModal} >
+            <Box className="ModalContent" sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 400,
+                bgcolor: 'background.paper',
+                boxShadow: 24,
+                p: 4,
+                borderRadius: 2,
+
+            }}>
+                <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
+                <form onSubmit={handleSubmit} >
+                    <Box mb={2}>
+                        <Title> Usuario</Title>
+                        {mode === "EDITAR" || mode === "BORRAR" ? (
+                            <FormControl fullWidth>
+                                <InputLabel id="user-select-label">Usuario</InputLabel>
+                                <Select
+                                    labelId="user-select-label"
+                                    id="user-select"
+                                    onChange={(e) => {
+
+                                        handleSelectChange(e, setUser)
+
+
+                                    }}
+                                    required
+                                    //value={user}
+                                    w
+                                >
+                                    {users.map((name, index) => (
+                                        <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        ) : null}
+                    </Box>
+                    <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
+                        <TextField
+                            label="Nombre"
+                            name="nombre"
+                            required
+                            fullWidth
+                            value={first_name}
+                            onChange={(e) => handleInputChange(e, setFirstName, mode)}
+                            margin="dense"
+                        />
+                        <TextField
+                            label="Apellido"
+                            name="apellido"
+                            required
+                            fullWidth
+                            value={last_name}
+                            onChange={(e) => handleInputChange(e, setLastName, mode)}
+                            margin="dense"
+                        />
+                        <TextField
+                            label="RFC"
+                            name="rfc"
+                            fullWidth
+                            value={rfc}
+                            onChange={handleRfcChange}
+                            margin="dense"
+                            inputProps={{
+                                maxLength: 13 // Opcional: si quieres forzar la longitud máxima en el HTML
+                            }}
+                            // Validación de error para la longitud del RFC
+                            error={rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)}
+                            helperText={
+                                rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)
+                                    ? "El RFC debe tener entre 12 y 13 caracteres"
+                                    : ""
+                            }
+                        />
+                        <TextField
+                            label="Razon Social"
+                            name="razon_social"
+                            required
+                            fullWidth
+                            value={razonSocial}
+                            onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
+                            margin="dense"
+                        />
+                        <TextField
+                            label="Email Usuario"
+                            name="email"
+                            type="email"
+                            required
+                            fullWidth
+                            value={email}
+                            onChange={(e) => handleInputChange(e, setEmail, mode)}
+                            margin="dense"
+                        />
+                        {mode === "CREAR" ? (
+                            <TextField
+                                label="Password"
+                                name="password"
+                                type={isPasswordVisible ? 'text' : 'password'}
+                                required
+                                fullWidth
+                                value={password}
+                                onChange={(e) => handleInputChange(e, setPassword, mode)}
+                                margin="dense"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={togglePasswordVisibility}
+                                            >
+                                                {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        ) : null}
+
+                        <FormControl fullWidth mt={2} mb={2}>
+
+
+
+
+                            <TextField
+                                label="Celular"
+                                name="phone"
+                                required
+                                fullWidth
+                                value={phone}
+                                onChange={handlePhoneChange}
+                                margin="dense"
+                                inputProps={{
+                                    // Opcional: usar el tipo "tel" para mejor semántica y compatibilidad móvil
+                                    type: "tel",
+                                    // maxLength: 10 // Opcional: si quieres forzar la longitud máxima en el HTML
+                                }}
+                                // Para mostrar un mensaje de error si la longitud es menor a 10
+                                error={phone.length > 0 && phone.length < 10}
+                                helperText={phone.length > 0 && phone.length < 10 ? "El número debe ser de 10 dígitos" : ""}
+                            />
+                        </FormControl>
+                        <FormControl fullWidth mt={2} mb={2}>
+
+                            <Title>Ubicacion</Title>
+                            <TextField
+                                label="Estado"
+                                name="state"
+                                required
+                                fullWidth
+                                value={state}
+                                onChange={(e) => handleInputChange(e, setState, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Ciudad"
+                                name="city"
+                                required
+                                fullWidth
+                                value={city}
+                                onChange={(e) => handleInputChange(e, setCity, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Colonia"
+                                name="locality"
+                                required
+                                fullWidth
+                                value={locality}
+                                onChange={(e) => handleInputChange(e, setLocality, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Calle "
+                                name="street"
+                                required
+                                fullWidth
+                                value={street}
+                                onChange={(e) => handleInputChange(e, setStreet, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Numero interior"
+                                name="address_num_int"
+                                required
+                                fullWidth
+                                value={address_num_int}
+                                onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
+                                margin="dense"
+                            />
+
+
+                            <TextField
+                                label="Codigo postal"
+                                name="postal_code"
+                                required
+                                fullWidth
+                                value={postal_code}
+                                onChange={(e) => handleInputChange(e, setPostalCode, mode)}
+                                margin="dense"
+                            />
+                        </FormControl>
+                    </Box>
+
+                    <Button type="submit" variant="contained" fullWidth>{mode}</Button>
+                </form>
+            </Box>
+
+
+        </Modal>,
+
+        document.getElementById('modal')
+
+    );
+}
 
 export { ModalGenerator };

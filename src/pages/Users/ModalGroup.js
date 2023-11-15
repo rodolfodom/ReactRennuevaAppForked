@@ -41,7 +41,7 @@ function ModalGroup({ children, mode }) {
 
     const editarDato = {
       name: group,
-      antiguoName: old_group ? old_group : user_ant,
+      antiguoName: old_group,
       group_key: groupKey
     };
     const borrarDato = {
@@ -133,12 +133,18 @@ function ModalGroup({ children, mode }) {
     // Buscar el dato seleccionado en el arreglo de datos
     const datoEncontrado = groups.find((groups) => groups.name === selectedOption);
     console.log("#DFSDFSDFSDDAto encotntrado")
-    setOldGroup(datoEncontrado.name)
-    
+    setGroup(datoEncontrado.name)
+    console.log("SADTERRRRRR")
+    setGroupKey(datoEncontrado.group_key)
+    console.log(datoEncontrado.name)
+    console.log(datoEncontrado.group_key)
+    setOldGroup(selectedOption)
 
 
+    // Actualizar el estado con el dato encontrado
 
 
+      
 
 
   }
