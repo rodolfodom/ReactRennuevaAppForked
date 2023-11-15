@@ -7,17 +7,13 @@ import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabe
 import Title from '../components/Title';
 
 function ModalCollectionCenter({ children, mode }) {
-    const [datos, setDatos] = useState([]);
-    const [groups, setGroups] = useState([])
+
     const [users, setUsers] = useState([])
     const [companies, setCompanies] = useState([""])
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [first_name, setFirstName] = useState("");
-    const [last_name, setLastName] = useState("");
-    const [group, setGroup] = useState("");
-    const [company, setCompany] = useState("");
+
     const [state, setState] = useState("");
     const [city, setCity] = useState("");
     const [locality, setLocality] = useState("");
@@ -51,14 +47,41 @@ function ModalCollectionCenter({ children, mode }) {
         }
     };
 
+    const handlePhoneChange = (event) => {
+        const value = event.target.value;
+    
+        // Permitir solo números y limitar la longitud a 10 caracteres
+        if (value === '' || (/^\d+$/.test(value) && value.length <= 10)) {
+          setPhone(value);
+        }
+      };
+      const handleRfcChange = (event) => {
+        const value = event.target.value.toUpperCase();
+
+
+    
+        // Permitir solo letras y números y limitar la longitud a 12-13 caracteres
+        if (/^[0-9A-Z]*$/.test(value) && value.length <= 13) {
+          setRfc(value);
+        }
+      }
+    
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (mode === "CREAR") {
+            var rfcValue = e.target.rfc.value
+            console.log("####dawd##################CREAR##################################")
+      console.log(key)
+      if (!rfcValue) {
+        rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
+      }
+      
             const nuevoDato = {
                 collection_center_name: e.target.nombre.value,
                 collection_center_razon_social: e.target.razon_social.value,
-                collection_center_rfc: e.target.rfc.value,
+                collection_center_rfc: rfcValue,
                 collection_center_phone: e.target.phone.value,
                 collection_center_email: e.target.email.value,
                 address_street: e.target.street.value,
@@ -92,11 +115,14 @@ function ModalCollectionCenter({ children, mode }) {
 
         }
         if (mode === "EDITAR") {
-
+            var rfcValue = e.target.rfc.value
+      if (!rfcValue) {
+        rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
+      }
             const editarDato = {
                 collection_center_name: e.target.nombre.value,
                 collection_center_razon_social: e.target.razon_social.value,
-                collection_center_rfc: e.target.rfc.value,
+                collection_center_rfc: rfcValue,
                 collection_center_phone: e.target.phone.value,
                 collection_center_email: e.target.email.value,
                 address_street: e.target.street.value,
@@ -162,28 +188,28 @@ function ModalCollectionCenter({ children, mode }) {
     };
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        // Basado en el modo, decidir si el campo de la contraseña debe ser visible
-        if (mode === 'CREAR') {
-            setIsPasswordVisible(true);
-        } else {
-            setIsPasswordVisible(false); // Esto cubre 'editar' y 'borrar'
-        }
+    //     // Basado en el modo, decidir si el campo de la contraseña debe ser visible
+    //     if (mode === 'CREAR') {
+    //         setIsPasswordVisible(true);
+    //     } else {
+    //         setIsPasswordVisible(false); // Esto cubre 'editar' y 'borrar'
+    //     }
 
-        axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
-            .then(response => {
-                const data = response.data;
-                setGroups(data)
-                console.log("######################GRUPOS##################################")
+    //     axios
+    //         .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
+    //         .then(response => {
+    //             const data = response.data;
+    //             setGroups(data)
+    //             console.log("######################GRUPOS##################################")
 
-            })
-            .catch(error => {
-                console.error(error);
-            });
+    //         })
+    //         .catch(error => {
+    //             console.error(error);
+    //         });
 
-    }, []);
+   // }, []);
 
 
     useEffect(() => {
@@ -209,9 +235,10 @@ function ModalCollectionCenter({ children, mode }) {
         // Buscar el dato seleccionado en el arreglo de datos
         const datoEncontrado = users.find((users) => users.CollectionCenterName === selectedOption);
         console.log("Dato Encontrado")
-        console.log(datoEncontrado)
+        console.log(datoEncontrado.CollectionCenterRfc)
+        console.log(datoEncontrado.CollectionCenterKey)
         setCenterName(datoEncontrado.CollectionCenterName);
-        setRfc(datoEncontrado.CollectionCenterRFC);
+        setRfc(datoEncontrado.CollectionCenterRfc);
         setRazonSocial(datoEncontrado.CollectionCenterRazonSocial);
         setEmail(datoEncontrado.CollectionCenterEmail);
         setPhone(datoEncontrado.CollectionCenterPhone);
@@ -223,7 +250,8 @@ function ModalCollectionCenter({ children, mode }) {
         setAddressNumInt(datoEncontrado.AddressNumInt);
         setAddressNumExt(datoEncontrado.AddressNumExt);
         setIdCenter(datoEncontrado.CollectionCenterId);
-
+        setKey(datoEncontrado.CollectionCenterKey)
+       
         // Actualizar el estado con el dato encontrado
 
 
@@ -289,14 +317,23 @@ function ModalCollectionCenter({ children, mode }) {
                             margin="dense"
                         />
                         <TextField
-                            label="RFC"
-                            name="rfc"
-                            required
-                            fullWidth
-                            value={rfc}
-                            onChange={(e) => handleInputChange(e, setRfc, mode)}
-                            margin="dense"
-                        />
+              label="RFC"
+              name="rfc"
+              fullWidth
+              value={rfc}
+              onChange={handleRfcChange}
+              margin="dense"
+              inputProps={{
+                maxLength: 13 // Opcional: si quieres forzar la longitud máxima en el HTML
+              }}
+              // Validación de error para la longitud del RFC
+              error={rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)}
+              helperText={
+                rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)
+                  ? "El RFC debe tener entre 12 y 13 caracteres"
+                  : ""
+              }
+            />
                         <TextField
                             label="Razon Social"
                             name="razon_social"
@@ -318,15 +355,23 @@ function ModalCollectionCenter({ children, mode }) {
                         />
 
 
-                        <TextField
-                            label="Celular"
-                            name="phone"
-                            required
-                            fullWidth
-                            value={phone}
-                            onChange={(e) => handleInputChange(e, setPhone, mode)}
-                            margin="dense"
-                        />
+<TextField
+                label="Celular"
+                name="phone"
+                required
+                fullWidth
+                value={phone}
+                onChange={handlePhoneChange}
+                margin="dense"
+                inputProps={{
+                  // Opcional: usar el tipo "tel" para mejor semántica y compatibilidad móvil
+                  type: "tel",
+                  // maxLength: 10 // Opcional: si quieres forzar la longitud máxima en el HTML
+                }}
+                // Para mostrar un mensaje de error si la longitud es menor a 10
+                error={phone.length > 0 && phone.length < 10}
+                helperText={phone.length > 0 && phone.length < 10 ? "El número debe ser de 10 dígitos" : ""}
+              />
 
                         <TextField
                             label="Clave de Centro Recoleccion"
