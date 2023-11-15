@@ -13,10 +13,7 @@ function ModalCollectionCenter({ children, mode }) {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [first_name, setFirstName] = useState("");
-    const [last_name, setLastName] = useState("");
-    const [group, setGroup] = useState("");
-    const [company, setCompany] = useState("");
+
     const [state, setState] = useState("");
     const [city, setCity] = useState("");
     const [locality, setLocality] = useState("");
@@ -75,9 +72,12 @@ function ModalCollectionCenter({ children, mode }) {
         e.preventDefault();
         if (mode === "CREAR") {
             var rfcValue = e.target.rfc.value
+            console.log("####dawd##################CREAR##################################")
+      console.log(key)
       if (!rfcValue) {
         rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
       }
+      
             const nuevoDato = {
                 collection_center_name: e.target.nombre.value,
                 collection_center_razon_social: e.target.razon_social.value,
@@ -236,6 +236,7 @@ function ModalCollectionCenter({ children, mode }) {
         const datoEncontrado = users.find((users) => users.CollectionCenterName === selectedOption);
         console.log("Dato Encontrado")
         console.log(datoEncontrado.CollectionCenterRfc)
+        console.log(datoEncontrado.CollectionCenterKey)
         setCenterName(datoEncontrado.CollectionCenterName);
         setRfc(datoEncontrado.CollectionCenterRfc);
         setRazonSocial(datoEncontrado.CollectionCenterRazonSocial);
@@ -249,6 +250,7 @@ function ModalCollectionCenter({ children, mode }) {
         setAddressNumInt(datoEncontrado.AddressNumInt);
         setAddressNumExt(datoEncontrado.AddressNumExt);
         setIdCenter(datoEncontrado.CollectionCenterId);
+        setKey(datoEncontrado.CollectionCenterKey)
        
         // Actualizar el estado con el dato encontrado
 
