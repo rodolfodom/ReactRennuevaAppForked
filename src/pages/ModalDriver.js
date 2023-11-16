@@ -6,6 +6,10 @@ import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
 import Title from '../components/Title';
 
+import { IconButton, InputAdornment } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 function ModalDriver({ children, mode }) {
     const [datos, setDatos] = useState([]);
     const [groups, setGroups] = useState([])
@@ -30,6 +34,9 @@ function ModalDriver({ children, mode }) {
     const [address_num_ext, setAddressNumExt] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible);
+      };
 
     const {setUpdateDriverInfo, openModalText, setTextOpenModalText, setOpenModalText, openModalCreateDriver, setOpenModalCreateDriver, openModalEditDriver, openModalDeleteDriver, setOpenModalEditDriver, setOpenModalDeleteDriver } = useContext(TodoContext);
     const closeModal = () => {
@@ -210,6 +217,14 @@ function ModalDriver({ children, mode }) {
                 setState(currentInputValue);
             }
         };
+        const handlePhoneChange = (event) => {
+            const value = event.target.value;
+        
+            // Permitir solo números y limitar la longitud a 10 caracteres
+            if (value === '' || (/^\d+$/.test(value) && value.length <= 10)) {
+              setPhone(value);
+            }
+          };
         return ReactDOM.createPortal(
             <Modal open={true} onClose={closeModal} >
                 <Box className="ModalContent" sx={{
@@ -282,31 +297,49 @@ function ModalDriver({ children, mode }) {
                                 onChange={(e) => handleInputChange(e, setEmail, mode)}
                                 margin="dense"
                             />
-                            {
-                                isPasswordVisible && (
-                                    <TextField
-                                        label="Password"
-                                        name="password"
-                                        type="password"
-                                        required
-                                        fullWidth
-                                        value={password}
-                                        onChange={(e) => handleInputChange(e, setPassword, mode)}
-                                        margin="dense"
-                                    />
-                                )
-                            }
+                            {mode === "CREAR" ? (
+              <TextField
+                label="Password"
+                name="password"
+                type={isPasswordVisible ? 'text' : 'password'}
+                required
+                fullWidth
+                value={password}
+                onChange={(e) => handleInputChange(e, setPassword, mode)}
+                margin="dense"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ) : null}
 
                             <FormControl fullWidth mt={2} mb={2}>
-                                <TextField
-                                    label="Celular"
-                                    name="phone"
-                                    required
-                                    fullWidth
-                                    value={phone}
-                                    onChange={(e) => handleInputChange(e, setPhone, mode)}
-                                    margin="dense"
-                                />
+                            <TextField
+                label="Celular"
+                name="phone"
+                required
+                fullWidth
+                value={phone}
+                onChange={handlePhoneChange}
+                margin="dense"
+                inputProps={{
+                  // Opcional: usar el tipo "tel" para mejor semántica y compatibilidad móvil
+                  type: "tel",
+                  // maxLength: 10 // Opcional: si quieres forzar la longitud máxima en el HTML
+                }}
+                // Para mostrar un mensaje de error si la longitud es menor a 10
+                error={phone.length > 0 && phone.length < 10}
+                helperText={phone.length > 0 && phone.length < 10 ? "El número debe ser de 10 dígitos" : ""}
+              />
                                 <TextField
                                     label="Licencia"
                                     name="license"

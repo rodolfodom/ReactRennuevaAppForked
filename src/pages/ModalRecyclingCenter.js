@@ -29,15 +29,15 @@ function ModalRecyclingCenter({ children, mode }) {
     const [address_num_ext, setAddressNumExt] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
-    const [razonSocial , setRazonSocial] = useState("");
-    const [centerName , setCenterName] = useState("");
-    const [idCenter , setIdCenter] = useState("");
+    const [razonSocial, setRazonSocial] = useState("");
+    const [centerName, setCenterName] = useState("");
+    const [idCenter, setIdCenter] = useState("");
     const [key, setKey] = useState("")
 
-    const { setUpdateRecyclingCenterInfo,openModalText, setTextOpenModalText, setOpenModalText,
-         openModalCreateRecyclingCenter, setOpenModalCreateRecyclingCenter, openModalEditRecyclingCenter, 
-         openModalDeleteRecyclingCenter, setOpenModalEditRecyclingCenter, setOpenModalDeleteRecyclingCenter 
-        } = useContext(TodoContext);
+    const { setUpdateRecyclingCenterInfo, openModalText, setTextOpenModalText, setOpenModalText,
+        openModalCreateRecyclingCenter, setOpenModalCreateRecyclingCenter, openModalEditRecyclingCenter,
+        openModalDeleteRecyclingCenter, setOpenModalEditRecyclingCenter, setOpenModalDeleteRecyclingCenter
+    } = useContext(TodoContext);
 
     const closeModal = () => {
         if (openModalCreateRecyclingCenter) {
@@ -51,25 +51,47 @@ function ModalRecyclingCenter({ children, mode }) {
         }
     };
 
+    const handleRfcChange = (event) => {
+        const value = event.target.value.toUpperCase();
+        // Permitir solo letras y números y limitar la longitud a 12-13 caracteres
+        if (/^[0-9A-Z]*$/.test(value) && value.length <= 13) {
+            setRfc(value);
+        }
+    }
+    const handlePhoneChange = (event) => {
+        const value = event.target.value;
+
+        // Permitir solo números y limitar la longitud a 10 caracteres
+        if (value === '' || (/^\d+$/.test(value) && value.length <= 10)) {
+            setPhone(value);
+        }
+    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (mode === "CREAR") {
+            var rfcValue = e.target.rfc.value
+            console.log("####dawd##################CREAR##################################")
+            console.log(key)
+            if (!rfcValue) {
+                rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
+            }
             const nuevoDato = {
-                recycling_center_name : e.target.nombre.value,
-                recycling_center_razon_social : e.target.razon_social.value,
-                recycling_center_rfc : e.target.rfc.value,
-                recycling_center_phone : e.target.phone.value,
-                recycling_center_email : e.target.email.value,
-                address_street : e.target.street.value,
-                address_num_int : e.target.address_num_int.value,
-                address_locality : e.target.locality.value,
-                address_city : e.target.city.value,
-                address_state : e.target.state.value,
-                address_postal_code : e.target.postal_code.value,
-                address_lat : 0,
-                address_lng : 0,
-                recycling_center_key : key
+                recycling_center_name: e.target.nombre.value,
+                recycling_center_razon_social: e.target.razon_social.value,
+                recycling_center_rfc: rfcValue,
+                recycling_center_phone: e.target.phone.value,
+                recycling_center_email: e.target.email.value,
+                address_street: e.target.street.value,
+                address_num_int: e.target.address_num_int.value,
+                address_locality: e.target.locality.value,
+                address_city: e.target.city.value,
+                address_state: e.target.state.value,
+                address_postal_code: e.target.postal_code.value,
+                address_lat: 0,
+                address_lng: 0,
+                recycling_center_key: key
 
 
             };
@@ -92,23 +114,29 @@ function ModalRecyclingCenter({ children, mode }) {
 
         }
         if (mode === "EDITAR") {
+            var rfcValue = e.target.rfc.value
+            console.log("####dawd##################CREAR##################################")
+            console.log(key)
+            if (!rfcValue) {
+                rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
+            }
 
             const editarDato = {
-                recycling_center_name : e.target.nombre.value,
-                recycling_center_razon_social : e.target.razon_social.value,
-                recycling_center_rfc : e.target.rfc.value,
-                recycling_center_phone : e.target.phone.value,
-                recycling_center_email : e.target.email.value,
-                address_street : e.target.street.value,
-                address_num_int : e.target.address_num_int.value,
-                address_locality : e.target.locality.value,
-                address_city : e.target.city.value,
-                address_state : e.target.state.value,
-                address_postal_code : e.target.postal_code.value,
-                address_lat : 0,
-                address_lng : 0,
-                recycling_center_id : idCenter,
-
+                recycling_center_name: e.target.nombre.value,
+                recycling_center_razon_social: e.target.razon_social.value,
+                recycling_center_rfc: rfcValue,
+                recycling_center_phone: e.target.phone.value,
+                recycling_center_email: e.target.email.value,
+                address_street: e.target.street.value,
+                address_num_int: e.target.address_num_int.value,
+                address_locality: e.target.locality.value,
+                address_city: e.target.city.value,
+                address_state: e.target.state.value,
+                address_postal_code: e.target.postal_code.value,
+                address_lat: 0,
+                address_lng: 0,
+                recycling_center_id: idCenter,
+                recycling_center_key: key
 
             };
             console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
@@ -132,11 +160,12 @@ function ModalRecyclingCenter({ children, mode }) {
 
         }
         if (mode === "BORRAR") {
+
             const antiguo_user = document.getElementById("user-select")
             var user_ant = antiguo_user ? antiguo_user.value : null;
 
             const deleteDato = {
-                recycling_center_id : idCenter,
+                recycling_center_id: idCenter,
             }
 
             axios
@@ -198,216 +227,234 @@ function ModalRecyclingCenter({ children, mode }) {
                 console.log("######################USUARIOS##################################")
             })
             .catch((err) => console.log(err));
-                
-            }, []);
 
-        const handleSelectChange = (event) => {
-            const selectedOption = event.target.value; // Obtener la opción seleccionada
-            console.log("opcion Seleccionada")
-            console.log(selectedOption)
-            // Buscar el dato seleccionado en el arreglo de datos
-            const datoEncontrado = users.find((users) => users.RecyclingCenterName === selectedOption);
-            console.log("Dato Encontrado")
-            console.log(datoEncontrado)
-            setCenterName(datoEncontrado.RecyclingCenterName);
-            setRfc(datoEncontrado.RecyclingCenterRFC);
-            setRazonSocial(datoEncontrado.RecyclingCenterRazonSocial);
-            setEmail(datoEncontrado.RecyclingCenterEmail);
-            setPhone(datoEncontrado.RecyclingCenterPhone);
-            setState(datoEncontrado.AddressState);
-            setCity(datoEncontrado.AddressCity);
-            setLocality(datoEncontrado.AddressLocality);
-            setStreet(datoEncontrado.AddressStreet);
-            setPostalCode(datoEncontrado.AddressPostalCode);
-            setAddressNumInt(datoEncontrado.AddressNumInt);
-            setAddressNumExt(datoEncontrado.AddressNumExt);
-            setIdCenter(datoEncontrado.RecyclingCenterId);
-            
-            // Actualizar el estado con el dato encontrado
-           
+    }, []);
 
+    const handleSelectChange = (event) => {
+        const selectedOption = event.target.value; // Obtener la opción seleccionada
+        console.log("opcion Seleccionada")
+        console.log(selectedOption)
+        // Buscar el dato seleccionado en el arreglo de datos
+        const datoEncontrado = users.find((users) => users.RecyclingCenterName === selectedOption);
+        console.log("Dato Encontrado")
+        console.log(datoEncontrado)
+        setCenterName(datoEncontrado.RecyclingCenterName);
+        setRfc(datoEncontrado.RecyclingCenterRFC);
+        setRazonSocial(datoEncontrado.RecyclingCenterRazonSocial);
+        setEmail(datoEncontrado.RecyclingCenterEmail);
+        setPhone(datoEncontrado.RecyclingCenterPhone);
+        setState(datoEncontrado.AddressState);
+        setCity(datoEncontrado.AddressCity);
+        setLocality(datoEncontrado.AddressLocality);
+        setStreet(datoEncontrado.AddressStreet);
+        setPostalCode(datoEncontrado.AddressPostalCode);
+        setAddressNumInt(datoEncontrado.AddressNumInt);
+        setAddressNumExt(datoEncontrado.AddressNumExt);
+        setIdCenter(datoEncontrado.RecyclingCenterId);
+        setKey(datoEncontrado.RecyclingCenterKey);
 
-        }
-
-        const handleInputChange = (e, setState, mode) => {
-            const currentInputValue = e.target.value;
-
-            if (mode !== "BORRAR") {
-                setState(currentInputValue);
-            }
-        };
-        return ReactDOM.createPortal(
-            <Modal open={true} onClose={closeModal} >
-                <Box className="ModalContent" sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 400,
-                    bgcolor: 'background.paper',
-                    boxShadow: 24,
-                    p: 4,
-                    borderRadius: 2,
-
-                }}>
-                    <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
-                    <form onSubmit={handleSubmit} >
-                        <Box mb={2}>
-                            <Title> Centro de Reciclaje</Title>
-                            {mode === "EDITAR" || mode === "BORRAR" ? (
-                                <FormControl fullWidth>
-                                    <InputLabel id="user-select-label">Centro Reciclaje</InputLabel>
-                                    <Select
-                                        labelId="user-select-label"
-                                        id="user-select"
-                                        onChange={(e) => {
-
-                                            handleSelectChange(e, setCenterName)
+        // Actualizar el estado con el dato encontrado
 
 
-                                        }}
-                                        required
-                                        //value={user}
-                                        w
-                                    >
-                                        {users.map((name, index) => (
-                                            <MenuItem key={index} value={name.RecyclingCenterName}>{name.RecyclingCenterName}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            ) : null}
-                        </Box>
-                        <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
-                            <TextField
-                                label="Nombre Centro Reciclaje"
-                                name="nombre"
-                                required
-                                fullWidth
-                                value={centerName}
-                                onChange={(e) => handleInputChange(e, setCenterName, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="RFC"
-                                name="rfc"
-                                required
-                                fullWidth
-                                value={rfc}
-                                onChange={(e) => handleInputChange(e, setRfc, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Razon Social"
-                                name="razon_social"
-                                required
-                                fullWidth
-                                value={razonSocial}
-                                onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
-                                margin="dense"
-                            />
-                            <TextField
-                                label="Email Usuario"
-                                name="email"
-                                type="email"
-                                required
-                                fullWidth
-                                value={email}
-                                onChange={(e) => handleInputChange(e, setEmail, mode)}
-                                margin="dense"
-                            />
 
-
-                                <TextField
-                                    label="Celular"
-                                    name="phone"
-                                    required
-                                    fullWidth
-                                    value={phone}
-                                    onChange={(e) => handleInputChange(e, setPhone, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Clave de Centro Reciclaje"
-                                    name="key"
-                                    required
-                                    fullWidth
-                                    value={key}
-                                    onChange={(e) => handleInputChange(e, setKey, mode)}
-                                    margin="dense"
-                                />
-                           
-                            <FormControl fullWidth mt={2} mb={2}>
-                                
-                                <Title>Ubicacion</Title>
-                                <TextField
-                                    label="Estado"
-                                    name="state"
-                                    required
-                                    fullWidth
-                                    value={state}
-                                    onChange={(e) => handleInputChange(e, setState, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Ciudad"
-                                    name="city"
-                                    required
-                                    fullWidth
-                                    value={city}
-                                    onChange={(e) => handleInputChange(e, setCity, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Colonia"
-                                    name="locality"
-                                    required
-                                    fullWidth
-                                    value={locality}
-                                    onChange={(e) => handleInputChange(e, setLocality, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Calle "
-                                    name="street"
-                                    required
-                                    fullWidth
-                                    value={street}
-                                    onChange={(e) => handleInputChange(e, setStreet, mode)}
-                                    margin="dense"
-                                />
-                                <TextField
-                                    label="Numero interior"
-                                    name="address_num_int"
-                                    required
-                                    fullWidth
-                                    value={address_num_int}
-                                    onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
-                                    margin="dense"
-                                />
-
-
-                                <TextField
-                                    label="Codigo postal"
-                                    name="postal_code"
-                                    required
-                                    fullWidth
-                                    value={postal_code}
-                                    onChange={(e) => handleInputChange(e, setPostalCode, mode)}
-                                    margin="dense"
-                                />
-                            </FormControl>
-                        </Box>
-
-                        <Button type="submit" variant="contained" fullWidth>{mode}</Button>
-                    </form>
-                </Box>
-
-
-            </Modal>,
-
-            document.getElementById('modal')
-
-        );
     }
+
+    const handleInputChange = (e, setState, mode) => {
+        const currentInputValue = e.target.value;
+
+        if (mode !== "BORRAR") {
+            setState(currentInputValue);
+        }
+    };
+    return ReactDOM.createPortal(
+        <Modal open={true} onClose={closeModal} >
+            <Box className="ModalContent" sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 400,
+                bgcolor: 'background.paper',
+                boxShadow: 24,
+                p: 4,
+                borderRadius: 2,
+
+            }}>
+                <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
+                <form onSubmit={handleSubmit} >
+                    <Box mb={2}>
+                        <Title> Centro de Reciclaje</Title>
+                        {mode === "EDITAR" || mode === "BORRAR" ? (
+                            <FormControl fullWidth>
+                                <InputLabel id="user-select-label">Centro Reciclaje</InputLabel>
+                                <Select
+                                    labelId="user-select-label"
+                                    id="user-select"
+                                    onChange={(e) => {
+
+                                        handleSelectChange(e, setCenterName)
+
+
+                                    }}
+                                    required
+                                    //value={user}
+                                    w
+                                >
+                                    {users.map((name, index) => (
+                                        <MenuItem key={index} value={name.RecyclingCenterName}>{name.RecyclingCenterName}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        ) : null}
+                    </Box>
+                    <Box mt={2} mb={2} sx={{ overflowY: 'auto', maxHeight: 500 }}>
+                        <TextField
+                            label="Nombre Centro Reciclaje"
+                            name="nombre"
+                            required
+                            fullWidth
+                            value={centerName}
+                            onChange={(e) => handleInputChange(e, setCenterName, mode)}
+                            margin="dense"
+                        />
+                        <TextField
+                            label="RFC"
+                            name="rfc"
+                            fullWidth
+                            value={rfc}
+                            onChange={handleRfcChange}
+                            margin="dense"
+                            inputProps={{
+                                maxLength: 13 // Opcional: si quieres forzar la longitud máxima en el HTML
+                            }}
+                            // // Validación de error para la longitud del RFC
+                            // error={rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)}
+                            // helperText={
+                            //     rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)
+                            //         ? "El RFC debe tener entre 12 y 13 caracteres"
+                            //         : ""
+                            // }
+                        />
+                        <TextField
+                            label="Razon Social"
+                            name="razon_social"
+                            required
+                            fullWidth
+                            value={razonSocial}
+                            onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
+                            margin="dense"
+                        />
+                        <TextField
+                            label="Email Usuario"
+                            name="email"
+                            type="email"
+                            required
+                            fullWidth
+                            value={email}
+                            onChange={(e) => handleInputChange(e, setEmail, mode)}
+                            margin="dense"
+                        />
+
+
+                        <TextField
+                            label="Celular"
+                            name="phone"
+                            required
+                            fullWidth
+                            value={phone}
+                            onChange={handlePhoneChange}
+                            margin="dense"
+                            inputProps={{
+                                // Opcional: usar el tipo "tel" para mejor semántica y compatibilidad móvil
+                                type: "tel",
+                                // maxLength: 10 // Opcional: si quieres forzar la longitud máxima en el HTML
+                            }}
+                            // Para mostrar un mensaje de error si la longitud es menor a 10
+                            error={phone.length > 0 && phone.length < 10}
+                            helperText={phone.length > 0 && phone.length < 10 ? "El número debe ser de 10 dígitos" : ""}
+                        />
+                        <TextField
+                            label="Clave de Centro Reciclaje"
+                            name="key"
+                            required
+                            fullWidth
+                            value={key}
+                            onChange={(e) => handleInputChange(e, setKey, mode)}
+                            margin="dense"
+                        />
+
+                        <FormControl fullWidth mt={2} mb={2}>
+
+                            <Title>Ubicacion</Title>
+                            <TextField
+                                label="Estado"
+                                name="state"
+                                required
+                                fullWidth
+                                value={state}
+                                onChange={(e) => handleInputChange(e, setState, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Ciudad"
+                                name="city"
+                                required
+                                fullWidth
+                                value={city}
+                                onChange={(e) => handleInputChange(e, setCity, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Colonia"
+                                name="locality"
+                                required
+                                fullWidth
+                                value={locality}
+                                onChange={(e) => handleInputChange(e, setLocality, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Calle "
+                                name="street"
+                                required
+                                fullWidth
+                                value={street}
+                                onChange={(e) => handleInputChange(e, setStreet, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Numero interior"
+                                name="address_num_int"
+                                required
+                                fullWidth
+                                value={address_num_int}
+                                onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
+                                margin="dense"
+                            />
+
+
+                            <TextField
+                                label="Codigo postal"
+                                name="postal_code"
+                                required
+                                fullWidth
+                                value={postal_code}
+                                onChange={(e) => handleInputChange(e, setPostalCode, mode)}
+                                margin="dense"
+                            />
+                        </FormControl>
+                    </Box>
+
+                    <Button type="submit" variant="contained" fullWidth>{mode}</Button>
+                </form>
+            </Box>
+
+
+        </Modal>,
+
+        document.getElementById('modal')
+
+    );
+}
 
 export { ModalRecyclingCenter };

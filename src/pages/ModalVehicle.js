@@ -8,8 +8,11 @@ import Title from '../components/Title';
 
 function ModalVehicle({ children, mode }) {
   const [vehicles, setVehicles] = useState([]);
+  const [drivers, setDrivers] = useState([]);
+  const [driver, setDriver] = useState("");
   const [residue, setVehicle] = useState("");
   const [oldVehicle, setOldVehicle] = useState("");
+  const [id, setId] = useState("");
   const [descripcion, setDescripcion] = useState("");
 
     const [nombre, setNombre] = useState("");
@@ -42,11 +45,13 @@ function ModalVehicle({ children, mode }) {
       modelo: e.target.nombre.value,
       placas: e.target.placas.value,
       capacidad: e.target.capacidad.value,
+      idConductor: id
     };
     const editarDato = {
         modelo: e.target.nombre.value,
         placas: e.target.placas.value,
         capacidad: e.target.capacidad.value,
+        idConductor: id,
         antiguasPlacas: oldVehicle
         };
         
@@ -120,37 +125,67 @@ function ModalVehicle({ children, mode }) {
   };
 
   useEffect(() => {
-    axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-vehicle/')
-      .then(response => {
-        const data = response.data;
-        setVehicles(data)
+
+    const fetchVehicles =axios.get('http://127.0.0.1:8000/Rennueva/get-all-vehicle/')
+
+    const fetchDrivers =axios.get('http://127.0.0.1:8000/Rennueva/get-all-drivers/')
+
+    axios.all([fetchVehicles, fetchDrivers]).then(
+      axios.spread((...allData) => {
+        const allDataVehicles = allData[0].data;
+        const allDataDrivers = allData[1].data;
+        setVehicles(allDataVehicles)
+        setDrivers(allDataDrivers)
         console.log("######################GRUPOS##################################")
+        console.log(allDataVehicles)
+        console.log(allDataDrivers)
 
       })
+    )
       .catch(error => {
         console.error(error);
       });
-
   }, []);
+  
+
+
+  const handleDriverSelectChange = (event) => {
+    const selectedOption = event.target.value; // Obtener la opción seleccionada
+    console.log(selectedOption)
+    setId(selectedOption)
+    //setOldVehicle(selectedOption)
+    // Buscar el dato seleccionado en el arreglo de datos
+    const datoEncontrado = drivers.find((drivers) => drivers.id === selectedOption);
+    console.log("dato encontrado")
+    console.log(datoEncontrado)
+ 
+  }
 
 
   const handleSelectChange = (event) => {
     const selectedOption = event.target.value; // Obtener la opción seleccionada
-    console.log(selectedOption)
     setOldVehicle(selectedOption)
+    console.log("selectedOption")
+    console.log(selectedOption)
+
     // Buscar el dato seleccionado en el arreglo de datos
     const datoEncontrado = vehicles.find((vehicles) => vehicles.placas === selectedOption);
     console.log("dato encontrado")
     console.log(datoEncontrado)
+    setVehicle(datoEncontrado.placas)
+    setNombre(datoEncontrado.modelo)
+    setPlacas(datoEncontrado.placas)
+    setCapacidad(datoEncontrado.capacidad)
+    setDriver(datoEncontrado.idConductor)
+    setId(datoEncontrado.idConductor)
 
-    setNombre(datoEncontrado.modelo);
-    setPlacas(datoEncontrado.placas);
-    setCapacidad(datoEncontrado.capacidad);
 
 
 
-  }
+
+
+}
+
 
   const handleInputChange = (e, setState, mode) => {
     const currentInputValue = e.target.value;
@@ -226,7 +261,22 @@ function ModalVehicle({ children, mode }) {
                 margin="dense"
               />
 
+
             </FormControl>
+            <FormControl fullWidth>
+                <InputLabel id="driver-select-label">Conductor</InputLabel>
+                <Select
+                  labelId="driver-select-label"
+                  id="driver-select"
+                  onChange={(e) => handleDriverSelectChange(e, id)}
+                  required
+                  value={id}
+                >
+                  {drivers.map((name, index) => (
+                    <MenuItem key={index} value={name.id}>{name.license} {name.first_name} {name.last_name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
           </Box>
 
           <Button type="submit" variant="contained" fullWidth>{mode}</Button>
