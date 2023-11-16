@@ -114,7 +114,7 @@ function ModalUser({ children, mode }) {
       }
 
       const editarDato = {
-        user: e.target.user.value,
+        user: e.target.email.value,
         //password: e.target.password.value,
         email: e.target.email.value,
         first_name: e.target.nombre.value,
