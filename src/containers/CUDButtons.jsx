@@ -14,7 +14,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       openModalEditGroup, setOpenModalEditGroup,
       openModalDeleteGroup, setOpenModalDeleteGroup,
       openModalCreateCarrier, setOpenModalCreateCarrier,
-      openModalEditCarrier, setOpenModalEditCarreir,
+      openModalEditCarrier, setOpenModalEditCarrier,
       openModalDeleteCarrier, setOpenModalDeleteCarrier,
       openModalCreateCollectionCenter, setOpenModalCreateCollectionCenter,
       openModalEditCollectionCenter, setOpenModalEditCollectionCenter,
@@ -87,7 +87,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
           <OptionButton setOpenModal={setOpenModalEditGroup} text="Editar Grupo" color="##007bff" />
         ) : null}
         {model === "Carrier"  ? (
-          <OptionButton setOpenModal={setOpenModalEditCarreir} text="Editar Transportista" color="##007bff" />
+          <OptionButton setOpenModal={setOpenModalEditCarrier} text="Editar Transportista" color="##007bff" />
         ) : null }
         {model === "CollectionCenter"  ? (
           <OptionButton setOpenModal={setOpenModalEditCollectionCenter} text="Editar Centro de Acopio" color="#007bff" />
