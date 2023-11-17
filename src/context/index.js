@@ -58,7 +58,15 @@ function TodoProvider({ children }) {
   const [updateReportInfo, setUpdateReportInfo] = React.useState(false);
   const [updateResidueReportInfo, setUpdateResidueReportInfo] = React.useState(false);
   const [updateUserInfo, setUpdateUserInfo] = React.useState(false);
-   
+
+  const [openModalCreateFirma, setOpenModalCreateFirma] = React.useState(false);
+  const [openModalEditFirma, setOpenModalEditFirma] = React.useState(false);
+  const [openModalDeleteFirma, setOpenModalDeleteFirma] = React.useState(false);
+
+  const [openModalCreateFirmaReceptor, setOpenModalCreateFirmaReceptor] = React.useState(false);
+  const [openModalEditFirmaReceptor, setOpenModalEditFirmaReceptor] = React.useState(false);
+  const [openModalDeleteFirmaReceptor, setOpenModalDeleteFirmaReceptor] = React.useState(false);
+
 
 
 
@@ -132,7 +140,12 @@ function TodoProvider({ children }) {
       updateReportInfo, setUpdateReportInfo,
       updateResidueReportInfo, setUpdateResidueReportInfo,
       updateUserInfo, setUpdateUserInfo,
-
+      openModalCreateFirma, setOpenModalCreateFirma,
+      openModalEditFirma, setOpenModalEditFirma,
+      openModalDeleteFirma, setOpenModalDeleteFirma,
+      openModalCreateFirmaReceptor, setOpenModalCreateFirmaReceptor,
+      openModalEditFirmaReceptor, setOpenModalEditFirmaReceptor,
+      openModalDeleteFirmaReceptor, setOpenModalDeleteFirmaReceptor,
     }} >
       {children}
     </TodoContext.Provider>

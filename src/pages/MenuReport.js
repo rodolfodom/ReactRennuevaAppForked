@@ -62,6 +62,8 @@ const getAllInfoReport = async (id_report) => {
     const response = await axios.post('http://127.0.0.1:8000/Rennueva/get-all-info-per-report/', {
       reportId: id_report,
     });
+    console.log("Return de la funcion get all info per report")
+    console.log(response.data)
 
     // Retorna directamente los datos de la respuesta
     return response.data;
@@ -95,7 +97,7 @@ const generatePdf = (report, data) => {
   // Use this if you have a logo to add
   //doc.addImage('src/assets/Rennueva.jpg', 'JPEG', 10, 10, 100, 100);
 
-  doc.setFillColor(153, 255, 153); 
+  doc.setFillColor(153, 255, 153);
 
   // Dibuja un rectángulo delgado en la coordenada y=0 (arriba) a lo largo del eje y.
   // El rectángulo tiene 3 de ancho (el '3' en el método rect) y la altura podría ser la longitud de la página.
@@ -115,7 +117,7 @@ const generatePdf = (report, data) => {
   doc.text("Datos del Generador", 14, 30);
   doc.setFontSize(12);
   doc.setTextColor(255, 0, 0);
-  doc.text("FOLIO: " + report.group_key +report.id_report, 90, 30, { align: 'left' });
+  doc.text("FOLIO: " + report.group_key + report.id_report, 90, 30, { align: 'left' });
   doc.setTextColor(0, 0, 0);
 
 
@@ -131,7 +133,7 @@ const generatePdf = (report, data) => {
     startY: 35,
     tableWidth: 190,
     body: [
-      ['RFC:', report.rfc_usuario , 'Razón Social:', 'Asociación de Colonos de Residencial Chiluca A.C.'],
+      ['RFC:', report.rfc_usuario, 'Razón Social:', 'Asociación de Colonos de Residencial Chiluca A.C.'],
 
     ],
     theme: 'plain',
@@ -171,17 +173,17 @@ const generatePdf = (report, data) => {
   doc.text("Datos del Residuo", 14, 140);
 
   var bodyData = []
-  
-  bodyData.push(['Tipo de Residuos', 'Cantidad (KG)', 'Cantidad (M3)', 'Procedencia de Residuos', ])
-  var distancia = 185 
+
+  bodyData.push(['Tipo de Residuos', 'Cantidad (KG)', 'Cantidad (M3)', 'Procedencia de Residuos',])
+  var distancia = 185
   for (let i = 0; i < data.length; i++) {
-    bodyData.push([data[i].nombre_residuo, data[i].peso + " kg", data[i].volumen + " m³" , data[i].tipo_residuo])
-    
+    bodyData.push([data[i].nombre_residuo, data[i].peso + " kg", data[i].volumen + " m³", data[i].tipo_residuo])
+
     distancia = distancia + 3
-  } 
- 
+  }
+
   //bodyData.push(["Fecha Recepcion", report.fecha_inicio_reporte, "Fecha Elaboracion", ""])
-  
+
 
   // Table 3: Residuos
   doc.autoTable({
@@ -191,22 +193,22 @@ const generatePdf = (report, data) => {
     theme: 'plain',
     styles: tableStyles,
   });
-  
+
 
   // doc.setFontSize(10);
   // doc.text("Certificacion del generador:", 90, distancia, { align: 'left' });
-   doc.setFontSize(8);
+  doc.setFontSize(8);
   doc.text("Solicite, con su numero de folio, el", 70, distancia + 35, { align: 'left' });
-  doc.text("deslose de los materiales y", 70, distancia +40, { align: "left" })
-  doc.text("comprobante al siguiente correo", 70, distancia +45, { align: "left" })
+  doc.text("deslose de los materiales y", 70, distancia + 40, { align: "left" })
+  doc.text("comprobante al siguiente correo", 70, distancia + 45, { align: "left" })
   doc.text("plasticos@rennueva.com", 70, distancia + 50, { align: "left" })
-  
+
   // Antes de añadir el texto para el "FOLIO", cambia el color del texto a rojo.
   doc.setTextColor(255, 0, 0); // Esto representa el color rojo en valores RGB
 
   // Luego, agrega el texto para el "FOLIO". 
   // El color rojo que estableciste anteriormente se aplicará aquí.
-  doc.text("FOLIO: " + report.id_report, 150, distancia + 30, { align: 'right' }); 
+  doc.text("FOLIO: " + report.id_report, 150, distancia + 30, { align: 'right' });
 
   // ... (resto de tu código para generar el PDF)
 
@@ -214,13 +216,20 @@ const generatePdf = (report, data) => {
   // Por ejemplo, para volver al negro usarías:
   doc.setTextColor(0, 0, 0);
   doc.text("Fecha Recepcion: " + report.fecha_inicio_reporte, 200, distancia + 35, { align: 'right' });
-  const startY = distancia + 10 ;
+  const startY = distancia + 10;
   const signatureWidth = 80;
   const spaceBetweenSignatures = 20;
+
+  doc.addImage(data[0].firma_responsiva_generador, 'JPEG', 155, startY - 15, 25, 15);
+
+  doc.addImage(data[0].firma_responsiva_receptor, 'JPEG', 45, startY - 15, 25,15);
 
   // Añade el texto y las líneas para el Receptor
   doc.text("Nombre y Firma del Receptor:", 15, startY);
   doc.line(15, startY + 5, 10 + signatureWidth, startY + 5);  // Línea de firma para el Receptor
+
+
+
 
   // Añade el texto y las líneas para el Generador
   doc.text("Nombre y Firma del Generador:", 10 + signatureWidth + spaceBetweenSignatures, startY);
@@ -232,11 +241,11 @@ const generatePdf = (report, data) => {
   doc.text("Todos los datos recabados en este documento seran tratados conforme a la Ley General de Proteccion de Datos Personales", 14, distancia + 85);
 
   if (qrImage) {
-    doc.addImage(qrImage, 'PNG', 12, distancia + 25 , 45, 45);
+    doc.addImage(qrImage, 'PNG', 12, distancia + 25, 45, 45);
     // Modifica 'x', 'y', 'width' y 'height' para ubicar y dimensionar el QR como desees.
   }
 
-  doc.save("Responsiva_folio_" +report.id_report +".pdf");
+  doc.save("Responsiva_folio_" + report.id_report + ".pdf");
 };
 
 
@@ -273,6 +282,10 @@ function MenuReport() {
     updateReportInfo,
     setUpdateReportInfo,
 
+    openModalCreateFirma, setOpenModalCreateFirma, openModalEditFirma, setOpenModalEditFirma, openModalDeleteFirma, setOpenModalDeleteFirma,
+    openModalCreateFirmaReceptor, setOpenModalCreateFirmaReceptor, openModalEditFirmaReceptor, setOpenModalEditFirmaReceptor, openModalDeleteFirmaReceptor, setOpenModalDeleteFirmaReceptor
+
+
 
 
   } = useContext(TodoContext);
@@ -289,17 +302,18 @@ function MenuReport() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openModalFirmar, setOpenModalFirmar] = useState(false);
   const [report, setReport] = useState([]);
-  const [userSelectModal ,setUserSelectModal] = useState("");
-  const [reportSelectModal ,setReportSelectModal] = useState("");
+  const [userSelectModal, setUserSelectModal] = useState("");
+  const [reportSelectModal, setReportSelectModal] = useState("");
+  const [id_report, setIdReport] = useState("");
 
-  
+
 
   useEffect(() => {
     axios
       .get('http://127.0.0.1:8000/Rennueva/get-all-reports/')
       .then(response => {
         setReport(response.data);
-        console.log("##################################################");
+        console.log("##############################################info get all reports####");
         console.log(response.data)
         setUpdateReportInfo(false);
       })
@@ -399,28 +413,50 @@ function MenuReport() {
                                 <TableCell>{reporte.calle_usuario}</TableCell>
                                 <TableCell>{reporte.cp_usuario}</TableCell>
                                 <TableCell>{reporte.fecha_inicio_reporte}</TableCell>
-                                
-                                <TableCell><StyledButton onClick={() => {
-                                  setOpenModalFirmar(true)
-                                }}>Firmar</StyledButton></TableCell>
-                                <TableCell><StyledButton onClick={() => {
-                                  setOpenModalCreateResidueReport(true)
-                                  setUserSelectModal(reporte.nombre_usuario)
-                                  setReportSelectModal(reporte.id_report)
 
-                                }} >Residuo</StyledButton></TableCell>
-                                <TableCell><StyledButton>Firmar</StyledButton></TableCell>
+                                <TableCell>
+                                  <StyledButton  onClick={() => {
+                                    setIdReport(reporte.id_report)
+                                    setOpenModalCreateFirmaReceptor(true)
+                                  }}>
+                                    Firmar
+                                  </StyledButton>
+                                </TableCell>
+
+                                <TableCell>
+                                  <StyledButton onClick={() => {
+                                    setOpenModalCreateResidueReport(true)
+                                    setUserSelectModal(reporte.nombre_usuario)
+                                    setReportSelectModal(reporte.id_report)
+
+                                  }}>
+                                    Residuo
+                                  </StyledButton>
+                                </TableCell>
+
+
+                                <TableCell>
+                                  <StyledButton onClick={() => {
+                                    setIdReport(reporte.id_report)
+                                    setOpenModalCreateFirma(true)
+                                  }}>
+                                    Firmar
+                                  </StyledButton>
+                                </TableCell>
 
                                 <TableCell><StyledButton onClick={async () => {
                                   await generateQR("TuTextoParaElQR");
-                                  const data  = await getAllInfoReport(reporte.id_report)    
+                                  const data = await getAllInfoReport(reporte.id_report)
                                   console.log("DATA de la funcion1")
                                   console.log(reporte)
-                                  
+                                  console.log("######SDASDASD el reporte firmado")
+                                  console.log(data[0].firma_responsiva_generador)
+
                                   generatePdf(reporte, data)
-                              
+
                                 }
-                                }>Reporte</StyledButton></TableCell>
+                                }>Reporte</StyledButton>
+                                </TableCell>
 
                               </TableRow>
                             ))}
@@ -436,9 +472,38 @@ function MenuReport() {
                       onPageChange={handleChangePage}
                       onRowsPerPageChange={handleChangeRowsPerPage}
                     />
-                    {openModalFirmar && (
 
-                      <ModalFirmar />
+
+                    {openModalCreateFirma && (
+                      <ModalFirmar mode={"CREAR"} id={id_report} type = {"Generador"} >
+                        La funcionalidad de agregar TODO
+                      </ ModalFirmar >
+                    )}
+                    {openModalEdit && (
+                      <ModalFirmar mode={"EDITAR"}>
+                        La funcionalidad de editar TODO
+                      </ ModalFirmar >
+                    )}
+                    {openModalDelete && (
+                      <ModalFirmar mode={"BORRAR"}>
+                        La funcionalidad de borrar TODO
+                      </ ModalFirmar >
+                    )}
+
+                    {openModalCreateFirmaReceptor && (
+                      <ModalFirmar mode={"CREAR"} id={id_report} type= {"Receptor"} >
+                        La funcionalidad de agregar TODO
+                      </ ModalFirmar >
+                    )}
+                    {openModalEditFirmaReceptor && (
+                      <ModalFirmar mode={"EDITAR"}>
+                        La funcionalidad de editar TODO
+                      </ ModalFirmar >
+                    )}
+                    {openModalDeleteFirmaReceptor && (
+                      <ModalFirmar mode={"BORRAR"}>
+                        La funcionalidad de borrar TODO
+                      </ ModalFirmar >
                     )}
 
                   </Paper>
@@ -465,21 +530,21 @@ function MenuReport() {
           )}
 
           {openModalCreateResidueReport && (
-            <ModalResidueReport mode={"CREAR"} userselect={userSelectModal} report = {reportSelectModal}>
+            <ModalResidueReport mode={"CREAR"} userselect={userSelectModal} report={reportSelectModal}>
               La funcionalidad de agregar TODO
             </ ModalResidueReport >
           )}
           {openModalEditResidueReport && (
-            <ModalResidueReport mode={"EDITAR"} userselect={userSelectModal} report = {reportSelectModal}>
+            <ModalResidueReport mode={"EDITAR"} userselect={userSelectModal} report={reportSelectModal}>
               La funcionalidad de editar TODO
             </ ModalResidueReport >
           )}
           {openModalDeleteResidueReport && (
-            <ModalResidueReport mode={"BORRAR"} userselect={userSelectModal} report = {reportSelectModal} >
+            <ModalResidueReport mode={"BORRAR"} userselect={userSelectModal} report={reportSelectModal} >
               La funcionalidad de borrar TODO
             </ ModalResidueReport >
           )}
-           {openModalText && (
+          {openModalText && (
             <Dialog
               open={openModalText}
               onClose={() => setOpenModalText(false)}

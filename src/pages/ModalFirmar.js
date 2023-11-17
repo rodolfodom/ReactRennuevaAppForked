@@ -8,76 +8,44 @@ import Title from '../components/Title';
 import Grid from '@mui/material/Grid';
 import SignatureComponent from "../components/FirmaDocument";
 
-function ModalFirmar({ children, mode }) {
-    const [datos, setDatos] = useState([]);
-    const [groups, setGroups] = useState([])
-    const [users, setUsers] = useState([])
-    const [user, setUser] = useState("");
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [first_name, setFirstName] = useState("");
-    const [last_name, setLastName] = useState("");
-    const [group, setGroup] = useState("");
-    const [company, setCompany] = useState("");
-    const [state, setState] = useState("");
-    const [city, setCity] = useState("");
-    const [locality, setLocality] = useState("");
-    const [street, setStreet] = useState("");
-    const [postal_code, setPostalCode] = useState("");
-    const [rfc, setRfc] = useState("");
-    const [phone, setPhone] = useState("");
-    const [nameGenerator, setNameGenerator] = useState([]);
-    const { openModalCreateReport, setOpenModalCreateReport, openModalEditReport, setOpenModalEditReport, openModalDeleteReport, setOpenModalDeleteReport } = useContext(TodoContext);
-    
-    useEffect(() => {
-        axios
-          .get('http://127.0.0.1:8000/Rennueva/get-all-generator/')
-          .then(response => {
-            const data = response.data;
-            
-            var nameGenerator = data.map(function (item) {
-                var name = item.first_name + " " + item.last_name;
-                return {
-                    rfc: item.rfc,
-                    name: name
-                };
-            
-            });
-            setNameGenerator(nameGenerator);
-            console.log(nameGenerator);
+function ModalFirmar({ children, mode,id , type}) {
+    const { openModalCreateFirma, setOpenModalCreateFirma, openModalEditFirma, setOpenModalEditFirma, openModalDeleteFirma, setOpenModalDeleteFirma,
+        openModalCreateFirmaReceptor, setOpenModalCreateFirmaReceptor, openModalEditFirmaReceptor, setOpenModalEditFirmaReceptor, openModalDeleteFirmaReceptor, setOpenModalDeleteFirmaReceptor,
+     } = useContext(TodoContext);
+    console.log("ID DE QUIERN SE FIRMA",id)
 
-
-          })
-          .catch(error => {
-            console.error(error);
-          });
-    
-      }, []); 
-    
     const closeModal = () => {
-        if (openModalCreateReport) {
-            setOpenModalCreateReport(false);
+        if (type == "Generador"){
+        if (openModalCreateFirma) {
+            setOpenModalCreateFirma(false);
         }
-        if (openModalEditReport) {
-            setOpenModalEditReport(false);
+        if (openModalEditFirma) {
+            setOpenModalEditFirma(false);
         }
-        if (openModalDeleteReport) {
-            setOpenModalDeleteReport(false);
+        if (openModalDeleteFirma) {
+            setOpenModalDeleteFirma(false);
         }
-    };
+    }
+        
+        if (type == "Receptor"){
+        if (openModalCreateFirmaReceptor) {
+            setOpenModalCreateFirmaReceptor(false);
+        }
+        if (openModalEditFirmaReceptor) {
+            setOpenModalEditFirmaReceptor(false);
+        }
+        if (openModalDeleteFirmaReceptor) {
+            setOpenModalDeleteFirmaReceptor(false);
+        }
+        }
 
 
-    const handleInputChange = (e, setState, mode) => {
-        const currentInputValue = e.target.value;
 
-        if (mode !== "BORRAR") {
-            setState(currentInputValue);
-        }
     };
 
     return ReactDOM.createPortal(
         <Modal open={true} onClose={closeModal}>
-            
+
             <Box className="ModalContent" sx={{
                 position: 'absolute',
                 top: '50%',
@@ -90,10 +58,11 @@ function ModalFirmar({ children, mode }) {
                 borderRadius: 2,
 
             }}>
-               <Box>
-                <SignatureComponent />
-              </Box>
-              </Box>
+                <Button onClick={closeModal} sx={{ position: 'absolute', right: 2, top: 2 }}>&times;</Button>
+                <Box>
+                    <SignatureComponent id= {id} type= {type}/>
+                </Box>
+            </Box>
 
         </Modal>
 
