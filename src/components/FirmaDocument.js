@@ -2,15 +2,44 @@ import React, { useRef, useState } from 'react';
 import SignaturePad from 'react-signature-canvas';
 import './Signature.css'; // Estilos para el canvas si los necesitas
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
-const SignatureComponent = () => {
+import axios from 'axios';
+const SignatureComponent = ({id, type}) => {
   const [imageURL, setImageURL] = useState(null); // para guardar la imagen de la firma
   const sigCanvas = useRef({}); // referencia al componente SignaturePad
-
+  console.log("firma en el signature component")
+  console.log(id)
   // Para limpiar el área de firma
   const clear = () => sigCanvas.current.clear();
 
+
   // Para guardar la imagen y posiblemente hacer algo más con ella (por ejemplo, enviarla a un servidor)
-  const save = () => setImageURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
+  const save = async () => {
+    let url = 'http://127.0.0.1:8000/Rennueva/update-report-generator-signature/'
+    if (type == "Receptor"){
+      url = 'http://127.0.0.1:8000/Rennueva/update-report-receptor-signature/'
+      
+    }
+
+    setImageURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
+    console.log(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
+    try {
+      // Usamos 'await' para esperar a que la solicitud se complete y para obtener la respuesta
+      const response = await axios.post(url, {
+        reportId: id,
+        reportGeneratorSignature: sigCanvas.current.getTrimmedCanvas().toDataURL("image/png")
+      });
+  
+      // Retorna directamente los datos de la respuesta
+      return response.data;
+    } catch (error) {
+      // Maneja cualquier error que ocurra durante la solicitud
+      console.error(error);
+      // Aquí puedes optar por lanzar el error o devolver algo específico en caso de un error
+      throw error; // Esto propaga el error al llamador para que pueda ser manejado más adelante
+    }
+  } 
+
+
 
   return (
     <div>
