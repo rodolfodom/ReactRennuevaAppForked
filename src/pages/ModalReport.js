@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 function ModalReport({ children, mode }) {
     const [datos, setDatos] = useState([]);
     const [groups, setGroups] = useState([])
+    const [carriers, setCarriers] = useState([])
     const [users, setUsers] = useState([])
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
@@ -30,6 +31,11 @@ function ModalReport({ children, mode }) {
     const [rfc, setRfc] = useState("");
     const [phone, setPhone] = useState("");
     const [nameGenerator, setNameGenerator] = useState([]);
+    const [isSameLocation, setIsSameLocation] = useState(true);
+    const [haveTransport, setHaveTransport] = useState(true);
+    const [carrier, setCarrier] = useState("");
+    const [transportAvailable, setTransportAvailable] = useState(false);
+
     const { setOpenModalText, setTextOpenModalText, updateReportInfo, setUpdateReportInfo, openModalCreateReport, setOpenModalCreateReport, openModalEditReport, setOpenModalEditReport, openModalDeleteReport, setOpenModalDeleteReport } = useContext(TodoContext);
 
     const AntSwitch = styled(Switch)(({ theme }) => ({
@@ -76,9 +82,10 @@ function ModalReport({ children, mode }) {
 
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-generator/')
+            .get('http://127.0.0.1:8000/Rennueva/get-all-users-responsiva/')
             .then(response => {
                 const data = response.data;
+                setDatos(data); // Asumiendo que 'data' es un array.
 
                 var nameGenerator = data.map(function (item) {
                     var name = item.first_name + " " + item.last_name;
@@ -95,6 +102,9 @@ function ModalReport({ children, mode }) {
                         address_city: item.address_city,
                         address_state: item.address_state,
                         address_postal_code: item.address_postal_code,
+                        phone: item.phone,
+                        group: item.groups[0],
+
 
                     };
 
@@ -109,6 +119,26 @@ function ModalReport({ children, mode }) {
             });
 
     }, []);
+
+
+    useEffect(() => {
+        axios
+            .get('http://127.0.0.1:8000/Rennueva/get-all-carrier/')
+            .then(response => {
+                const data = response.data;
+                console.log("#############################CARRIERS#######################")
+                console.log(data)
+                setCarriers(data); // Asumiendo que 'data' es un array.
+
+
+
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    }, []);
+
 
     const closeModal = () => {
         if (openModalCreateReport) {
@@ -136,7 +166,7 @@ function ModalReport({ children, mode }) {
                     city: city,
                     state: state,
                     postalCode: postal_code,
-                    
+
 
                 })
                 .then(response => {
@@ -165,6 +195,10 @@ function ModalReport({ children, mode }) {
         }
     };
 
+    const handleCarrierChange = (event) => {
+        setCarrier(event.target.value);
+    };
+
     const handleSelectChange = (event) => {
         const selectedOption = event.target.value; // Obtener la opción seleccionada
         console.log(selectedOption)
@@ -172,6 +206,7 @@ function ModalReport({ children, mode }) {
         console.log(nameGenerator)
         // Buscar el dato seleccionado en el arreglo de datos
         const datoEncontrado = nameGenerator.find((users) => users.name === selectedOption);
+        console.log("Dato encontrado")
         console.log(datoEncontrado)
         setUser(datoEncontrado.user);
         setPassword(datoEncontrado.password);
@@ -188,13 +223,24 @@ function ModalReport({ children, mode }) {
         setStreet(datoEncontrado.address_street);
         setPostalCode(datoEncontrado.address_postal_code);
 
+        if (datoEncontrado.group === "Generador") {
+            setTransportAvailable(true);
+        }
+        if (datoEncontrado.group === "Transportista" || datoEncontrado.group === "Receptor", datoEncontrado.group === "Donador") {
+            setTransportAvailable(false);
+        }
+
+
 
 
     }
-    const [isSameLocation, setIsSameLocation] = useState(true);
+
 
     const handleSwitchChange = (event) => {
         setIsSameLocation(event.target.checked);
+    }
+    const handleSwitchChangeCarrier = (event) => {
+        setHaveTransport(event.target.checked);
     }
 
     useEffect(() => {
@@ -316,6 +362,47 @@ function ModalReport({ children, mode }) {
                                         margin="dense"
                                     />
                                 </Grid>
+                                {transportAvailable &&
+                                    <Grid item xs={12} sm={12}>
+                                        <Grid item xs={12} sm={12}>
+                                            <Title>Cuenta con transportista ?</Title>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+
+                                            <Stack direction="row" spacing={2} alignItems="center">
+                                                <Typography>No</Typography>
+                                                <AntSwitch onChange={handleSwitchChangeCarrier}
+                                                    checked={haveTransport} inputProps={{ 'aria-label': 'ant design' }} />
+                                                <Typography>Si</Typography>
+                                            </Stack>
+                                        </Grid>
+                                        {haveTransport &&
+
+                                            <Grid item xs={12} sm={12}>
+                                                <Title>Seleccionar Transportista</Title>
+                                                <FormControl fullWidth mt={2} mb={2}>
+                                                    <InputLabel id="rol-select-label">Transportista</InputLabel>
+                                                    <Select
+                                                        labelId="rol-select-label"
+                                                        id="rol-select"
+                                                        required
+                                                        onChange={(e) => handleCarrierChange(e, setUser)}
+                                                    >
+                                                        {carriers.map((name, index) => (
+                                                            <MenuItem key={index} value={name.company_name}>{name.company_name}</MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </FormControl>
+
+                                            </Grid>}
+                                    </Grid>
+                                }
+
+
+
+
+
+
                                 {/* <Grid item xs={12} sm={6}>
                                 <TextField
                                     label="Celular"
