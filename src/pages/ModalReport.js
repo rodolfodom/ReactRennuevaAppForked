@@ -16,6 +16,7 @@ function ModalReport({ children, mode }) {
     const [groups, setGroups] = useState([])
     const [carriers, setCarriers] = useState([])
     const [users, setUsers] = useState([])
+    const [recyclingCollectionCenters, setRecyclingCollectionCenters] = useState([])
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -30,6 +31,7 @@ function ModalReport({ children, mode }) {
     const [postal_code, setPostalCode] = useState("");
     const [rfc, setRfc] = useState("");
     const [phone, setPhone] = useState("");
+    const [recyclingCollection , setRecyclingCollection] = useState("")
     const [nameGenerator, setNameGenerator] = useState([]);
     const [isSameLocation, setIsSameLocation] = useState(true);
     const [haveTransport, setHaveTransport] = useState(true);
@@ -138,6 +140,23 @@ function ModalReport({ children, mode }) {
             });
 
     }, []);
+    useEffect(() => {
+        axios
+            .get('http://127.0.0.1:8000/Rennueva/get-all-recycling-collection-center/')
+            .then(response => {
+                const data = response.data;
+                console.log("#############################CARRIERS#######################")
+                console.log(data)
+                setRecyclingCollectionCenters(data); // Asumiendo que 'data' es un array.
+
+
+
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    }, []);
 
 
     const closeModal = () => {
@@ -197,6 +216,10 @@ function ModalReport({ children, mode }) {
 
     const handleCarrierChange = (event) => {
         setCarrier(event.target.value);
+    };
+
+    const handleCenterChange = (event) => {
+        setRecyclingCollection(event.target.value);
     };
 
     const handleSelectChange = (event) => {
@@ -488,7 +511,25 @@ function ModalReport({ children, mode }) {
                                         margin="dense"
                                     />
                                 </Grid>
+                                <Grid item xs={12} sm={12}>
+                                <Box mb={2}>
+                            <Title>Seleccionar Centro de Reciclaje o Recolección</Title>
+                            <FormControl fullWidth mt={2} mb={2}>
+                                <InputLabel id="rol-select-label">Centro</InputLabel>
+                                <Select
+                                    labelId="rol-select-label"
+                                    id="rol-select"
+                                    required
+                                    onChange={(e) => handleCenterChange(e, setUser)}
+                                >
+                                    {recyclingCollectionCenters.map((name, index) => (
+                                        <MenuItem key={index} value={name.RecyclingCenterName}>{name.RecyclingCenterName}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
 
+                        </Box>
+                        </Grid>
 
 
 
