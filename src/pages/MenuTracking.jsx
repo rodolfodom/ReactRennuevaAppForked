@@ -13,6 +13,7 @@ function MenuTracking() {
     const [pdfFile2, setPdfFile2] = useState(null);
     const defaultTheme = createTheme();
     const [url, setUrl] = useState(null);
+    const [folio, setFolio] = useState(null);
 
     function openPdfInNewWindow() {
         const blob = base64ToBlob(pdfFile, 'application/pdf');
@@ -26,7 +27,7 @@ function MenuTracking() {
 
     const getPDF = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:8000/Rennueva/get-pdf-report/', { reportId: "1234" });
+            const response = await axios.post('http://127.0.0.1:8000/Rennueva/get-pdf-report/', { ReportFolio: folio});
             const data = response.data;
             console.log("Respuesta del servidor:");
             console.log(data.Reporte);
@@ -83,16 +84,19 @@ function MenuTracking() {
                                     <Title>Tracking</Title>
 
                                     <TextField
-                                        label="Clave de Grupo"
-                                        name="name"
+                                        label="Clave de Responsiva"
+                                        name="responsiva"
                                         required
                                         fullWidth
+                                        onChange={(e) => setFolio(e.target.value)}
+
                                     />
                                     <Button 
                                         variant="contained" 
                                         color="primary" 
                                         sx={{ mt: 3, mb: 2 }}
                                         onClick={getPDF}
+                                        
                                     >
                                         Buscar
                                     </Button>
