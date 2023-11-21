@@ -10,7 +10,7 @@ function ModalResidueReport({ onClose  , userselect, report} ) { // Asegúrate d
     const [residues, setResidues] = useState([]);
     const [reportResidues, setReportResidues] = useState([]);
     const [entries, setEntries] = useState([{ user: userselect, report: report, residue: '', peso: '', volumen: '' }]);
-    console.log("##################################################################SDFDFDSFDSFDSGHMN")
+    console.log("####################ReporteSeleccionado###############################SDFDFDSFDSFDSGHMN")
     console.log(userselect)
     console.log(report)
     const { openModalCreateResidueReport, setOpenModalCreateResidueReport,openModalEditResidueReport, setOpenModalEditResidueReport ,openModalDeleteResidueReport, setOpenModalDeleteReportResidue  } = useContext(TodoContext);
@@ -46,7 +46,7 @@ function ModalResidueReport({ onClose  , userselect, report} ) { // Asegúrate d
         //         console.log(err);
         //     });
         const getResidues = {
-            reportId: "14"
+            reportId: report,
           }
         axios.get('http://127.0.0.1:8000/Rennueva/get-all-residue/')
             .then(response => {

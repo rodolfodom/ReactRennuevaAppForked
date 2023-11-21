@@ -89,8 +89,43 @@ function loadImage(src, callback) {
   xhr.send();
 }
 
-const generatePdf = (report, data) => {
+const savePdf = async(pdfBase64, id_report) => {
+  console.log("PDF BASE 64")
+  console.log(pdfBase64)
+  console.log("ID REPORT")
+  console.log(id_report)
+  try {
+    // Usamos 'await' para esperar a que la solicitud se complete y para obtener la respuesta
+    const response = await axios.post('http://127.0.0.1:8000/Rennueva/finish-report/', {
+      reportId: id_report,
+      reportBase64: pdfBase64,
+    });
+    console.log("Return de la funcion get all info per report")
+    console.log(response.data)
+    }
+  catch (error) {
+    // Maneja cualquier error que ocurra durante la solicitud
+    console.error(error);
+    // Aquí puedes optar por lanzar el error o devolver algo específico en caso de un error
+    throw error; // Esto propaga el error al llamador para que pueda ser manejado más adelante
+  }
+};
 
+
+  
+
+const generatePdf = (report, data) => {
+  console.log("DATA de la funcion2")
+  console.log(data)
+  let key_centro = ""
+  if (data[0].key_centro_reciclaje != null) {
+    key_centro = data[0].key_centro_reciclaje    
+  }
+  if (data[0].key_centro_recoleccion != null) {
+    key_centro = data[0].key_centro_recoleccion
+  }
+  console.log("KEY CENTRO")
+  console.log(key_centro)
 
   const doc = new jsPDF();
 
@@ -117,7 +152,7 @@ const generatePdf = (report, data) => {
   doc.text("Datos del Generador", 14, 30);
   doc.setFontSize(12);
   doc.setTextColor(255, 0, 0);
-  doc.text("FOLIO: " + report.group_key + report.id_report, 90, 30, { align: 'left' });
+  doc.text("FOLIO: " + key_centro +"-"+ data[0].key_grupo_usuario + "-" +report.id_report, 90, 30, { align: 'left' });
   doc.setTextColor(0, 0, 0);
 
 
@@ -244,6 +279,10 @@ const generatePdf = (report, data) => {
     doc.addImage(qrImage, 'PNG', 12, distancia + 25, 45, 45);
     // Modifica 'x', 'y', 'width' y 'height' para ubicar y dimensionar el QR como desees.
   }
+
+  const pdfBase64 = doc.output('datauristring');
+  savePdf(pdfBase64, report.id_report);
+  
 
   doc.save("Responsiva_folio_" + report.id_report + ".pdf");
 };
@@ -445,12 +484,12 @@ function MenuReport() {
                                 </TableCell>
 
                                 <TableCell><StyledButton onClick={async () => {
-                                  await generateQR("TuTextoParaElQR");
+                                  await generateQR("http://localhost:3000/report");
                                   const data = await getAllInfoReport(reporte.id_report)
                                   console.log("DATA de la funcion1")
                                   console.log(reporte)
                                   console.log("######SDASDASD el reporte firmado")
-                                  console.log(data[0].firma_responsiva_generador)
+                                  console.log(data[0])
 
                                   generatePdf(reporte, data)
 
