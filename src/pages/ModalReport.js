@@ -175,8 +175,21 @@ function ModalReport({ children, mode }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (mode === "CREAR") {
-            console.log("CREAR")
-            console.log(user)
+            console.log("###############CREAR USUARIOS##################")
+            console.log({
+                username: user,
+                street: street,
+                locality: locality,
+                city: city,
+                state: state,
+                postalCode: postal_code,
+                recyclingCollection: recyclingCollection,
+                carrier: carrier,
+
+
+
+            })
+
             axios
                 .post('http://127.0.0.1:8000/Rennueva/create-initial-report/', {
                     username: user,
@@ -185,6 +198,9 @@ function ModalReport({ children, mode }) {
                     city: city,
                     state: state,
                     postalCode: postal_code,
+                    recyclingCollection: recyclingCollection,
+                    carrier: carrier,
+
 
 
                 })

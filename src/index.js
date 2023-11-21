@@ -3,8 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './routes/AppRouter';
 import reportWebVitals from './App/reportWebVitals';
+import { pdfjs } from 'react-pdf';
+import 'pdfjs-dist/build/pdf.worker.entry';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
 root.render(
   <React.StrictMode>
     <App/>
