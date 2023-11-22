@@ -149,6 +149,16 @@ export default function MiniDrawer() {
     }
 
   }
+
+  const handleClickResponsivas = (index) => {
+    console.log("index");
+    console.log(index);
+    if (index == 0) {
+      navigate('/report');
+    } else if (index == 1) {
+      navigate('/tracking');
+    }
+  }
   
 
 
@@ -290,10 +300,10 @@ export default function MiniDrawer() {
         <Divider />
         <Divider />
         <List>
-          {['Responsivas'].map((text, index) => (
+          {['Responsivas', "Busqueda"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
-                onClick={() => { navigate('/report') }}
+                onClick={() => handleClickResponsivas(index)}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -308,6 +318,7 @@ export default function MiniDrawer() {
                   }}
                 >
                   {index === 0 ? <AssignmentRoundedIcon /> : null}
+                  {index === 1 ? <AssignmentRoundedIcon /> : null}
 
 
                 </ListItemIcon>
