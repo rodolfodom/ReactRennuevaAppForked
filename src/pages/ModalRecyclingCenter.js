@@ -239,7 +239,7 @@ function ModalRecyclingCenter({ children, mode }) {
         console.log("Dato Encontrado")
         console.log(datoEncontrado)
         setCenterName(datoEncontrado.RecyclingCenterName);
-        setRfc(datoEncontrado.RecyclingCenterRFC);
+        setRfc(datoEncontrado.RecyclingCenterRfc);
         setRazonSocial(datoEncontrado.RecyclingCenterRazonSocial);
         setEmail(datoEncontrado.RecyclingCenterEmail);
         setPhone(datoEncontrado.RecyclingCenterPhone);
