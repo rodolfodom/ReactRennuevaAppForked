@@ -118,11 +118,20 @@ const generatePdf = (report, data) => {
   console.log("DATA de la funcion2")
   console.log(data)
   let key_centro = ""
+  let direccion_centro = ""
+  let centro = ""
+  let titulo_centro = ""
   if (data[0].key_centro_reciclaje != null) {
-    key_centro = data[0].key_centro_reciclaje    
+    key_centro = data[0].key_centro_reciclaje   
+    direccion_centro = data[0].ubicacion_centro_reciclaje
+    centro = data[0].centro_reciclaje
+    titulo_centro = "Reciclaje" 
   }
   if (data[0].key_centro_recoleccion != null) {
     key_centro = data[0].key_centro_recoleccion
+    direccion_centro = data[0].ubicacion_centro_recoleccion
+    centro = data[0].centro_recoleccion
+    titulo_centro = "Recoleccion"
   }
   console.log("KEY CENTRO")
   console.log(key_centro)
@@ -152,7 +161,7 @@ const generatePdf = (report, data) => {
   doc.text("Datos del Generador", 14, 30);
   doc.setFontSize(12);
   doc.setTextColor(255, 0, 0);
-  doc.text("FOLIO: " + key_centro +"-"+ data[0].key_grupo_usuario + "-" +report.id_report, 90, 30, { align: 'left' });
+  doc.text("FOLIO: " + data[0].key_grupo_usuario  +"-"+  key_centro+ "-" +report.id_report, 90, 30, { align: 'left' });
   doc.setTextColor(0, 0, 0);
 
 
@@ -181,9 +190,8 @@ const generatePdf = (report, data) => {
     tableWidth: 190,
     body: [
 
-      ['Calle:', report.calle_usuario, 'Número:', 'S/N'],
-      ['Colonia:', report.colonia_usuario, 'C.P.:', report.cp_usuario],
-      ['Estado:', report.estado_usuario, 'Municipio:', report.ciudad_usuario],
+      ['Calle:', report.calle_usuario, 'Número:', 'S/N','Colonia:', report.colonia_usuario],
+      [ 'C.P.:', report.cp_usuario,'Estado:', report.estado_usuario, 'Municipio:', report.ciudad_usuario],
       ['Contacto:', report.nombre_real_usuario + " " + report.apellido_usuario, 'Teléfono:', report.telefono_usuario],
     ],
     theme: 'plain',
@@ -191,21 +199,35 @@ const generatePdf = (report, data) => {
   });
 
   doc.setFontSize(16);
-  doc.text("Datos del Recolector", 14, 100);
+  doc.text("Datos del Centro de "+ titulo_centro,14, 90);
+
 
   // Table 2: Recolection
   doc.autoTable({
-    startY: 105,
+    startY: 95,
     tableWidth: 190,
     body: [
-      ['Recolección', 'Disposición', 'Ruta', 'Procedencia:', 'Edo Méx'],
-      ['Ubicación:', 'Av. Residencial Chiluca S/N, Fraccionamiento Residencial Chiluca, Atizapán de Zaragoza'],
+      ["Centro:", centro,'Ubicación:', direccion_centro],
     ],
     theme: 'plain',
     styles: tableStyles,
   });
+  doc.text("Datos del Transportista ",14, 115);
+  doc.autoTable({
+    startY: 120,
+    tableWidth: 190,
+    body: [
+      ["Compañia:", data[0].transportista,'Transportista:', data[0].transportista_nombre],
+    ],
+    theme: 'plain',
+    styles: tableStyles,
+  });
+
+
   doc.setFontSize(16);
-  doc.text("Datos del Residuo", 14, 140);
+  doc.text("Datos del Residuo", 14, 135);
+
+
 
   var bodyData = []
 
@@ -222,7 +244,7 @@ const generatePdf = (report, data) => {
 
   // Table 3: Residuos
   doc.autoTable({
-    startY: 145,
+    startY: 140,
     tableWidth: 190,
     body: bodyData,
     theme: 'plain',
@@ -243,7 +265,7 @@ const generatePdf = (report, data) => {
 
   // Luego, agrega el texto para el "FOLIO". 
   // El color rojo que estableciste anteriormente se aplicará aquí.
-  doc.text("FOLIO: " + report.id_report, 150, distancia + 30, { align: 'right' });
+  doc.text("FOLIO: " + data[0].key_grupo_usuario  +"-"+  key_centro+ "-" +report.id_report, 150, distancia + 30, { align: 'right' });
 
   // ... (resto de tu código para generar el PDF)
 

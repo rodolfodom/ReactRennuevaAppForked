@@ -93,6 +93,11 @@ const linksArray = [
     icon: <IoFileTrayFullOutline />,
     to: "/diagramas",
   },
+  {
+    label: "Busqueda",
+    icon: <IoFileTrayFullOutline />,
+    to: "/tracking",
+  },
 ];
 const secondarylinksArray = [
   {

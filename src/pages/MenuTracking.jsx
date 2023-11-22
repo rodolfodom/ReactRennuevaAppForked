@@ -13,6 +13,7 @@ function MenuTracking() {
     const [pdfFile2, setPdfFile2] = useState(null);
     const defaultTheme = createTheme();
     const [url, setUrl] = useState(null);
+    const [url2, setURL2] = useState(null);
     const [folio, setFolio] = useState(null);
 
     function openPdfInNewWindow() {
@@ -27,19 +28,24 @@ function MenuTracking() {
 
     const getPDF = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:8000/Rennueva/get-pdf-report/', { ReportFolio: folio});
+            const response = await axios.post('http://127.0.0.1:8000/Rennueva/get-pdf-report/', { ReportFolio: folio });
             const data = response.data;
             console.log("Respuesta del servidor:");
             console.log(data.Reporte);
+    
             const blob = base64ToBlob(data.Reporte, 'application/pdf');
-            
-            setUrl(URL.createObjectURL(blob));
+            const url = URL.createObjectURL(blob); // Crea una URL para el blob
+    
+            setUrl(url); // Actualiza el estado con la nueva URL
             setPdfFile(data.Reporte); // Asumiendo que data ya está en formato base64
-            openPdfInNewWindow(data.Reporte);
+    
+            window.open(url, '_blank'); // Abre el PDF en una nueva ventana
+    
         } catch (error) {
             console.log(error);
         }
     };
+    
 
     function base64ToBlob(base64, mimeType) {
         const base64Real = base64.split(',')[1] || base64;
