@@ -50,6 +50,8 @@ const VehicleTable = () => {
               <TableCell>Placas</TableCell>
               <TableCell>Capacidad</TableCell>
               <TableCell>Conductor</TableCell>
+              <TableCell>Permiso</TableCell>
+
             </TableRow>
           </TableHead>
           <TableBody>
@@ -61,6 +63,7 @@ const VehicleTable = () => {
                   <TableCell>{vehicle.placas}</TableCell>
                   <TableCell>{vehicle.capacidad}</TableCell>
                   <TableCell>{vehicle.conductor}</TableCell>
+                  <TableCell>{vehicle.permiso}</TableCell>
                 </TableRow>
             ))}
           </TableBody>

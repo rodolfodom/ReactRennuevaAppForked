@@ -18,6 +18,7 @@ function ModalVehicle({ children, mode }) {
     const [nombre, setNombre] = useState("");
     const [placas, setPlacas] = useState("");
     const [capacidad, setCapacidad] = useState("");
+    const [permiso, setPermiso] = useState("");
 
 
 
@@ -45,14 +46,16 @@ function ModalVehicle({ children, mode }) {
       modelo: e.target.nombre.value,
       placas: e.target.placas.value,
       capacidad: e.target.capacidad.value,
-      idConductor: id
+      idConductor: id,
+      permiso: e.target.permiso.value
     };
     const editarDato = {
         modelo: e.target.nombre.value,
         placas: e.target.placas.value,
         capacidad: e.target.capacidad.value,
         idConductor: id,
-        antiguasPlacas: oldVehicle
+        antiguasPlacas: oldVehicle,
+        permiso: e.target.permiso.value
         };
         
 
@@ -178,6 +181,8 @@ function ModalVehicle({ children, mode }) {
     setCapacidad(datoEncontrado.capacidad)
     setDriver(datoEncontrado.idConductor)
     setId(datoEncontrado.idConductor)
+    setPermiso(datoEncontrado.permiso)
+
 
 
 
@@ -249,6 +254,15 @@ function ModalVehicle({ children, mode }) {
                 fullWidth
                 value={placas}
                 onChange={(e) => handleInputChange(e, setPlacas, mode)}
+                margin="dense"
+              />
+              <TextField
+                label="Permiso del Vehiculo"
+                name="permiso"
+                required
+                fullWidth
+                value={permiso}
+                onChange={(e) => handleInputChange(e, setPermiso, mode)}
                 margin="dense"
               />
               <TextField

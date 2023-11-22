@@ -37,6 +37,8 @@ function ModalCarrier({ children, mode }) {
     const [old_user, setOldUser] = useState("");
     const [comments, setComments] = useState("");
     const [razon_social, setRazonSocial] = useState("");
+    const [permiso, setPermiso] = useState("");
+
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible);
     };
@@ -59,12 +61,12 @@ function ModalCarrier({ children, mode }) {
 
     const handlePhoneChange = (event) => {
         const value = event.target.value;
-    
+
         // Permitir solo números y limitar la longitud a 10 caracteres
         if (value === '' || (/^\d+$/.test(value) && value.length <= 10)) {
-          setPhone(value);
+            setPhone(value);
         }
-      };
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -83,8 +85,10 @@ function ModalCarrier({ children, mode }) {
                 rfc: rfcValue,
                 comments: e.target.comments.value,
                 razon_social: e.target.razon_social.value,
+                permiso: e.target.permiso.value,
             };
-
+            console.log("##SDAFS")
+            console.log(nuevoDato)
             axios
                 .post('http://127.0.0.1:8000/Rennueva/create-carrier/', nuevoDato)
                 .then(response => {
@@ -119,6 +123,7 @@ function ModalCarrier({ children, mode }) {
                 rfc: rfcValue,
                 comments: e.target.comments.value,
                 razon_social: e.target.razon_social.value,
+                permiso: e.target.permiso.value,
 
 
                 old_user: old_user,
@@ -232,6 +237,7 @@ function ModalCarrier({ children, mode }) {
         setRazonSocial(datoEncontrado.razon_social);
         setCompany(datoEncontrado.company_name);
         setOldUser(selectedOption);
+        setPermiso(datoEncontrado.permiso);
 
 
 
@@ -246,12 +252,12 @@ function ModalCarrier({ children, mode }) {
     };
     const handleRfcChange = (event) => {
         const value = event.target.value.toUpperCase();
-    
+
         // Permitir solo letras y números y limitar la longitud a 12-13 caracteres
         if (/^[0-9A-Z]*$/.test(value) && value.length <= 13) {
-          setRfc(value);
+            setRfc(value);
         }
-      }
+    }
     return ReactDOM.createPortal(
         <Modal open={true} onClose={closeModal} >
             <Box className="ModalContent" sx={{
@@ -368,23 +374,23 @@ function ModalCarrier({ children, mode }) {
                                 helperText={phone.length > 0 && phone.length < 10 ? "El número debe ser de 10 dígitos" : ""}
                             />
                             <TextField
-              label="RFC"
-              name="rfc"
-              fullWidth
-              value={rfc}
-              onChange={handleRfcChange}
-              margin="dense"
-              inputProps={{
-                maxLength: 13 // Opcional: si quieres forzar la longitud máxima en el HTML
-              }}
-              // Validación de error para la longitud del RFC
-              error={rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)}
-              helperText={
-                rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)
-                  ? "El RFC debe tener entre 12 y 13 caracteres"
-                  : ""
-              }
-            />
+                                label="RFC"
+                                name="rfc"
+                                fullWidth
+                                value={rfc}
+                                onChange={handleRfcChange}
+                                margin="dense"
+                                inputProps={{
+                                    maxLength: 13 // Opcional: si quieres forzar la longitud máxima en el HTML
+                                }}
+                                // Validación de error para la longitud del RFC
+                                error={rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)}
+                                helperText={
+                                    rfc.length > 0 && (rfc.length < 12 || rfc.length > 13)
+                                        ? "El RFC debe tener entre 12 y 13 caracteres"
+                                        : ""
+                                }
+                            />
                             <TextField
                                 label="Comentarios"
                                 name="comments"
@@ -410,6 +416,15 @@ function ModalCarrier({ children, mode }) {
                                 fullWidth
                                 value={razon_social}
                                 onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Permiso"
+                                name="permiso"
+                                required
+                                fullWidth
+                                value={permiso}
+                                onChange={(e) => handleInputChange(e, setPermiso, mode)}
                                 margin="dense"
                             />
                         </FormControl>
