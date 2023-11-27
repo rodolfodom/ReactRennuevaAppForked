@@ -90,7 +90,7 @@ function ModalCarrier({ children, mode }) {
             console.log("##SDAFS")
             console.log(nuevoDato)
             axios
-                .post('http://127.0.0.1:8000/Rennueva/create-carrier/', nuevoDato)
+                .post('http://10.10.200.12:8008/Rennueva/create-carrier/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -132,7 +132,7 @@ function ModalCarrier({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/update-carrier/', editarDato)
+                .put('http://10.10.200.12:8008/Rennueva/update-carrier/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -157,7 +157,7 @@ function ModalCarrier({ children, mode }) {
             }
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/delete-carrier/', deleteDato)
+                .put('http://10.10.200.12:8008/Rennueva/delete-carrier/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -188,7 +188,7 @@ function ModalCarrier({ children, mode }) {
         }
 
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-drivers/')
+            .get('http://10.10.200.12:8008/Rennueva/get-all-drivers/')
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -203,8 +203,8 @@ function ModalCarrier({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get('http://127.0.0.1:8000/Rennueva/get-all-carrier/')
-        const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
+        const fetchUsers = axios.get('http://10.10.200.12:8008/Rennueva/get-all-carrier/')
+        const fetchCompanies = axios.get('http://10.10.200.12:8008/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {

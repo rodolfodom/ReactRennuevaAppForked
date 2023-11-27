@@ -13,7 +13,7 @@ const GroupTable = ({ datos }) => {
     useEffect(() => {
         // Realiza una petición GET a una URL específica
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
+            .get('http://10.10.200.12:8008/Rennueva/get-all-groups/')
             .then(response => {
                 const data = response.data;
                 setClientes(data);

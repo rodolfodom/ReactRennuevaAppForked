@@ -28,7 +28,7 @@ function MenuTracking() {
 
     const getPDF = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:8000/Rennueva/get-pdf-report/', { ReportFolio: folio });
+            const response = await axios.post('http://10.10.200.12:8008/Rennueva/get-pdf-report/', { ReportFolio: folio });
             const data = response.data;
             console.log("Respuesta del servidor:");
             console.log(data.Reporte);

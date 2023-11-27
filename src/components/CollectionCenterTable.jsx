@@ -19,7 +19,7 @@ const CollectionCenterTable = () => {
     const { updateCollectionCenterInfo, setUpdateCollectionCenterInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-collection-center/')
+            .get('http://10.10.200.12:8008/Rennueva/get-all-collection-center/')
             .then(response => {
                 setClientes(response.data);
                 console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");

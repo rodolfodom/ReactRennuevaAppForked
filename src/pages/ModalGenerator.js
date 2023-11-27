@@ -85,7 +85,7 @@ function ModalGenerator({ children, mode }) {
             };
 
             axios
-                .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
+                .post('http://10.10.200.12:8008/Rennueva/create-django-user/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -130,7 +130,7 @@ function ModalGenerator({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
+                .put('http://10.10.200.12:8008/Rennueva/update-django-user/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -155,7 +155,7 @@ function ModalGenerator({ children, mode }) {
             }
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
+                .put('http://10.10.200.12:8008/Rennueva/delete-django-user/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -186,7 +186,7 @@ function ModalGenerator({ children, mode }) {
         }
 
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
+            .get('http://10.10.200.12:8008/Rennueva/get-all-groups/')
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -201,8 +201,8 @@ function ModalGenerator({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.post('http://127.0.0.1:8000/Rennueva/get-all-users/', { group: "Generador" })
-        const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
+        const fetchUsers = axios.post('http://10.10.200.12:8008/Rennueva/get-all-users/', { group: "Generador" })
+        const fetchCompanies = axios.get('http://10.10.200.12:8008/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {

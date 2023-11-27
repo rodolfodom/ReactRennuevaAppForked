@@ -193,7 +193,7 @@ const ReportTable = () => {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-reports/')
+      .get('http://10.10.200.12:8008/Rennueva/get-all-reports/')
       .then(response => {
         setReport(response.data);
         console.log("##################################################");
