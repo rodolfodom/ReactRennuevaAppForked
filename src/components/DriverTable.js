@@ -8,7 +8,7 @@ const DriverTable = ({ datos }) => {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-drivers/')
+      .get('http://3.101.102.247/backend/Rennueva/get-all-drivers/')
       .then(response => {
         const data = response.data;
         setClientes(data);

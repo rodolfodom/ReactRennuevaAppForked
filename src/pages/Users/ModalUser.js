@@ -90,7 +90,7 @@ function ModalUser({ children, mode }) {
 
 
       axios
-        .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
+        .post('http://3.101.102.247/backend/Rennueva/create-django-user/', nuevoDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -140,7 +140,7 @@ function ModalUser({ children, mode }) {
       console.log(editarDato)
 
       axios
-        .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
+        .put('http://3.101.102.247/backend/Rennueva/update-django-user/', editarDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -165,7 +165,7 @@ function ModalUser({ children, mode }) {
       }
 
       axios
-        .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
+        .put('http://3.101.102.247/backend/Rennueva/delete-django-user/', deleteDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -196,9 +196,9 @@ function ModalUser({ children, mode }) {
 
 
     // Definir las peticiones pero no ejecutarlas todavía
-    const fetchGroups = axios.get('http://127.0.0.1:8000/Rennueva/get-all-groups/');
-    const fetchUsers = axios.post('http://127.0.0.1:8000/Rennueva/get-all-users/', { group: "Administrador" });
-    const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
+    const fetchGroups = axios.get('http://3.101.102.247/backend/Rennueva/get-all-groups/');
+    const fetchUsers = axios.post('http://3.101.102.247/backend/Rennueva/get-all-users/', { group: "Administrador" });
+    const fetchCompanies = axios.get('http://3.101.102.247/backend/Rennueva/get-all-companies/');
     // Ejecutar todas las peticiones en paralelo y establecer los estados una vez que todas hayan terminado
     Promise.all([fetchGroups, fetchUsers, fetchCompanies])
       .then((responses) => {

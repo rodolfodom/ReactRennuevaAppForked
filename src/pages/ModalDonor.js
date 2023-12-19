@@ -75,7 +75,7 @@ function ModalDonor({ children, mode }) {
             };
 
             axios
-                .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
+                .post('http://3.101.102.247/backend/Rennueva/create-django-user/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -123,7 +123,7 @@ function ModalDonor({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
+                .put('http://3.101.102.247/backend/Rennueva/update-django-user/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -148,7 +148,7 @@ function ModalDonor({ children, mode }) {
             }
 
             axios
-                .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
+                .put('http://3.101.102.247/backend/Rennueva/delete-django-user/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -179,7 +179,7 @@ function ModalDonor({ children, mode }) {
         }
 
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
+            .get('http://3.101.102.247/backend/Rennueva/get-all-groups/')
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -194,8 +194,8 @@ function ModalDonor({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.post('http://127.0.0.1:8000/Rennueva/get-all-users/', { group: "Donador" });
-        const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
+        const fetchUsers = axios.post('http://3.101.102.247/backend/Rennueva/get-all-users/', { group: "Donador" });
+        const fetchCompanies = axios.get('http://3.101.102.247/backend/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers,fetchCompanies])
             .then((res) => {

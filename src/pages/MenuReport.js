@@ -59,7 +59,7 @@ const generateQR = async (text) => {
 const getAllInfoReport = async (id_report) => {
   try {
     // Usamos 'await' para esperar a que la solicitud se complete y para obtener la respuesta
-    const response = await axios.post('http://127.0.0.1:8000/Rennueva/get-all-info-per-report/', {
+    const response = await axios.post('http://3.101.102.247/backend/Rennueva/get-all-info-per-report/', {
       reportId: id_report,
     });
     console.log("Return de la funcion get all info per report")
@@ -96,7 +96,7 @@ const savePdf = async(pdfBase64, id_report) => {
   console.log(id_report)
   try {
     // Usamos 'await' para esperar a que la solicitud se complete y para obtener la respuesta
-    const response = await axios.post('http://127.0.0.1:8000/Rennueva/finish-report/', {
+    const response = await axios.post('http://3.101.102.247/backend/Rennueva/finish-report/', {
       reportId: id_report,
       reportBase64: pdfBase64,
     });
@@ -371,7 +371,7 @@ function MenuReport() {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-reports/')
+      .get('http://3.101.102.247/backend/Rennueva/get-all-reports/')
       .then(response => {
         setReport(response.data);
         console.log("##############################################info get all reports####");

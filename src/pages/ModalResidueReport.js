@@ -36,8 +36,8 @@ function ModalResidueReport({ onClose, userselect, report }) { // Asegúrate de 
 
     useEffect(() => {
 
-        // const fetchResidues = axios.get('http://127.0.0.1:8000/Rennueva/get-all-residue/');
-        // const fetchReportResidues = axios.post('http://127.0.0.1:8000/Rennueva/get-all-residues-per-report/', "14");
+        // const fetchResidues = axios.get('http://3.101.102.247/backend/Rennueva/get-all-residue/');
+        // const fetchReportResidues = axios.post('http://3.101.102.247/backend/Rennueva/get-all-residues-per-report/', "14");
 
 
         // Promise.all([fetchResidues, fetchReportResidues]) 
@@ -53,7 +53,7 @@ function ModalResidueReport({ onClose, userselect, report }) { // Asegúrate de 
         const getResidues = {
             reportId: report,
         }
-        axios.get('http://127.0.0.1:8000/Rennueva/get-all-residue/')
+        axios.get('http://3.101.102.247/backend/Rennueva/get-all-residue/')
             .then(response => {
                 const data = response.data;
                 console.log("todos los residuos de get all residue")
@@ -65,7 +65,7 @@ function ModalResidueReport({ onClose, userselect, report }) { // Asegúrate de 
                 console.error('Hubo un problema al obtener los residuos:', error);
             });
 
-        axios.post('http://127.0.0.1:8000/Rennueva/get-all-residues-per-report/', getResidues)
+        axios.post('http://3.101.102.247/backend/Rennueva/get-all-residues-per-report/', getResidues)
             .then(response => {
                 const data = response.data;
                 setEntries(data); // Asumiendo que 'data' es un array.
@@ -121,7 +121,7 @@ function ModalResidueReport({ onClose, userselect, report }) { // Asegúrate de 
         // Lógica para enviar 'entries' a tu backend
         console.log('Enviando datos:', entries);
         axios
-            .post('http://127.0.0.1:8000/Rennueva/create-report-residue-user/', entries)
+            .post('http://3.101.102.247/backend/Rennueva/create-report-residue-user/', entries)
             .then(response => {
                 const data = response.data;
                 console.log(data)

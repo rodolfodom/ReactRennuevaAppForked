@@ -19,7 +19,7 @@ const DonorTable = () => {
     const { updateDonorInfo, setUpdateDonorInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-donors/')
+            .get('http://3.101.102.247/backend/Rennueva/get-all-donors/')
             .then(response => {
                 setClientes(response.data);
                 setUpdateDonorInfo(false);

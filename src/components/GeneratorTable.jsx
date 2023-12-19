@@ -19,7 +19,7 @@ const GeneratorTable = () => {
     const { updateGeneratorInfo, setUpdateGeneratorInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-generator/')
+            .get('http://3.101.102.247/backend/Rennueva/get-all-generator/')
             .then(response => {
                 setClientes(response.data);
                 setUpdateGeneratorInfo(false);

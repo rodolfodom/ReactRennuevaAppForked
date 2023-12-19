@@ -14,9 +14,9 @@ const SignatureComponent = ({id, type}) => {
 
   // Para guardar la imagen y posiblemente hacer algo más con ella (por ejemplo, enviarla a un servidor)
   const save = async () => {
-    let url = 'http://127.0.0.1:8000/Rennueva/update-report-generator-signature/'
+    let url = 'http://3.101.102.247/backend/Rennueva/update-report-generator-signature/'
     if (type == "Receptor"){
-      url = 'http://127.0.0.1:8000/Rennueva/update-report-receptor-signature/'
+      url = 'http://3.101.102.247/backend/Rennueva/update-report-receptor-signature/'
       
     }
 

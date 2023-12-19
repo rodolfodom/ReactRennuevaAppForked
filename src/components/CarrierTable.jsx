@@ -20,7 +20,7 @@ const RecyclingCenterTable = () => {
 
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-carrier/')
+            .get('http://3.101.102.247/backend/Rennueva/get-all-carrier/')
             .then(response => {
                 setClientes(response.data);
                 console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");
