@@ -84,7 +84,7 @@ function ModalReport({ children, mode }) {
 
     useEffect(() => {
         axios
-            .get('http://3.101.102.247/backend/Rennueva/get-all-users-responsiva/')
+            .get('https://api.rennueva.com/Rennueva/get-all-users-responsiva/')
             .then(response => {
                 const data = response.data;
                 setDatos(data); // Asumiendo que 'data' es un array.
@@ -125,7 +125,7 @@ function ModalReport({ children, mode }) {
 
     useEffect(() => {
         axios
-            .get('http://3.101.102.247/backend/Rennueva/get-all-carrier/')
+            .get('https://api.rennueva.com/Rennueva/get-all-carrier/')
             .then(response => {
                 const data = response.data;
                 console.log("#############################CARRIERS#######################")
@@ -142,7 +142,7 @@ function ModalReport({ children, mode }) {
     }, []);
     useEffect(() => {
         axios
-            .get('http://3.101.102.247/backend/Rennueva/get-all-recycling-collection-center/')
+            .get('https://api.rennueva.com/Rennueva/get-all-recycling-collection-center/')
             .then(response => {
                 const data = response.data;
                 console.log("#############################CARRIERS#######################")
@@ -191,7 +191,7 @@ function ModalReport({ children, mode }) {
             })
 
             axios
-                .post('http://3.101.102.247/backend/Rennueva/create-initial-report/', {
+                .post('https://api.rennueva.com/Rennueva/create-initial-report/', {
                     username: user,
                     street: street,
                     locality: locality,

@@ -90,7 +90,7 @@ function ModalCarrier({ children, mode }) {
             console.log("##SDAFS")
             console.log(nuevoDato)
             axios
-                .post('http://3.101.102.247/backend/Rennueva/create-carrier/', nuevoDato)
+                .post('https://api.rennueva.com/Rennueva/create-carrier/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -132,7 +132,7 @@ function ModalCarrier({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .put('http://3.101.102.247/backend/Rennueva/update-carrier/', editarDato)
+                .put('https://api.rennueva.com/Rennueva/update-carrier/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -157,7 +157,7 @@ function ModalCarrier({ children, mode }) {
             }
 
             axios
-                .put('http://3.101.102.247/backend/Rennueva/delete-carrier/', deleteDato)
+                .put('https://api.rennueva.com/Rennueva/delete-carrier/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -188,7 +188,7 @@ function ModalCarrier({ children, mode }) {
         }
 
         axios
-            .get('http://3.101.102.247/backend/Rennueva/get-all-drivers/')
+            .get('https://api.rennueva.com/Rennueva/get-all-drivers/')
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -203,8 +203,8 @@ function ModalCarrier({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get('http://3.101.102.247/backend/Rennueva/get-all-carrier/')
-        const fetchCompanies = axios.get('http://3.101.102.247/backend/Rennueva/get-all-companies/');
+        const fetchUsers = axios.get('https://api.rennueva.com/Rennueva/get-all-carrier/')
+        const fetchCompanies = axios.get('https://api.rennueva.com/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {

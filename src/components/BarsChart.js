@@ -39,7 +39,7 @@ export default function Chart() {
     useEffect(() => {
         // Realiza una petición GET a una URL específica
         axios
-            .get('http://3.101.102.247/backend/Rennueva/get-all-users-months/')
+            .get('https://api.rennueva.com/Rennueva/get-all-users-months/')
             .then(response => {
                 const data = response.data;
                 let enero = data[0].enero;

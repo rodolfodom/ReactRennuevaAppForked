@@ -97,7 +97,7 @@ function ModalRecyclingCenter({ children, mode }) {
             };
 
             axios
-                .post('http://3.101.102.247/backend/Rennueva/create-recycling-center/', nuevoDato)
+                .post('https://api.rennueva.com/Rennueva/create-recycling-center/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -143,7 +143,7 @@ function ModalRecyclingCenter({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .post('http://3.101.102.247/backend/Rennueva/update-recycling-center/', editarDato)
+                .post('https://api.rennueva.com/Rennueva/update-recycling-center/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -169,7 +169,7 @@ function ModalRecyclingCenter({ children, mode }) {
             }
 
             axios
-                .post('http://3.101.102.247/backend/Rennueva/delete-recycling-center/', deleteDato)
+                .post('https://api.rennueva.com/Rennueva/delete-recycling-center/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -200,7 +200,7 @@ function ModalRecyclingCenter({ children, mode }) {
         }
 
         axios
-            .get('http://3.101.102.247/backend/Rennueva/get-all-groups/')
+            .get('https://api.rennueva.com/Rennueva/get-all-groups/')
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -215,8 +215,8 @@ function ModalRecyclingCenter({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get("http://3.101.102.247/backend/Rennueva/get-all-recycling-center/")
-        const fetchCompanies = axios.get('http://3.101.102.247/backend/Rennueva/get-all-companies/');
+        const fetchUsers = axios.get("https://api.rennueva.com/Rennueva/get-all-recycling-center/")
+        const fetchCompanies = axios.get('https://api.rennueva.com/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {

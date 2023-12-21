@@ -50,7 +50,7 @@ function ModalResidue({ children, mode }) {
     //   }
     if (mode === "CREAR") {
       axios
-        .post('http://3.101.102.247/backend/Rennueva/create-residue/', {
+        .post('https://api.rennueva.com/Rennueva/create-residue/', {
           nombre: e.target.nombre.value,
           descripcion: e.target.descripcion.value,
         })
@@ -73,7 +73,7 @@ function ModalResidue({ children, mode }) {
     }
     if (mode === "EDITAR") {
       axios
-        .put('http://3.101.102.247/backend/Rennueva/update-residue/', { antiguoNombre : oldResidue, nombre: e.target.nombre.value, descripcion: e.target.descripcion.value})
+        .put('https://api.rennueva.com/Rennueva/update-residue/', { antiguoNombre : oldResidue, nombre: e.target.nombre.value, descripcion: e.target.descripcion.value})
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -89,7 +89,7 @@ function ModalResidue({ children, mode }) {
     }
     if (mode === "BORRAR") {
       axios
-        .put('http://3.101.102.247/backend/Rennueva/delete-residue/', { nombre: e.target.nombre.value})
+        .put('https://api.rennueva.com/Rennueva/delete-residue/', { nombre: e.target.nombre.value})
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -109,7 +109,7 @@ function ModalResidue({ children, mode }) {
 
   useEffect(() => {
     axios
-      .get('http://3.101.102.247/backend/Rennueva/get-all-residue/')
+      .get('https://api.rennueva.com/Rennueva/get-all-residue/')
       .then(response => {
         const data = response.data;
         setResidues(data)

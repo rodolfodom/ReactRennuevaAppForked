@@ -98,7 +98,7 @@ function ModalCollectionCenter({ children, mode }) {
             };
 
             axios
-                .post('http://3.101.102.247/backend/Rennueva/create-collection-center/', nuevoDato)
+                .post('https://api.rennueva.com/Rennueva/create-collection-center/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -142,7 +142,7 @@ function ModalCollectionCenter({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .post('http://3.101.102.247/backend/Rennueva/update-collection-center/', editarDato)
+                .post('https://api.rennueva.com/Rennueva/update-collection-center/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -167,7 +167,7 @@ function ModalCollectionCenter({ children, mode }) {
             }
 
             axios
-                .post('http://3.101.102.247/backend/Rennueva/delete-collection-center/', deleteDato)
+                .post('https://api.rennueva.com/Rennueva/delete-collection-center/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -198,7 +198,7 @@ function ModalCollectionCenter({ children, mode }) {
     //     }
 
     //     axios
-    //         .get('http://3.101.102.247/backend/Rennueva/get-all-groups/')
+    //         .get('https://api.rennueva.com/Rennueva/get-all-groups/')
     //         .then(response => {
     //             const data = response.data;
     //             setGroups(data)
@@ -213,8 +213,8 @@ function ModalCollectionCenter({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get("http://3.101.102.247/backend/Rennueva/get-all-collection-center/")
-        const fetchCompanies = axios.get('http://3.101.102.247/backend/Rennueva/get-all-companies/');
+        const fetchUsers = axios.get("https://api.rennueva.com/Rennueva/get-all-collection-center/")
+        const fetchCompanies = axios.get('https://api.rennueva.com/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {

@@ -50,7 +50,7 @@ function ModalGroup({ children, mode }) {
 
     if (mode === "CREAR") {
       axios
-        .post('http://3.101.102.247/backend/Rennueva/create-django-group/', nuevoDato)
+        .post('https://api.rennueva.com/Rennueva/create-django-group/', nuevoDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -69,7 +69,7 @@ function ModalGroup({ children, mode }) {
     }
     if (mode === "EDITAR") {
       axios
-        .put('http://3.101.102.247/backend/Rennueva/update-django-group/', editarDato)
+        .put('https://api.rennueva.com/Rennueva/update-django-group/', editarDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -86,7 +86,7 @@ function ModalGroup({ children, mode }) {
     }
     if (mode === "BORRAR") {
       axios
-        .put('http://3.101.102.247/backend/Rennueva/delete-django-group/', borrarDato)
+        .put('https://api.rennueva.com/Rennueva/delete-django-group/', borrarDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -111,7 +111,7 @@ function ModalGroup({ children, mode }) {
       setIsVisible(false)
     }
     axios
-      .get('http://3.101.102.247/backend/Rennueva/get-all-groups/')
+      .get('https://api.rennueva.com/Rennueva/get-all-groups/')
       .then(response => {
         const data = response.data;
         setGroups(data)

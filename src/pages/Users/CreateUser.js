@@ -47,7 +47,7 @@ function Modal({ children , mode}) {
     console.log(nuevoDato)
     // Realiza una petición GET a una URL específica
     axios
-    .post('http://3.101.102.247/backend/Rennueva/create-django-user/', nuevoDato)
+    .post('https://api.rennueva.com/Rennueva/create-django-user/', nuevoDato)
     .then(response => {
         const data = response.data;
         console.log(data)
@@ -72,7 +72,7 @@ function Modal({ children , mode}) {
 
   useEffect(() => {
     axios
-    .get('http://3.101.102.247/backend/Rennueva/get-all-groups/')
+    .get('https://api.rennueva.com/Rennueva/get-all-groups/')
     .then(response => {
         const data = response.data;
         setGroups(data)
@@ -92,7 +92,7 @@ function Modal({ children , mode}) {
 
   useEffect(() => {
     axios
-    .get('http://3.101.102.247/backend/Rennueva/get-all-users/')
+    .get('https://api.rennueva.com/Rennueva/get-all-users/')
     .then(response => {
         const data = response.data;
         setUsers(data)

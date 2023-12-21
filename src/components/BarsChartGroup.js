@@ -8,7 +8,7 @@ export default function Chart() {
 
   useEffect(() => {
     axios
-      .get('http://3.101.102.247/backend/Rennueva/get-all-users-groups/')
+      .get('https://api.rennueva.com/Rennueva/get-all-users-groups/')
       .then(response => {
         const data = response.data.group_data; // Asumiendo que los datos relevantes están en group_data
 

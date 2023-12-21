@@ -67,7 +67,7 @@ function ModalDriver({ children, mode }) {
             };
 
             axios
-                .post('http://3.101.102.247/backend/Rennueva/create-driver/', nuevoDato)
+                .post('https://api.rennueva.com/Rennueva/create-driver/', nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -101,7 +101,7 @@ function ModalDriver({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .put('http://3.101.102.247/backend/Rennueva/update-driver/', editarDato)
+                .put('https://api.rennueva.com/Rennueva/update-driver/', editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -126,7 +126,7 @@ function ModalDriver({ children, mode }) {
             }
 
             axios
-                .post('http://3.101.102.247/backend/Rennueva/delete-driver/', deleteDato)
+                .post('https://api.rennueva.com/Rennueva/delete-driver/', deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -157,7 +157,7 @@ function ModalDriver({ children, mode }) {
         }
 
         axios
-            .get('http://3.101.102.247/backend/Rennueva/get-all-drivers/')
+            .get('https://api.rennueva.com/Rennueva/get-all-drivers/')
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -172,8 +172,8 @@ function ModalDriver({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get('http://3.101.102.247/backend/Rennueva/get-all-drivers/')
-        const fetchCompanies = axios.get('http://3.101.102.247/backend/Rennueva/get-all-companies/');
+        const fetchUsers = axios.get('https://api.rennueva.com/Rennueva/get-all-drivers/')
+        const fetchCompanies = axios.get('https://api.rennueva.com/Rennueva/get-all-companies/');
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {
