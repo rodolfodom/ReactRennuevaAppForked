@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TodoContext } from '../context/index.js';
 
-import GeneratorTable from "../components/GeneratorTable";
+import BarsCharDonor from "../components/BarsCharDonor.js";
 import BarsChartVehicle from "../components/BarsChartVehicle";
 import {
   ThemeProvider,
@@ -83,7 +83,7 @@ function MenuDonor() {
                     height: 580,
                   }}
                 >
-                  <BarsChartVehicle />
+                  <BarsCharDonor />
                 </Paper>
               </Grid>
             </Grid>
