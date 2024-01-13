@@ -54,7 +54,7 @@ const generateQR = async (text) => {
 const ValidateReport = async (id_report) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/Rennueva/evaluate-report/",
+      "${process.env.REACT_APP_API_URL}/evaluate-report/",
       {
         ReportFolio: id_report,
       }
@@ -78,7 +78,7 @@ const getAllInfoReport = async (id_report) => {
   try {
     // Usamos 'await' para esperar a que la solicitud se complete y para obtener la respuesta
     const response = await axios.post(
-      "http://127.0.0.1:8000/Rennueva/get-all-info-per-report/",
+      `${process.env.REACT_APP_API_URL}/get-all-info-per-report/`,
       {
         reportId: id_report,
       }
@@ -118,7 +118,7 @@ const savePdf = async (pdfBase64, id_report) => {
   try {
     // Usamos 'await' para esperar a que la solicitud se complete y para obtener la respuesta
     const response = await axios.post(
-      "http://127.0.0.1:8000/Rennueva/finish-report/",
+      `${process.env.REACT_APP_API_URL}/finish-report/`,
       {
         reportId: id_report,
         reportBase64: pdfBase64,
@@ -482,7 +482,7 @@ function MenuReport() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/Rennueva/get-all-reports/")
+      .get(`${process.env.REACT_APP_API_URL}/get-all-reports/`)
       .then((response) => {
         setReport(response.data);
         console.log(

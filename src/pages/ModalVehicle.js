@@ -72,7 +72,7 @@ function ModalVehicle({ children, mode }) {
     //   }
     if (mode === "CREAR") {
       axios
-        .post('http://127.0.0.1:8000/Rennueva/create-vehicle/', nuevoDato)
+        .post(`${process.env.REACT_APP_API_URL}/create-vehicle/`, nuevoDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -91,7 +91,7 @@ function ModalVehicle({ children, mode }) {
     }
     if (mode === "EDITAR") {
       axios
-        .put('http://127.0.0.1:8000/Rennueva/update-vehicle/', editarDato)
+        .put(`${process.env.REACT_APP_API_URL}/update-vehicle/`, editarDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -108,7 +108,7 @@ function ModalVehicle({ children, mode }) {
     }
     if (mode === "BORRAR") {
       axios
-        .post('http://127.0.0.1:8000/Rennueva/delete-vehicle/', { placas: oldVehicle})
+        .post(`${process.env.REACT_APP_API_URL}/delete-vehicle/`, { placas: oldVehicle})
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -129,9 +129,9 @@ function ModalVehicle({ children, mode }) {
 
   useEffect(() => {
 
-    const fetchVehicles =axios.get('http://127.0.0.1:8000/Rennueva/get-all-vehicle/')
+    const fetchVehicles =axios.get(`${process.env.REACT_APP_API_URL}/get-all-vehicle/`)
 
-    const fetchDrivers =axios.get('http://127.0.0.1:8000/Rennueva/get-all-drivers/')
+    const fetchDrivers =axios.get(`${process.env.REACT_APP_API_URL}/get-all-drivers/`)
 
     axios.all([fetchVehicles, fetchDrivers]).then(
       axios.spread((...allData) => {

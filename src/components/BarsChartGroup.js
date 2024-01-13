@@ -7,8 +7,8 @@ export default function Chart() {
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
-    axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-users-groups/')
+    axios   
+      .get(`${process.env.REACT_APP_API_URL}/get-all-users-groups/`)
       .then(response => {
         const data = response.data.group_data; // Asumiendo que los datos relevantes están en group_data
 

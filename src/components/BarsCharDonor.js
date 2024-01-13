@@ -8,7 +8,7 @@ export default function Chart() {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-donors-recollection/')
+      .get(`${process.env.REACT_APP_API_URL}/get-all-donors-recollection/`)
       .then(response => {
         const data = response.data.group_data; // Asumiendo que los datos relevantes están en group_data
 

@@ -35,7 +35,7 @@ export default function Bars() {
     useEffect(() => {
         // Realiza una petición GET a una URL específica
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-users-groups/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-users-groups/`)
             .then(response => {
                 const data = response.data;
               

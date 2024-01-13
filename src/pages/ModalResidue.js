@@ -50,7 +50,7 @@ function ModalResidue({ children, mode }) {
     //   }
     if (mode === "CREAR") {
       axios
-        .post('http://127.0.0.1:8000/Rennueva/create-residue/', {
+        .post(`${process.env.REACT_APP_API_URL}/create-residue/`, {
           nombre: e.target.nombre.value,
           descripcion: e.target.descripcion.value,
         })
@@ -73,7 +73,7 @@ function ModalResidue({ children, mode }) {
     }
     if (mode === "EDITAR") {
       axios
-        .put('http://127.0.0.1:8000/Rennueva/update-residue/', { antiguoNombre : oldResidue, nombre: e.target.nombre.value, descripcion: e.target.descripcion.value})
+        .put(`${process.env.REACT_APP_API_URL}/update-residue/`, { antiguoNombre : oldResidue, nombre: e.target.nombre.value, descripcion: e.target.descripcion.value})
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -89,7 +89,7 @@ function ModalResidue({ children, mode }) {
     }
     if (mode === "BORRAR") {
       axios
-        .put('http://127.0.0.1:8000/Rennueva/delete-residue/', { nombre: e.target.nombre.value})
+        .put(`${process.env.REACT_APP_API_URL}/delete-residue/`, { nombre: e.target.nombre.value})
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -109,7 +109,7 @@ function ModalResidue({ children, mode }) {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/Rennueva/get-all-residue/')
+      .get(`${process.env.REACT_APP_API_URL}/get-all-residue/`)
       .then(response => {
         const data = response.data;
         setResidues(data)
