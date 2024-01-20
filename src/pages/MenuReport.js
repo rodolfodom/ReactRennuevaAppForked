@@ -54,7 +54,7 @@ const generateQR = async (text) => {
 const ValidateReport = async (id_report) => {
   try {
     const response = await axios.post(
-      "${process.env.REACT_APP_API_URL}/evaluate-report/",
+      `${process.env.REACT_APP_API_URL}/evaluate-report/`,
       {
         ReportFolio: id_report,
       }
