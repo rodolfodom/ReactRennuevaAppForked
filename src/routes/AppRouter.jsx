@@ -20,6 +20,7 @@ import { MenuCarrier } from '../pages/MenuCarrier';
 import { MenuCollectionCenter } from '../pages/MenuCollectionCenter';
 import { MenuReport } from '../pages/MenuReport';
 import { MenuTracking } from '../pages/MenuTracking.jsx';
+import { MenuDonorRecolection } from '../pages/MenuDonorRecolection.js';
 
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
 
           <Routes>
           <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Layout><MenuUser /></Layout>} />
+            <Route path="/" element={<Login />} />
             <Route path="/users" element={<Layout><MenuUser /></Layout>} />
             <Route path="/groups" element={<Layout><MenuGroups/></Layout>} />
             <Route path="/vehicle" element={<Layout><MenuVehicle /></Layout>} />
@@ -49,6 +50,7 @@ function App() {
             <Route path="/collection-center" element={<Layout><MenuCollectionCenter /></Layout>} />
             <Route path="/report" element={<Layout><MenuReport /></Layout>} />
             <Route path="/tracking" element={<Layout><MenuTracking /></Layout>} />
+            <Route path="/donor-recolection" element={<Layout><MenuDonorRecolection /></Layout>} />
             
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>

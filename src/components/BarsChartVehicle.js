@@ -24,27 +24,67 @@ export default function Chart() {
       });
   }, []);
 
-  return (
-    <React.Fragment>
-      <Title>Today</Title>
-      <ResponsiveContainer width="100%" height={500}>
-        <BarChart
-          data={groups}
-          margin={{
-            top: 16,
-            right: 16,
-            bottom: 0,
-            left: 24,
-          }}
-        >
-          <XAxis dataKey="group" stroke="#000000" />
-          <YAxis allowDecimals={false} />
-          <Tooltip />
-          <Legend />
-          <CartesianGrid stroke="#f5f5f5" />
-          <Bar type="monotone" dataKey="users" fill="#3f51b5" barSize={30} />
-        </BarChart>
-      </ResponsiveContainer>
-    </React.Fragment>
-  );
+    useEffect(() => {
+        // Realiza una petición GET a una URL específica
+        axios
+            .get(`${process.env.REACT_APP_API_URL}/get-all-users-groups/`)
+            .then(response => {
+                const data = response.data;
+              
+                console.log("data#hjshjahjashjas$##$#$#$##$#$#$##$");
+                console.log(data.group_data[0].group);
+
+                for (let i = 0; i < data.group_data.length; i++) {
+
+                    meses.push(data.group_data[i].group);
+                    beneficios.push(data.group_data[i].user_count);
+                }
+                console.log("data#$##$#$#$adsdasdsad##$#$#$##$");
+                console.log(meses);
+                console.log(beneficios);
+                setBeneficio(beneficios);
+                setGrupos(meses);
+
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, []);
+
+    var beneficios = [];
+    var meses = [];
+
+
+
+    var misoptions = {
+        responsive: true,
+        animation: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                min: 0,
+                max: 100
+            },
+            x: {
+                ticks: { color: 'rgba(0, 220, 195)' }
+            }
+        }
+    };
+
+    var midata = {
+        labels: ["vehiculo01", "Vehiculo02"],
+        datasets: [
+            {
+                label: 'Plastico reciclado',
+                data: beneficio ,
+                backgroundColor: 'rgba(0, 220, 195, 0.5)'
+            }
+        ]
+    };
+
+    return <Bar data={midata} options={misoptions} />
 }

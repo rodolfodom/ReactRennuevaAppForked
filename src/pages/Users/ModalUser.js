@@ -90,7 +90,7 @@ function ModalUser({ children, mode }) {
 
 
       axios
-        .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
+        .post(`${process.env.REACT_APP_API_URL}/create-django-user/`, nuevoDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -102,6 +102,8 @@ function ModalUser({ children, mode }) {
 
         })
         .catch(error => {
+          setOpenModalText(true);
+          setTextOpenModalText("Algo salio mal. Intenta de nuevo \n  " + error + " ")
           console.error(error);
         })
 
@@ -140,7 +142,7 @@ function ModalUser({ children, mode }) {
       console.log(editarDato)
 
       axios
-        .put('http://127.0.0.1:8000/Rennueva/update-django-user/', editarDato)
+        .put(`${process.env.REACT_APP_API_URL}/update-django-user/`, editarDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -165,7 +167,7 @@ function ModalUser({ children, mode }) {
       }
 
       axios
-        .put('http://127.0.0.1:8000/Rennueva/delete-django-user/', deleteDato)
+        .put(`${process.env.REACT_APP_API_URL}/delete-django-user/`, deleteDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -196,9 +198,9 @@ function ModalUser({ children, mode }) {
 
 
     // Definir las peticiones pero no ejecutarlas todavía
-    const fetchGroups = axios.get('http://127.0.0.1:8000/Rennueva/get-all-groups/');
-    const fetchUsers = axios.post('http://127.0.0.1:8000/Rennueva/get-all-users/', { group: "Administrador" });
-    const fetchCompanies = axios.get('http://127.0.0.1:8000/Rennueva/get-all-companies/');
+    const fetchGroups = axios.get(`${process.env.REACT_APP_API_URL}/get-all-groups/`);
+    const fetchUsers = axios.post(`${process.env.REACT_APP_API_URL}/get-all-users/`, { group: "Administrador" });
+    const fetchCompanies = axios.get(`${process.env.REACT_APP_API_URL}/get-all-companies/`);
     // Ejecutar todas las peticiones en paralelo y establecer los estados una vez que todas hayan terminado
     Promise.all([fetchGroups, fetchUsers, fetchCompanies])
       .then((responses) => {
@@ -368,6 +370,16 @@ function ModalUser({ children, mode }) {
               value={razon_social}
               onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
               margin="dense"
+              inputProps={{
+                maxLength: 13 // Opcional: si quieres forzar la longitud máxima en el HTML
+              }}
+              error={razon_social.length > 0 && (razon_social.length < 12 || razon_social.length > 13)}
+              helperText={
+                razon_social.length > 0 && (razon_social.length < 12 || razon_social.length > 13)
+                  ? "La Razon Social debe tener entre 12 y 13 caracteres"
+                  : ""
+              }
+
             />
             <TextField
               label="Email Usuario"
@@ -450,6 +462,16 @@ function ModalUser({ children, mode }) {
               value={state}
               onChange={(e) => handleInputChange(e, setState, mode)}
               margin="dense"
+              inputProps={{
+                maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
+              }}
+              error={state.length < 3 && state.length > 50}
+              helperText={
+                state.length > 0 && (state.length < 3 || state.length > 50)
+                  ? "El estado debe tener entre 3 y 50 caracteres"
+                  : ""
+              }
+
             />
             <TextField
               label="Ciudad"
@@ -459,6 +481,15 @@ function ModalUser({ children, mode }) {
               value={city}
               onChange={(e) => handleInputChange(e, setCity, mode)}
               margin="dense"
+              inputProps={{
+                maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
+              }}
+              error={state.length < 3 && city.length > 50}
+              helperText={
+                city.length > 0 && (city.length < 3 || city.length > 50)
+                  ? "La ciudad debe tener entre 3 y 50 caracteres"
+                  : ""
+              }
             />
             <TextField
               label="Colonia"
@@ -468,6 +499,15 @@ function ModalUser({ children, mode }) {
               value={locality}
               onChange={(e) => handleInputChange(e, setLocality, mode)}
               margin="dense"
+              inputProps={{
+                maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
+              }}
+              error={state.length < 3 && locality.length > 50}
+              helperText={
+                locality.length > 0 && (locality.length < 3 || locality.length > 50)
+                  ? "La colonia debe tener entre 3 y 50 caracteres"
+                  : ""
+              }
             />
             <TextField
               label="Calle "
@@ -477,6 +517,15 @@ function ModalUser({ children, mode }) {
               value={street}
               onChange={(e) => handleInputChange(e, setStreet, mode)}
               margin="dense"
+              inputProps={{
+                maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
+              }}
+              error={state.length < 3 && street.length > 50}
+              helperText={
+                street.length > 0 && (street.length < 3 || street.length > 50)
+                  ? "La calle debe tener entre 3 y 50 caracteres"
+                  : ""
+              }
             />
             <TextField
               label="Numero interior"
@@ -484,8 +533,24 @@ function ModalUser({ children, mode }) {
               required
               fullWidth
               value={address_num_int}
-              onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
+              onChange={(e) => {
+                // Solo permite números
+                if (e.target.value === '' || /^[0-9\b]+$/.test(e.target.value)) {
+               
+
+               
+                    handleInputChange(e, setAddressNumInt, mode);
+                  
+                }
+              }}
+              inputProps={{ maxLength: 5 }}
               margin="dense"
+              error={address_num_int.length > 0 && address_num_int.length > 5}
+              helperText={
+                address_num_int.length > 0 && address_num_int.length > 5
+                  ? "El numero interior debe tener entre 1 y 5 caracteres"
+                  : ""
+              }
             />
 
 
@@ -495,8 +560,21 @@ function ModalUser({ children, mode }) {
               required
               fullWidth
               value={postal_code}
-              onChange={(e) => handleInputChange(e, setPostalCode, mode)}
+              onChange={(e) => {
+                // Solo permite números
+                if (e.target.value === '' || /^[0-9\b]+$/.test(e.target.value)) {
+             
+                  handleInputChange(e, setPostalCode, mode);
+                }
+              }}
+              inputProps={{ maxLength: 5 }}
               margin="dense"
+              error={postal_code.length > 0 && postal_code.length > 5}
+              helperText={
+                postal_code.length > 0 && postal_code.length > 5
+                  ? "El numero interior debe tener entre 1 y 5 caracteres"
+                  : ""
+              }
             />
 
           </Box>

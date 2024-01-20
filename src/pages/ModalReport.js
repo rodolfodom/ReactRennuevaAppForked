@@ -84,7 +84,7 @@ function ModalReport({ children, mode }) {
 
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-users-responsiva/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-users-responsiva/`)
             .then(response => {
                 const data = response.data;
                 setDatos(data); // Asumiendo que 'data' es un array.
@@ -125,7 +125,7 @@ function ModalReport({ children, mode }) {
 
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-carrier/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-carrier/`)
             .then(response => {
                 const data = response.data;
                 console.log("#############################CARRIERS#######################")
@@ -142,7 +142,7 @@ function ModalReport({ children, mode }) {
     }, []);
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/Rennueva/get-all-recycling-collection-center/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-recycling-collection-center/`)
             .then(response => {
                 const data = response.data;
                 console.log("#############################CARRIERS#######################")
@@ -191,7 +191,7 @@ function ModalReport({ children, mode }) {
             })
 
             axios
-                .post('http://127.0.0.1:8000/Rennueva/create-initial-report/', {
+                .post(`${process.env.REACT_APP_API_URL}/create-initial-report/`, {
                     username: user,
                     street: street,
                     locality: locality,

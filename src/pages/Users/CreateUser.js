@@ -47,7 +47,7 @@ function Modal({ children , mode}) {
     console.log(nuevoDato)
     // Realiza una petición GET a una URL específica
     axios
-    .post('http://127.0.0.1:8000/Rennueva/create-django-user/', nuevoDato)
+    .post(`${process.env.REACT_APP_API_URL}/create-django-user/`, nuevoDato)
     .then(response => {
         const data = response.data;
         console.log(data)
@@ -72,7 +72,7 @@ function Modal({ children , mode}) {
 
   useEffect(() => {
     axios
-    .get('http://127.0.0.1:8000/Rennueva/get-all-groups/')
+    .get(`${process.env.REACT_APP_API_URL}/get-all-groups/`)
     .then(response => {
         const data = response.data;
         setGroups(data)
@@ -92,7 +92,7 @@ function Modal({ children , mode}) {
 
   useEffect(() => {
     axios
-    .get('http://127.0.0.1:8000/Rennueva/get-all-users/')
+    .get(`${process.env.REACT_APP_API_URL}/get-all-users/`)
     .then(response => {
         const data = response.data;
         setUsers(data)

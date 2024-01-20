@@ -18,6 +18,7 @@ function ModalVehicle({ children, mode }) {
     const [nombre, setNombre] = useState("");
     const [placas, setPlacas] = useState("");
     const [capacidad, setCapacidad] = useState("");
+    const [permiso, setPermiso] = useState("");
 
 
 
@@ -45,14 +46,16 @@ function ModalVehicle({ children, mode }) {
       modelo: e.target.nombre.value,
       placas: e.target.placas.value,
       capacidad: e.target.capacidad.value,
-      idConductor: id
+      idConductor: id,
+      permiso: e.target.permiso.value
     };
     const editarDato = {
         modelo: e.target.nombre.value,
         placas: e.target.placas.value,
         capacidad: e.target.capacidad.value,
         idConductor: id,
-        antiguasPlacas: oldVehicle
+        antiguasPlacas: oldVehicle,
+        permiso: e.target.permiso.value
         };
         
 
@@ -69,7 +72,7 @@ function ModalVehicle({ children, mode }) {
     //   }
     if (mode === "CREAR") {
       axios
-        .post('http://127.0.0.1:8000/Rennueva/create-vehicle/', nuevoDato)
+        .post(`${process.env.REACT_APP_API_URL}/create-vehicle/`, nuevoDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -88,7 +91,7 @@ function ModalVehicle({ children, mode }) {
     }
     if (mode === "EDITAR") {
       axios
-        .put('http://127.0.0.1:8000/Rennueva/update-vehicle/', editarDato)
+        .put(`${process.env.REACT_APP_API_URL}/update-vehicle/`, editarDato)
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -105,7 +108,7 @@ function ModalVehicle({ children, mode }) {
     }
     if (mode === "BORRAR") {
       axios
-        .post('http://127.0.0.1:8000/Rennueva/delete-vehicle/', { placas: oldVehicle})
+        .post(`${process.env.REACT_APP_API_URL}/delete-vehicle/`, { placas: oldVehicle})
         .then(response => {
           const data = response.data;
           console.log(data)
@@ -126,9 +129,9 @@ function ModalVehicle({ children, mode }) {
 
   useEffect(() => {
 
-    const fetchVehicles =axios.get('http://127.0.0.1:8000/Rennueva/get-all-vehicle/')
+    const fetchVehicles =axios.get(`${process.env.REACT_APP_API_URL}/get-all-vehicle/`)
 
-    const fetchDrivers =axios.get('http://127.0.0.1:8000/Rennueva/get-all-drivers/')
+    const fetchDrivers =axios.get(`${process.env.REACT_APP_API_URL}/get-all-drivers/`)
 
     axios.all([fetchVehicles, fetchDrivers]).then(
       axios.spread((...allData) => {
@@ -178,6 +181,8 @@ function ModalVehicle({ children, mode }) {
     setCapacidad(datoEncontrado.capacidad)
     setDriver(datoEncontrado.idConductor)
     setId(datoEncontrado.idConductor)
+    setPermiso(datoEncontrado.permiso)
+
 
 
 
@@ -249,6 +254,15 @@ function ModalVehicle({ children, mode }) {
                 fullWidth
                 value={placas}
                 onChange={(e) => handleInputChange(e, setPlacas, mode)}
+                margin="dense"
+              />
+              <TextField
+                label="Permiso del Vehiculo"
+                name="permiso"
+                required
+                fullWidth
+                value={permiso}
+                onChange={(e) => handleInputChange(e, setPermiso, mode)}
                 margin="dense"
               />
               <TextField
