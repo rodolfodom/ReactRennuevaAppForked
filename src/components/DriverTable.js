@@ -8,7 +8,7 @@ const DriverTable = ({ datos }) => {
 
   useEffect(() => {
     axios
-      .get('https://api.rennueva.com/Rennueva/get-all-drivers/')
+      .get(`${process.env.REACT_APP_API_URL}/get-all-drivers/`)
       .then(response => {
         const data = response.data;
         setClientes(data);

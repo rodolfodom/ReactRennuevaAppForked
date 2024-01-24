@@ -20,7 +20,7 @@ const RecyclingCenterTable = () => {
 
     useEffect(() => {
         axios
-            .get('https://api.rennueva.com/Rennueva/get-all-recycling-center/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-recycling-center/`)
             .then(response => {
                 setClientes(response.data);
                 console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");

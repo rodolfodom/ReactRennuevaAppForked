@@ -19,7 +19,7 @@ const DonorTable = () => {
     const { updateDonorInfo, setUpdateDonorInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
-            .get('https://api.rennueva.com/Rennueva/get-all-donors/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-donors/`)
             .then(response => {
                 setClientes(response.data);
                 setUpdateDonorInfo(false);

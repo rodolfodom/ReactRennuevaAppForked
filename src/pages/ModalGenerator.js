@@ -37,8 +37,8 @@ function ModalGenerator({ children, mode }) {
 
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible);
-      };
-    
+    };
+
     const { setUpdateGeneratorInfo, openModalText, setTextOpenModalText, setOpenModalText, openModalCreateGenerator, setOpenModalCreateGenerator, openModalEditGenerator, openModalDeleteGenerator, setOpenModalEditGenerator, setOpenModalDeleteGenerator } = useContext(TodoContext);
     const closeModal = () => {
         if (openModalCreateGenerator) {
@@ -55,13 +55,13 @@ function ModalGenerator({ children, mode }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
-            var rfcValue = e.target.rfc.value
-            if (!rfcValue) {
-              rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
-            }
+
+        var rfcValue = e.target.rfc.value
+        if (!rfcValue) {
+            rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
+        }
         if (mode === "CREAR") {
-            const nuevoDato = { 
+            const nuevoDato = {
                 user: e.target.email.value,
                 password: e.target.password.value,
                 email: e.target.email.value,
@@ -85,7 +85,7 @@ function ModalGenerator({ children, mode }) {
             };
 
             axios
-                .post('https://api.rennueva.com/Rennueva/create-django-user/', nuevoDato)
+                .post(`${process.env.REACT_APP_API_URL}/create-django-user/`, nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -130,7 +130,7 @@ function ModalGenerator({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .put('https://api.rennueva.com/Rennueva/update-django-user/', editarDato)
+                .put(`${process.env.REACT_APP_API_URL}/update-django-user/`, editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -155,7 +155,7 @@ function ModalGenerator({ children, mode }) {
             }
 
             axios
-                .put('https://api.rennueva.com/Rennueva/delete-django-user/', deleteDato)
+                .put(`${process.env.REACT_APP_API_URL}/delete-django-user/`, deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -186,7 +186,7 @@ function ModalGenerator({ children, mode }) {
         }
 
         axios
-            .get('https://api.rennueva.com/Rennueva/get-all-groups/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-groups/`)
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -201,8 +201,8 @@ function ModalGenerator({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.post('https://api.rennueva.com/Rennueva/get-all-users/', { group: "Generador" })
-        const fetchCompanies = axios.get('https://api.rennueva.com/Rennueva/get-all-companies/');
+        const fetchUsers = axios.post(`${process.env.REACT_APP_API_URL}/get-all-users/`, { group: "Generador" })
+        const fetchCompanies = axios.get(`${process.env.REACT_APP_API_URL}/get-all-companies/`);
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {
@@ -253,20 +253,20 @@ function ModalGenerator({ children, mode }) {
     };
     const handlePhoneChange = (event) => {
         const value = event.target.value;
-    
+
         // Permitir solo números y limitar la longitud a 10 caracteres
         if (value === '' || (/^\d+$/.test(value) && value.length <= 10)) {
-          setPhone(value);
+            setPhone(value);
         }
-      };
-      const handleRfcChange = (event) => {
+    };
+    const handleRfcChange = (event) => {
         const value = event.target.value.toUpperCase();
-    
+
         // Permitir solo letras y números y limitar la longitud a 12-13 caracteres
         if (/^[0-9A-Z]*$/.test(value) && value.length <= 13) {
-          setRfc(value);
+            setRfc(value);
         }
-      }
+    }
     return ReactDOM.createPortal(
         <Modal open={true} onClose={closeModal} >
             <Box className="ModalContent" sx={{
@@ -346,13 +346,23 @@ function ModalGenerator({ children, mode }) {
                             }
                         />
                         <TextField
-                            label="Razon Social"
+                            label="Razon social"
                             name="razon_social"
                             required
                             fullWidth
                             value={razonSocial}
                             onChange={(e) => handleInputChange(e, setRazonSocial, mode)}
                             margin="dense"
+                            inputProps={{
+                                maxLength: 13 // Opcional: si quieres forzar la longitud máxima en el HTML
+                            }}
+                            error={razonSocial.length > 0 && (razonSocial.length < 12 || razonSocial.length > 13)}
+                            helperText={
+                                razonSocial.length > 0 && (razonSocial.length < 12 || razonSocial.length > 13)
+                                    ? "La Razon Social debe tener entre 12 y 13 caracteres"
+                                    : ""
+                            }
+
                         />
                         <TextField
                             label="Email Usuario"
@@ -423,6 +433,16 @@ function ModalGenerator({ children, mode }) {
                                 value={state}
                                 onChange={(e) => handleInputChange(e, setState, mode)}
                                 margin="dense"
+                                inputProps={{
+                                    maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
+                                }}
+                                error={state.length < 3 && state.length > 50}
+                                helperText={
+                                    state.length > 0 && (state.length < 3 || state.length > 50)
+                                        ? "El estado debe tener entre 3 y 50 caracteres"
+                                        : ""
+                                }
+
                             />
                             <TextField
                                 label="Ciudad"
@@ -432,6 +452,15 @@ function ModalGenerator({ children, mode }) {
                                 value={city}
                                 onChange={(e) => handleInputChange(e, setCity, mode)}
                                 margin="dense"
+                                inputProps={{
+                                    maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
+                                }}
+                                error={state.length < 3 && city.length > 50}
+                                helperText={
+                                    city.length > 0 && (city.length < 3 || city.length > 50)
+                                        ? "La ciudad debe tener entre 3 y 50 caracteres"
+                                        : ""
+                                }
                             />
                             <TextField
                                 label="Colonia"
@@ -441,6 +470,15 @@ function ModalGenerator({ children, mode }) {
                                 value={locality}
                                 onChange={(e) => handleInputChange(e, setLocality, mode)}
                                 margin="dense"
+                                inputProps={{
+                                    maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
+                                }}
+                                error={state.length < 3 && locality.length > 50}
+                                helperText={
+                                    locality.length > 0 && (locality.length < 3 || locality.length > 50)
+                                        ? "La colonia debe tener entre 3 y 50 caracteres"
+                                        : ""
+                                }
                             />
                             <TextField
                                 label="Calle "
@@ -450,6 +488,15 @@ function ModalGenerator({ children, mode }) {
                                 value={street}
                                 onChange={(e) => handleInputChange(e, setStreet, mode)}
                                 margin="dense"
+                                inputProps={{
+                                    maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
+                                }}
+                                error={state.length < 3 && street.length > 50}
+                                helperText={
+                                    street.length > 0 && (street.length < 3 || street.length > 50)
+                                        ? "La calle debe tener entre 3 y 50 caracteres"
+                                        : ""
+                                }
                             />
                             <TextField
                                 label="Numero interior"
@@ -457,8 +504,24 @@ function ModalGenerator({ children, mode }) {
                                 required
                                 fullWidth
                                 value={address_num_int}
-                                onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
+                                onChange={(e) => {
+                                    // Solo permite números
+                                    if (e.target.value === '' || /^[0-9\b]+$/.test(e.target.value)) {
+
+
+
+                                        handleInputChange(e, setAddressNumInt, mode);
+
+                                    }
+                                }}
+                                inputProps={{ maxLength: 5 }}
                                 margin="dense"
+                                error={address_num_int.length > 0 && address_num_int.length > 5}
+                                helperText={
+                                    address_num_int.length > 0 && address_num_int.length > 5
+                                        ? "El numero interior debe tener entre 1 y 5 caracteres"
+                                        : ""
+                                }
                             />
 
 
@@ -468,8 +531,21 @@ function ModalGenerator({ children, mode }) {
                                 required
                                 fullWidth
                                 value={postal_code}
-                                onChange={(e) => handleInputChange(e, setPostalCode, mode)}
+                                onChange={(e) => {
+                                    // Solo permite números
+                                    if (e.target.value === '' || /^[0-9\b]+$/.test(e.target.value)) {
+
+                                        handleInputChange(e, setPostalCode, mode);
+                                    }
+                                }}
+                                inputProps={{ maxLength: 5 }}
                                 margin="dense"
+                                error={postal_code.length > 0 && postal_code.length > 5}
+                                helperText={
+                                    postal_code.length > 0 && postal_code.length > 5
+                                        ? "El numero interior debe tener entre 1 y 5 caracteres"
+                                        : ""
+                                }
                             />
                         </FormControl>
                     </Box>

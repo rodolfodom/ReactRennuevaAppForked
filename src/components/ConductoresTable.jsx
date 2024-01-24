@@ -9,7 +9,7 @@ const RecyclingCenterTable = ({ datos }) => {
     useEffect(() => {
         // Realiza una petición GET a una URL específica
         axios
-            .get('https://api.rennueva.com/Rennueva/get-all-recyclingCenter/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-recyclingCenter/`)
             .then(response => {
                 const data = response.data;
                 setClientes(data);

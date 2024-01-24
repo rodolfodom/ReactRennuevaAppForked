@@ -193,7 +193,7 @@ const ReportTable = () => {
 
   useEffect(() => {
     axios
-      .get('https://api.rennueva.com/Rennueva/get-all-reports/')
+      .get(`${process.env.REACT_APP_API_URL}/get-all-reports/`)
       .then(response => {
         setReport(response.data);
         console.log("##################################################");

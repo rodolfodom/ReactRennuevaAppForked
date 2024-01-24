@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { TodoContext } from '../context/index.js';
-import { OptionButton } from '../components/OptionButton';
+import { OptionButton, ActionButtonOrdersExcel } from '../components/OptionButton';
 
 
 const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
@@ -77,6 +77,17 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       {model === 'Responsiva' ? (
         <OptionButton setOpenModal={setOpenModalCreateReport} text="Crear responsiva" color="#28a745" />
       ) : null}
+      {model === 'Company' ? (
+        <OptionButton setOpenModal={setOpenModalCreateReport} text="Crear Compañia" color="#28a745" />
+      ) : null}
+      {model === 'DonorRecolection' ? (
+        <ActionButtonOrdersExcel 
+        text="Exportar a Excel"
+        color="#28a745"
+        
+      />
+      ) : null}
+
 
       </div>
         <div className="create-button">
@@ -113,6 +124,9 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         {model === "Responsiva"  ? (
           <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Responsiva" color="#007bff" />
         ) : null}
+        {model === "Company"  ? (
+          <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Compañia" color="#007bff" />
+        ) : null}
 
       </div>
         <div className="create-button">
@@ -148,6 +162,12 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         ): null}
         {model === "Responsiva" ? (
           <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Responsiva" color="#dc3545" />
+        ): null}
+        {model === "Company" ? (
+          <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Compañia" color="#dc3545" />
+        ): null}
+        {model === "DonorRecolection" ? (
+          <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Orden Recoleccioni" color="#dc3545" />
         ): null}
 
       </div>

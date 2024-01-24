@@ -23,13 +23,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import DonorTable from "../components/DonorTable.jsx";
+import DonorRecolectionTable from "../components/boards/DonorRecolectionTable.jsx";
 
 
-function MenuDonor() {
+function MenuDonorRecolection() {
   const {
     openModalCreateDonor,
-    setOpenModalCreate,
-    setOpenModalEdit,
     openModalEditDonor,
     setOpenModalDelete,
     openModalDeleteDonor,
@@ -57,8 +56,8 @@ function MenuDonor() {
         >
           <Toolbar />
           <Container maxWidth="lg">
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+            <Grid container spacing={1}>
+              <Grid item xs={12} md={12}>
                 <Paper
                   sx={{
                     p: 3,
@@ -69,23 +68,12 @@ function MenuDonor() {
                   }}
                 >
                   <Title>Donadores</Title>
-                  <CUDButtons model="Donor" />
-                  <Title>Donadores Creados</Title>
-                  <DonorTable />
+                  <CUDButtons model="DonorRecolection" />
+                  <Title>Ordenes de Recoleccion</Title>
+                  <DonorRecolectionTable />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Paper
-                  sx={{
-                    p: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 580,
-                  }}
-                >
-                  <BarsCharDonor />
-                </Paper>
-              </Grid>
+              
             </Grid>
           </Container>
 
@@ -128,4 +116,4 @@ function MenuDonor() {
   );
 }
 
-export { MenuDonor };
+export { MenuDonorRecolection };

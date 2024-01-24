@@ -54,7 +54,7 @@ export default function SignInSide() {
     console.log('username', username);
     try {
       // Realizando la petición POST a la API
-      const response = await axios.post('https://api.rennueva.com/api-token-auth/', {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-token-auth/`, {
         username,
         password,
       });

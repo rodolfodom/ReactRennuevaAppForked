@@ -19,7 +19,7 @@ const CollectionCenterTable = () => {
     const { updateCollectionCenterInfo, setUpdateCollectionCenterInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
-            .get('https://api.rennueva.com/Rennueva/get-all-collection-center/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-collection-center/`)
             .then(response => {
                 setClientes(response.data);
                 console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");

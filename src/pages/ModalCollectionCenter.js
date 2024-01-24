@@ -98,7 +98,7 @@ function ModalCollectionCenter({ children, mode }) {
             };
 
             axios
-                .post('https://api.rennueva.com/Rennueva/create-collection-center/', nuevoDato)
+                .post(`${process.env.REACT_APP_API_URL}/create-collection-center/`, nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -142,7 +142,7 @@ function ModalCollectionCenter({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .post('https://api.rennueva.com/Rennueva/update-collection-center/', editarDato)
+                .post(`${process.env.REACT_APP_API_URL}/update-collection-center/`, editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -167,7 +167,7 @@ function ModalCollectionCenter({ children, mode }) {
             }
 
             axios
-                .post('https://api.rennueva.com/Rennueva/delete-collection-center/', deleteDato)
+                .post(`${process.env.REACT_APP_API_URL}/delete-collection-center/`, deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -198,7 +198,7 @@ function ModalCollectionCenter({ children, mode }) {
     //     }
 
     //     axios
-    //         .get('https://api.rennueva.com/Rennueva/get-all-groups/')
+    //         .get('${process.env.REACT_APP_API_URL}/get-all-groups/')
     //         .then(response => {
     //             const data = response.data;
     //             setGroups(data)
@@ -213,8 +213,8 @@ function ModalCollectionCenter({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get("https://api.rennueva.com/Rennueva/get-all-collection-center/")
-        const fetchCompanies = axios.get('https://api.rennueva.com/Rennueva/get-all-companies/');
+        const fetchUsers = axios.get(`${process.env.REACT_APP_API_URL}/get-all-collection-center/`)
+        const fetchCompanies = axios.get(`${process.env.REACT_APP_API_URL}/get-all-companies/`);
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {

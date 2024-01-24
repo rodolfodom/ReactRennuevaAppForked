@@ -75,7 +75,7 @@ function ModalDonor({ children, mode }) {
             };
 
             axios
-                .post('https://api.rennueva.com/Rennueva/create-django-user/', nuevoDato)
+                .post(`${process.env.REACT_APP_API_URL}/create-django-user/`, nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -123,7 +123,7 @@ function ModalDonor({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .put('https://api.rennueva.com/Rennueva/update-django-user/', editarDato)
+                .put(`${process.env.REACT_APP_API_URL}/update-django-user/`, editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -148,7 +148,7 @@ function ModalDonor({ children, mode }) {
             }
 
             axios
-                .put('https://api.rennueva.com/Rennueva/delete-django-user/', deleteDato)
+                .put(`${process.env.REACT_APP_API_URL}/delete-django-user/`, deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -179,7 +179,7 @@ function ModalDonor({ children, mode }) {
         }
 
         axios
-            .get('https://api.rennueva.com/Rennueva/get-all-groups/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-groups/`)
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -194,8 +194,8 @@ function ModalDonor({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.post('https://api.rennueva.com/Rennueva/get-all-users/', { group: "Donador" });
-        const fetchCompanies = axios.get('https://api.rennueva.com/Rennueva/get-all-companies/');
+        const fetchUsers = axios.post(`${process.env.REACT_APP_API_URL}/get-all-users/`, { group: "Donador" });
+        const fetchCompanies = axios.get(`${process.env.REACT_APP_API_URL}/get-all-companies/`);
 
         Promise.all([fetchUsers,fetchCompanies])
             .then((res) => {

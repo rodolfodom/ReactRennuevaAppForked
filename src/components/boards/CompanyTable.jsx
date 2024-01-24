@@ -10,27 +10,26 @@ import {
   TableRow, 
   TablePagination 
 } from '@mui/material';
-import { TodoContext } from '../context';
+import { TodoContext } from '../../context';
 
-const RecyclingCenterTable = () => {
+const CompanyTable = () => {
     const [clientes, setClientes] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const { updateCarrierInfo, setUpdateCarrierInfo  } = useContext(TodoContext);
-
+    const { updateCollectionCenterInfo, setUpdateCollectionCenterInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
-            .get(`${process.env.REACT_APP_API_URL}/get-all-carrier/`)
+            .get(`${process.env.REACT_APP_API_URL}/get-all-companies/`)
             .then(response => {
                 setClientes(response.data);
                 console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");
-                setUpdateCarrierInfo(false);
                 console.log(response.data);
+                setUpdateCollectionCenterInfo(false);
             })
             .catch(error => {
                 console.error(error);
             });
-    }, [updateCarrierInfo]);
+    }, [updateCollectionCenterInfo]);
   
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -47,24 +46,27 @@ const RecyclingCenterTable = () => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Telefono</TableCell>
-                <TableCell>Compañia</TableCell>
-                <TableCell>RFC</TableCell>
-                <TableCell>Comentarios</TableCell>
-          
+                <TableCell>ID</TableCell>
+                <TableCell>Nombre compañia</TableCell>
+                <TableCell>logo</TableCell>
+                <TableCell>Main Color</TableCell>
+                <TableCell>Secondary Color</TableCell>
+                <TableCell>Main Web</TableCell>
+                <TableCell>Secondary Web</TableCell>
+                <TableCell>Font Name </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {clientes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((cliente, index) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                  <TableCell>{cliente.first_name} {cliente.last_name}</TableCell>
-                  <TableCell>{cliente.email}</TableCell>
-                  <TableCell>{cliente.phone}</TableCell>
+                  <TableCell>{cliente.company_id}</TableCell>
                   <TableCell>{cliente.company_name}</TableCell>
-                  <TableCell>{cliente.rfc}</TableCell>
-                  <TableCell>{cliente.comments}</TableCell>
+                  <TableCell>{cliente.logo}</TableCell>
+                  <TableCell>{cliente.main_color}</TableCell>
+                  <TableCell>{cliente.secondary_color}</TableCell>
+                  <TableCell>{cliente.main_web}</TableCell>
+                  <TableCell>{cliente.second_web}</TableCell>
+                  <TableCell>{cliente.font_name}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -83,4 +85,4 @@ const RecyclingCenterTable = () => {
     );
 }
 
-export default RecyclingCenterTable;
+export default CompanyTable;

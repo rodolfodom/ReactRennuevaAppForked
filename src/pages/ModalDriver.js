@@ -67,7 +67,7 @@ function ModalDriver({ children, mode }) {
             };
 
             axios
-                .post('https://api.rennueva.com/Rennueva/create-driver/', nuevoDato)
+                .post(`${process.env.REACT_APP_API_URL}/create-driver/`, nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -101,7 +101,7 @@ function ModalDriver({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .put('https://api.rennueva.com/Rennueva/update-driver/', editarDato)
+                .put(`${process.env.REACT_APP_API_URL}/update-driver/`, editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -126,7 +126,7 @@ function ModalDriver({ children, mode }) {
             }
 
             axios
-                .post('https://api.rennueva.com/Rennueva/delete-driver/', deleteDato)
+                .post(`${process.env.REACT_APP_API_URL}/delete-driver/`, deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -157,7 +157,7 @@ function ModalDriver({ children, mode }) {
         }
 
         axios
-            .get('https://api.rennueva.com/Rennueva/get-all-drivers/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-drivers/`)
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -172,8 +172,8 @@ function ModalDriver({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get('https://api.rennueva.com/Rennueva/get-all-drivers/')
-        const fetchCompanies = axios.get('https://api.rennueva.com/Rennueva/get-all-companies/');
+        const fetchUsers = axios.get(`${process.env.REACT_APP_API_URL}/get-all-drivers/`)
+        const fetchCompanies = axios.get(`${process.env.REACT_APP_API_URL}/get-all-companies/`);
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {

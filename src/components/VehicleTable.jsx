@@ -20,7 +20,7 @@ const VehicleTable = () => {
 
   useEffect(() => {
     axios
-      .get('http://3.101.102.247/backend/Rennueva/get-all-vehicle/')
+      .get(`${process.env.REACT_APP_API_URL}/get-all-vehicle/`)
       .then(response => {
         setVehicles(response.data);
         setUpdateVehicleInfo(false);

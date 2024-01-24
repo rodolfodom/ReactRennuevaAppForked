@@ -28,7 +28,7 @@ function MenuTracking() {
 
     const getPDF = async () => {
         try {
-            const response = await axios.post('https://api.rennueva.com/Rennueva/get-pdf-report/', { ReportFolio: folio });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/get-pdf-report/`, { ReportFolio: folio });
             const data = response.data;
             console.log("Respuesta del servidor:");
             console.log(data.Reporte);

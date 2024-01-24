@@ -19,7 +19,7 @@ const GeneratorTable = () => {
     const { updateGeneratorInfo, setUpdateGeneratorInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
-            .get('https://api.rennueva.com/Rennueva/get-all-generator/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-generator/`)
             .then(response => {
                 setClientes(response.data);
                 setUpdateGeneratorInfo(false);

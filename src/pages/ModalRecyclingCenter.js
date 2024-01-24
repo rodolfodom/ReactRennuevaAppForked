@@ -97,7 +97,7 @@ function ModalRecyclingCenter({ children, mode }) {
             };
 
             axios
-                .post('https://api.rennueva.com/Rennueva/create-recycling-center/', nuevoDato)
+                .post(`${process.env.REACT_APP_API_URL}/create-recycling-center/`, nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -143,7 +143,7 @@ function ModalRecyclingCenter({ children, mode }) {
             console.log(editarDato)
 
             axios
-                .post('https://api.rennueva.com/Rennueva/update-recycling-center/', editarDato)
+                .post(`${process.env.REACT_APP_API_URL}/update-recycling-center/`, editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -169,7 +169,7 @@ function ModalRecyclingCenter({ children, mode }) {
             }
 
             axios
-                .post('https://api.rennueva.com/Rennueva/delete-recycling-center/', deleteDato)
+                .post(`${process.env.REACT_APP_API_URL}/delete-recycling-center/`, deleteDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -200,7 +200,7 @@ function ModalRecyclingCenter({ children, mode }) {
         }
 
         axios
-            .get('https://api.rennueva.com/Rennueva/get-all-groups/')
+            .get(`${process.env.REACT_APP_API_URL}/get-all-groups/`)
             .then(response => {
                 const data = response.data;
                 setGroups(data)
@@ -215,8 +215,8 @@ function ModalRecyclingCenter({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.get("https://api.rennueva.com/Rennueva/get-all-recycling-center/")
-        const fetchCompanies = axios.get('https://api.rennueva.com/Rennueva/get-all-companies/');
+        const fetchUsers = axios.get(`${process.env.REACT_APP_API_URL}/get-all-recycling-center/`)
+        const fetchCompanies = axios.get(`${process.env.REACT_APP_API_URL}/get-all-companies/`);
 
         Promise.all([fetchUsers, fetchCompanies])
             .then((res) => {

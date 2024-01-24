@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TodoContext } from '../context/index.js';
-
-import BarsCharDonor from "../components/BarsCharDonor.js";
-import BarsChartVehicle from "../components/BarsChartVehicle";
+import { TodoContext } from '../../context/index.js';
+import { ModalUser } from '../Users/ModalUser';
+import RecyclingCenterTable from "../../components/RecyclingCenterTable";
+import BarsChartVehicle from "../../components/BarsChartVehicle";
 import {
   ThemeProvider,
   createTheme,
@@ -13,27 +13,25 @@ import {
   Toolbar,
   CssBaseline,
 } from '@mui/material';
-import Title from '../components/Title';
-import CUDButtons from "../containers/CUDButtons";
-import { ModalDonor } from "./ModalDonor.js";
+import Title from '../../components/Title';
+import CUDButtons from "../../containers/CUDButtons";
+import { ModalRecyclingCenter } from "../ModalRecyclingCenter.js";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import DonorTable from "../components/DonorTable.jsx";
+import CompanyTable from "../../components/boards/CompanyTable.jsx";
 
-
-function MenuDonor() {
-  const {
-    openModalCreateDonor,
-    setOpenModalCreate,
-    setOpenModalEdit,
-    openModalEditDonor,
-    setOpenModalDelete,
-    openModalDeleteDonor,
-    openModalText, setOpenModalText , textOpenModalText
+function MenuCompany() {
+  const { 
+    openModalCreateRecyclingCenter, 
+    setOpenModalCreateRecyclingCenter, 
+    setOpenModalEditRecyclingCenter,
+    openModalEditRecyclingCenter, 
+    setOpenModalDeleteRecyclingCenter, 
+    openModalDeleteRecyclingCenter ,openModalText, setOpenModalText ,textOpenModalText,setTextOpenModalText
   } = useContext(TodoContext);
 
   const [datos, setDatos] = useState([]);
@@ -58,7 +56,7 @@ function MenuDonor() {
           <Toolbar />
           <Container maxWidth="lg">
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 <Paper
                   sx={{
                     p: 3,
@@ -68,43 +66,32 @@ function MenuDonor() {
                     justifyContent: 'center'
                   }}
                 >
-                  <Title>Donadores</Title>
-                  <CUDButtons model="Donor" />
-                  <Title>Donadores Creados</Title>
-                  <DonorTable />
+                  <Title>Compañias</Title>
+                  <CUDButtons model="Company" />
+                  <Title>Compañias Creadas</Title>
+                  <CompanyTable />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Paper
-                  sx={{
-                    p: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 580,
-                  }}
-                >
-                  <BarsCharDonor />
-                </Paper>
-              </Grid>
+              
             </Grid>
           </Container>
 
-          {openModalCreateDonor && (
-            <ModalDonor mode={"CREAR"}>
+          {openModalCreateRecyclingCenter && (
+            <ModalRecyclingCenter mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalDonor >
+            </ ModalRecyclingCenter >
           )}
-          {openModalEditDonor && (
-            <ModalDonor mode={"EDITAR"}>
+          {openModalEditRecyclingCenter && (
+            <ModalRecyclingCenter mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalDonor >
+            </ ModalRecyclingCenter >
           )}
-          {openModalDeleteDonor && (
-            <ModalDonor mode={"BORRAR"}>
+          {openModalDeleteRecyclingCenter && (
+            <ModalRecyclingCenter mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalDonor >
+            </ ModalRecyclingCenter >
           )}
-          {openModalText && (
+           {openModalText && (
             <Dialog
               open={openModalText}
               onClose={() => setOpenModalText(false)}
@@ -128,4 +115,4 @@ function MenuDonor() {
   );
 }
 
-export { MenuDonor };
+export { MenuCompany };
