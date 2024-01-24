@@ -128,8 +128,10 @@ export default function MiniDrawer() {
     } else if (index == 1) {
       navigate('/generator');
     } else if (index == 2) {
-      navigate('/donor');
+      navigate('/company');
     } else if (index == 3) {
+      navigate('/donor');
+    } else if (index == 4) {
       navigate('/donor-recolection');
     }
 
@@ -239,7 +241,7 @@ export default function MiniDrawer() {
         <Divider />
 
         <List>
-          {['Residuos', 'Generadores', 'Donadores', "Orden Recoleccion"].map((text, index) => (
+          {['Residuos', 'Generadores',"Compañias", 'Donadores', "Orden Recoleccion"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 onClick={() => handleClickResidueGeneratorDonor(index)}
@@ -260,6 +262,7 @@ export default function MiniDrawer() {
                   {index === 1 ? <ElectricBoltRoundedIcon /> : null}
                   {index === 2 ? <Man2RoundedIcon /> : null}
                   {index === 3 ? <Man2RoundedIcon /> : null}
+                  {index === 4 ? <Man2RoundedIcon /> : null}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
