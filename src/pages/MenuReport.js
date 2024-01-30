@@ -209,7 +209,7 @@ const generatePdf = (report, data) => {
         "RFC:",
         report.rfc_usuario,
         "Razón Social:",
-        "Asociación de Colonos de Residencial Chiluca A.C.",
+        data[0].razon_social,
       ],
     ],
     theme: "plain",
