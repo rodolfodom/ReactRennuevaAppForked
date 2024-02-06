@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
-import Title from './Title';
+import Title from '../Title';
 
 export default function Chart() {
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/get-all-donors-recollection/`)
+      .get(`${process.env.REACT_APP_API_URL}/get-residues-kg/`)
       .then(response => {
-        const data = response.data.group_data; // Asumiendo que los datos relevantes están en group_data
+        const data = response.data
 
         let chartData = data.map(item => ({
-          group: item.group,  // Asegúrate de que 'group' y 'user_count' son las claves correctas
-          users: item.user_count
+          group: item.nombre,  // Asegúrate de que 'group' y 'user_count' son las claves correctas
+          users: item.kilos
         }));
 
         setGroups(chartData);

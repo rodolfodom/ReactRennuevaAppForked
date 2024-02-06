@@ -23,7 +23,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import DonorTable from "../components/DonorTable.jsx";
-
+import BarsCharOrderRecollection from '../components/graph/BarsCharOrderRecollection';
 
 function MenuDonor() {
   const {
@@ -83,7 +83,7 @@ function MenuDonor() {
                     height: 580,
                   }}
                 >
-                  <BarsCharDonor />
+                  <BarsCharOrderRecollection />
                 </Paper>
               </Grid>
             </Grid>

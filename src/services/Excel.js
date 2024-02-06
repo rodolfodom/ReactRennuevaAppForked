@@ -18,5 +18,26 @@ const generateExcel = () => {
       });
 };
 
+const importExcel = (file, onImported) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
 
-export { generateExcel };
+    reader.onload = (e) => {
+        const bufferArray = e.target.result;
+        const workbook = XLSX.read(bufferArray, { type: 'buffer' });
+        const worksheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[worksheetName];
+        const data = XLSX.utils.sheet_to_json(worksheet);
+        onImported(data); // Callback con los datos
+    };
+
+    reader.onerror = (error) => {
+        console.error("Error al leer el archivo Excel:", error);
+    };
+};
+
+
+
+
+
+export { generateExcel, importExcel};

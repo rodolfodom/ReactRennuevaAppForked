@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { TodoContext } from '../context/index.js';
-import { OptionButton, ActionButtonOrdersExcel } from '../components/OptionButton';
+import { OptionButton, ActionButtonOrdersExcel, ImportExcelButton } from '../components/OptionButton';
 
 
 const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
@@ -39,6 +39,10 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       openModalDeleteVehicle, setOpenModalDeleteVehicle,
       openModalCreateReport, setOpenModalCreateReport
     } = useContext(TodoContext);
+    const handleDataImported = (data) => {
+      console.log("Datos importados:", data);
+      // Aquí puedes manejar los datos importados como desees
+    };
     
     return (
         <div style={{display :"flex"}}>
@@ -86,6 +90,9 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         color="#28a745"
         
       />
+      ) : null}
+      {model === 'ReportHistory' ? (
+        <ImportExcelButton text="Importar Excel" color="blue" onImported={handleDataImported} />
       ) : null}
 
 
@@ -168,6 +175,9 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         ): null}
         {model === "DonorRecolection" ? (
           <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Orden Recoleccioni" color="#dc3545" />
+        ): null}
+        {model === "ReportHistory" ? (
+          <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Historial de Reportes" color="#dc3545" />
         ): null}
 
       </div>

@@ -1,34 +1,41 @@
-import React, { useContext } from "react";
-import '../styles/user/MenuUser.css';
-import { TodoContext } from '../context/index.js';
-import { ModalUser } from './Users/ModalUser';
-import ResidueTable from "../components/ResidueTable";
-import BarsChartVehicle from "../components/BarsChartVehicle";
-import CUDButtons from "../containers/CUDButtons";
-
-import { ThemeProvider, createTheme, Box, Grid, Paper, Container, Toolbar, CssBaseline } from '@mui/material';
-import Title from '../components/Title';
-import { ModalResidue } from "./ModalResidue";
+import React, { useContext, useEffect, useState } from "react";
+import { TodoContext } from '../../context/index.js';
+import { ModalUser } from '../Users/ModalUser';
+import RecyclingCenterTable from "../../components/RecyclingCenterTable";
+import BarsChartVehicle from "../../components/BarsChartVehicle";
+import {
+  ThemeProvider,
+  createTheme,
+  Box,
+  Grid,
+  Paper,
+  Container,
+  Toolbar,
+  CssBaseline,
+} from '@mui/material';
+import Title from '../../components/Title';
+import CUDButtons from "../../containers/CUDButtons";
+import { ModalRecyclingCenter } from "../ModalRecyclingCenter.js";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import BarsCharResidue from "../components/graph/BarsCharResidue";
+import CompanyTable from "../../components/boards/CompanyTable.jsx";
+import ReportTable from "../../components/ReportTable.jsx";
 
-function MenuResidue() {
-  const {
-    openModalCreateResidue,
-    setOpenModalCreateResidue,
-    setOpenModalEditResidue,
-    openModalEditResidue,
-    setOpenModalDeleteResidue,
-    openModalDeleteResidue,
-    textOpenModalText,
-    setOpenModalText,
-    openModalText
+function MenuReportHistory() {
+  const { 
+    openModalCreateRecyclingCenter, 
+    openModalEditRecyclingCenter, 
+    setOpenModalDeleteRecyclingCenter, 
+    openModalDeleteRecyclingCenter ,openModalText, setOpenModalText ,textOpenModalText,setTextOpenModalText
   } = useContext(TodoContext);
+
+  const [datos, setDatos] = useState([]);
+
+  // ... otros handlers y useEffect ...
 
   const defaultTheme = createTheme();
 
@@ -39,7 +46,7 @@ function MenuResidue() {
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) => (theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900]),
+            backgroundColor: (theme) => theme.palette.grey[100],
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
@@ -48,51 +55,40 @@ function MenuResidue() {
           <Toolbar />
           <Container maxWidth="lg">
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 <Paper
                   sx={{
                     p: 3,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'center'
                   }}
                 >
-                  <Title>Residuos</Title>
-                  <CUDButtons model="Residue" />
-                  <Title>Tabla de Residuos</Title>
-                  <ResidueTable />
+                  <Title>Responsivas</Title>
+                  <CUDButtons model="ReportHistory" />
+                  <Title>Historial de Responsivas</Title>
+                  <ReportTable />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Paper
-                  sx={{
-                    p: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 580,
-                  }}
-                >
-                  <BarsCharResidue />
-                </Paper>
-              </Grid>
+              
             </Grid>
           </Container>
 
-          {openModalCreateResidue && (
-            <ModalResidue mode={"CREAR"}>
+          {openModalCreateRecyclingCenter && (
+            <ModalRecyclingCenter mode={"CREAR"}>
               La funcionalidad de agregar TODO
-            </ ModalResidue >
+            </ ModalRecyclingCenter >
           )}
-          {openModalEditResidue && (
-            <ModalResidue mode={"EDITAR"}>
+          {openModalEditRecyclingCenter && (
+            <ModalRecyclingCenter mode={"EDITAR"}>
               La funcionalidad de editar TODO
-            </ ModalResidue >
+            </ ModalRecyclingCenter >
           )}
-          {openModalDeleteResidue && (
-            <ModalResidue mode={"BORRAR"}>
+          {openModalDeleteRecyclingCenter && (
+            <ModalRecyclingCenter mode={"BORRAR"}>
               La funcionalidad de borrar TODO
-            </ ModalResidue >
+            </ ModalRecyclingCenter >
           )}
            {openModalText && (
             <Dialog
@@ -112,11 +108,10 @@ function MenuResidue() {
               </DialogActions>
             </Dialog>
           )}
-          
         </Box>
       </Box>
     </ThemeProvider>
   );
 }
 
-export { MenuResidue };
+export { MenuReportHistory };

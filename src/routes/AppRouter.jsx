@@ -22,6 +22,7 @@ import { MenuReport } from '../pages/MenuReport';
 import { MenuTracking } from '../pages/MenuTracking.jsx';
 import { MenuDonorRecolection } from '../pages/MenuDonorRecolection.js';
 import { MenuCompany } from '../pages/Menus/MenuCompany.js';
+import { MenuReportHistory } from '../pages/Menus/MenuReportHistory.js';
 
 
 
@@ -54,6 +55,7 @@ function App() {
             <Route path="/tracking" element={<Layout><MenuTracking /></Layout>} />
             <Route path="/donor-recolection" element={<Layout><MenuDonorRecolection /></Layout>} />
             <Route path="/company" element={<Layout><MenuCompany /></Layout>} />
+            <Route path="/report-history" element={<Layout><MenuReportHistory/></Layout>} />
             
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>

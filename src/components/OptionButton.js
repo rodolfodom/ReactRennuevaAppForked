@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { generateExcel } from '../services/Excel.js';
+import { generateExcel,importExcel } from '../services/Excel.js';
 
 function OptionButton({ setOpenModal, text, color }) {
   return (
@@ -30,4 +30,28 @@ function ActionButtonOrdersExcel({text, color }) {
   );
 }
 
-export { OptionButton, ActionButtonOrdersExcel };
+function ImportExcelButton({ text, color, onImported }) {
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    importExcel(file, onImported);
+  };
+
+  return (
+    <>
+      <Button
+        variant="contained"
+        component="label"
+        style={{ backgroundColor: color, color: 'black' }}
+      >
+        {text}
+        <input
+          type="file"
+          hidden
+          onChange={handleFileSelect}
+        />
+      </Button>
+    </>
+  );
+}
+
+export { OptionButton, ActionButtonOrdersExcel , ImportExcelButton};
