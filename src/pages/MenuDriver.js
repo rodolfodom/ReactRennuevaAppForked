@@ -23,6 +23,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import DriverTable from "../components/DriverTable.js";
+import BarsChartCarrier from "../components/graph/BarsCharCarrier.js";
 
 
 
@@ -86,7 +87,7 @@ function MenuDriver() {
                     height: 580,
                   }}
                 >
-                  <BarsChartVehicle />
+                  <BarsChartCarrier />
                 </Paper>
               </Grid>
             </Grid>

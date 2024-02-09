@@ -41,6 +41,17 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
     } = useContext(TodoContext);
     const handleDataImported = (data) => {
       console.log("Datos importados:", data);
+      console.log(data[0].Tipo);
+      if (data[0].Tipo === "Generador") {
+        console.log("Es un archivo de usuarios");
+      }
+      if (data[0].Tipo === "Centro de Reciclaje") {
+        console.log("Es un archivo de reciclaje");
+      }
+      if (data[0].Tipo === "Centro de Recoleccion") {
+        console.log("Es un archivo de recoleccion");
+      }
+      
       // Aquí puedes manejar los datos importados como desees
     };
     
@@ -92,8 +103,9 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       />
       ) : null}
       {model === 'ReportHistory' ? (
-        <ImportExcelButton text="Importar Excel" color="blue" onImported={handleDataImported} />
+        <ImportExcelButton text="Importar Generadores Excel" color="blue" onImported={handleDataImported} />
       ) : null}
+
 
 
       </div>
@@ -134,6 +146,12 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         {model === "Company"  ? (
           <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Compañia" color="#007bff" />
         ) : null}
+        {model === 'ReportHistory' ? (
+        <ImportExcelButton text="Importar Centros de Recoleccion Excel" color="blue" onImported={handleDataImported} />
+      ) : null}
+      {model === 'ReportHistory' ? (
+        <div className="create-button">  <ImportExcelButton text="Importar Centros de Reciclaje Excel" color="blue" onImported={handleDataImported} /> </div>
+      ) : null}
 
       </div>
         <div className="create-button">

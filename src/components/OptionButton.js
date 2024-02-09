@@ -1,6 +1,8 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { generateExcel,importExcel } from '../services/Excel.js';
+import { generateExcel} from '../services/Excel.js';
+import * as XLSX from 'xlsx';
+
 
 function OptionButton({ setOpenModal, text, color }) {
   return (
@@ -28,6 +30,28 @@ function ActionButtonOrdersExcel({text, color }) {
       {text}
     </Button>
   );
+}
+
+function importExcel(file, callback) {
+  // Read the file using FileReader
+  const reader = new FileReader();
+  
+  reader.onload = (e) => {
+    const data = e.target.result;
+    // Parse the file data and convert it to JSON
+    const workbook = XLSX.read(data, { type: 'binary' });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const json = XLSX.utils.sheet_to_json(sheet);
+    callback(json);
+  };
+
+  reader.onerror = (error) => {
+    console.log(error);
+    callback(null);
+  };
+  
+  reader.readAsBinaryString(file);
 }
 
 function ImportExcelButton({ text, color, onImported }) {
