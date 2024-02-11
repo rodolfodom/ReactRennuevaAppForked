@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { TodoContext } from '../context/index.js';
 import { OptionButton, ActionButtonOrdersExcel, ImportExcelButton } from '../components/OptionButton';
-
+import axios from 'axios';
 
 const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
     const {
@@ -39,21 +39,51 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       openModalDeleteVehicle, setOpenModalDeleteVehicle,
       openModalCreateReport, setOpenModalCreateReport
     } = useContext(TodoContext);
-    const handleDataImported = (data) => {
+
+
+    const handleDataImported = async (data) => {
       console.log("Datos importados:", data);
       console.log(data[0].Tipo);
+    
+      let url = "http://127.0.0.1:8000/Rennueva"; // URL base
+    
       if (data[0].Tipo === "Generador") {
         console.log("Es un archivo de usuarios");
-      }
-      if (data[0].Tipo === "Centro de Reciclaje") {
+        // Suponiendo que tienes una URL para crear usuarios
+        url += "/create-generator/";
+      } else if (data[0].Tipo === "Centro de Reciclaje") {
         console.log("Es un archivo de reciclaje");
+        url += "/creat-recycling-center/";
+      } else if (data[0].Tipo === "Centro de Recoleccion") {
+        console.log("Es un archivo de recolección");
+        url += "/creat-collection-center/";
+      } else {
+        console.log("Tipo desconocido");
+        return; // Salir si el tipo no es reconocido
       }
-      if (data[0].Tipo === "Centro de Recoleccion") {
-        console.log("Es un archivo de recoleccion");
+    
+      // Realizar la consulta
+      try {
+        console.log("####################################");
+        console.log("Enviando datos:", JSON.stringify(data));
+        
+        const response = axios
+        .post(`${url}`, data)
+        .then(response => {
+            const data = response.data;
+            console.log("Respuesta del servidor:", data);
+
+        })
+        .catch(error => {
+            console.error(error);
+        })
+
+        console.log("Respuesta del servidor:", response.data);
+      } catch (error) {
+        console.error("Error al realizar la consulta:", error);
       }
-      
-      // Aquí puedes manejar los datos importados como desees
     };
+    
     
     return (
         <div style={{display :"flex"}}>
