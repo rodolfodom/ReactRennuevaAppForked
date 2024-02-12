@@ -113,7 +113,7 @@ function ModalCompany({ children, mode }) {
           const data = response.data;
           console.log(data);
           setOpenModalText(true);
-          setTextOpenModalText("Donador editado correctamente");
+          setTextOpenModalText("Compañia editado correctamente");
           setUpdateCompanyInfo(true);
           e.target.reset();
           closeModal();
@@ -124,21 +124,20 @@ function ModalCompany({ children, mode }) {
         });
     }
     if (mode === "BORRAR") {
-      const antiguo_user = document.getElementById("user-select");
-      var user_ant = antiguo_user ? antiguo_user.value : null;
 
       const deleteDato = {
-        user: user,
+        CompanyName: companyOldName,
       };
 
       axios
         .put(`${process.env.REACT_APP_API_URL}/delete-companie/`, deleteDato)
         .then((response) => {
           const data = response.data;
+          console.log("#######################    Borrado    #################")
           console.log(data);
           setOpenModalText(true);
-          setTextOpenModalText("Donador borrado correctamente");
-          setUpdateDonorInfo(true);
+          setTextOpenModalText("Compañia borrado correctamente");
+          setUpdateCompanyInfo(true);
           e.target.reset();
           closeModal();
         })
