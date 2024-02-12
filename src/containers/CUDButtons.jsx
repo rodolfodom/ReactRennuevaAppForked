@@ -37,7 +37,12 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       openModalCreateVehicle, setOpenModalCreateVehicle,
       openModalEditVehicle, setOpenModalEditVehicle,
       openModalDeleteVehicle, setOpenModalDeleteVehicle,
-      openModalCreateReport, setOpenModalCreateReport
+      openModalCreateReport, setOpenModalCreateReport,
+
+      openModalCreateCompany, setOpenModalCreateCompany,
+      openModalEditCompany, setOpenModalEditCompany,
+      openModalDeleteCompany, setOpenModalDeleteCompany,
+
     } = useContext(TodoContext);
 
 
@@ -123,7 +128,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         <OptionButton setOpenModal={setOpenModalCreateReport} text="Crear responsiva" color="#28a745" />
       ) : null}
       {model === 'Company' ? (
-        <OptionButton setOpenModal={setOpenModalCreateReport} text="Crear Compañia" color="#28a745" />
+        <OptionButton setOpenModal={setOpenModalCreateCompany} text="Crear Compañia" color="#28a745" />
       ) : null}
       {model === 'DonorRecolection' ? (
         <ActionButtonOrdersExcel 
@@ -174,7 +179,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
           <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Responsiva" color="#007bff" />
         ) : null}
         {model === "Company"  ? (
-          <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Compañia" color="#007bff" />
+          <OptionButton setOpenModal={setOpenModalEditCompany} text="Editar Compañia" color="#007bff" />
         ) : null}
         {model === 'ReportHistory' ? (
         <ImportExcelButton text="Importar Centros de Recoleccion Excel" color="blue" onImported={handleDataImported} />
@@ -219,7 +224,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
           <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Responsiva" color="#dc3545" />
         ): null}
         {model === "Company" ? (
-          <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Compañia" color="#dc3545" />
+          <OptionButton setOpenModal={setOpenModalDeleteCompany} text="Borrar Compañia" color="#dc3545" />
         ): null}
         {model === "DonorRecolection" ? (
           <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Orden Recoleccioni" color="#dc3545" />

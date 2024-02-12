@@ -16,7 +16,7 @@ const CompanyTable = () => {
     const [clientes, setClientes] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const { updateCollectionCenterInfo, setUpdateCollectionCenterInfo } = useContext(TodoContext);
+    const { updateCompanyInfo,setUpdateCompanyInfo ,setUpdateCollectionCenterInfo } = useContext(TodoContext);
     useEffect(() => {
         axios
             .get(`${process.env.REACT_APP_API_URL}/get-all-companies/`)
@@ -24,12 +24,12 @@ const CompanyTable = () => {
                 setClientes(response.data);
                 console.log("sadlkasdasklajkfdsfjkgdsfljkasdhfladksjhfasdjklfhadskljfhasdlkfj");
                 console.log(response.data);
-                setUpdateCollectionCenterInfo(false);
+                setUpdateCompanyInfo(false);
             })
             .catch(error => {
                 console.error(error);
             });
-    }, [updateCollectionCenterInfo]);
+    }, [updateCompanyInfo]);
   
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
