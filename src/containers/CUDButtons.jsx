@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { TodoContext } from '../context/index.js';
-import { OptionButton, ActionButtonOrdersExcel } from '../components/OptionButton';
-
+import { OptionButton, ActionButtonOrdersExcel, ImportExcelButton } from '../components/OptionButton';
+import axios from 'axios';
 
 const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
     const {
@@ -37,8 +37,73 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       openModalCreateVehicle, setOpenModalCreateVehicle,
       openModalEditVehicle, setOpenModalEditVehicle,
       openModalDeleteVehicle, setOpenModalDeleteVehicle,
-      openModalCreateReport, setOpenModalCreateReport
+      openModalCreateReport, setOpenModalCreateReport,
+
+      openModalCreateCompany, setOpenModalCreateCompany,
+      openModalEditCompany, setOpenModalEditCompany,
+      openModalDeleteCompany, setOpenModalDeleteCompany,
+      openModalText, setOpenModalText, textOpenModalText, setTextOpenModalText,
+
     } = useContext(TodoContext);
+
+
+    const handleDataImported = async (data) => {
+      console.log("Datos importados:", data);
+      console.log(data[0].Tipo);
+    
+      let url = "http://127.0.0.1:8000/Rennueva"; // URL base
+    
+      if (data[0].Tipo === "Generador") {
+        console.log("Es un archivo de usuarios");
+        // Suponiendo que tienes una URL para crear usuarios
+        url += "/create-generator/";
+      } else if (data[0].Tipo === "Centro de Reciclaje") {
+        console.log("Es un archivo de reciclaje");
+        url += "/creat-recycling-center/";
+      } else if (data[0].Tipo === "Centro de Recoleccion") {
+        console.log("Es un archivo de recolección");
+        url += "/creat-collection-center/";
+      } else if (data[0].Tipo === "Responsiva"){
+        console.log("Es un archivo de responsiva");
+        url += "/import-report/";
+      }
+      else {
+        console.log("Tipo desconocido");
+        return; // Salir si el tipo no es reconocido
+      }
+    
+      // Realizar la consulta
+      try {
+        console.log("####################################");
+        console.log("Enviando datos:", JSON.stringify(data));
+        
+        const response = axios
+        .post(`${url}`, data)
+        .then(response => {
+            const data = response.data;
+            console.log("Respuesta del servidor:", data);
+            if (data.message === "Generador creado") {
+              setTextOpenModalText("Generador(es) creado(s) correctamente con el archivo Excel, se crearon: " + data.usuarios_creados + " Generadores");
+              setOpenModalText(true);
+            }
+            if (data.message === "error") {
+              setTextOpenModalText("Error al crear Generador(es) con el archivo Excel, se lograron crear: " + data.usuarios_creados + " Generadores");
+              setOpenModalText(true);
+            }
+            
+            
+
+        })
+        .catch(error => {
+            console.error(error);
+        })
+
+        console.log("Respuesta del servidor:", response.data);
+      } catch (error) {
+        console.error("Error al realizar la consulta:", error);
+      }
+    };
+    
     
     return (
         <div style={{display :"flex"}}>
@@ -78,7 +143,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         <OptionButton setOpenModal={setOpenModalCreateReport} text="Crear responsiva" color="#28a745" />
       ) : null}
       {model === 'Company' ? (
-        <OptionButton setOpenModal={setOpenModalCreateReport} text="Crear Compañia" color="#28a745" />
+        <OptionButton setOpenModal={setOpenModalCreateCompany} text="Crear Compañia" color="#28a745" />
       ) : null}
       {model === 'DonorRecolection' ? (
         <ActionButtonOrdersExcel 
@@ -87,6 +152,10 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         
       />
       ) : null}
+      {model === 'ReportHistory' ? (
+        <ImportExcelButton text="Importar Generadores Excel" color="blue" onImported={handleDataImported} />
+      ) : null}
+
 
 
       </div>
@@ -125,8 +194,14 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
           <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Responsiva" color="#007bff" />
         ) : null}
         {model === "Company"  ? (
-          <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Compañia" color="#007bff" />
+          <OptionButton setOpenModal={setOpenModalEditCompany} text="Editar Compañia" color="#007bff" />
         ) : null}
+        {/* {model === 'ReportHistory' ? (
+        <ImportExcelButton text="Importar Centros de Recoleccion Excel" color="blue" onImported={handleDataImported} />
+      ) : null} */}
+      {model === 'ReportHistory' ? (
+        <div className="create-button">  <ImportExcelButton text="Importar Responsivas Excel" color="blue" onImported={handleDataImported} /> </div>
+      ) : null}
 
       </div>
         <div className="create-button">
@@ -164,10 +239,13 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
           <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Responsiva" color="#dc3545" />
         ): null}
         {model === "Company" ? (
-          <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Compañia" color="#dc3545" />
+          <OptionButton setOpenModal={setOpenModalDeleteCompany} text="Borrar Compañia" color="#dc3545" />
         ): null}
         {model === "DonorRecolection" ? (
           <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Orden Recoleccioni" color="#dc3545" />
+        ): null}
+        {model === "ReportHistory" ? (
+          <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Historial de Reportes" color="#dc3545" />
         ): null}
 
       </div>

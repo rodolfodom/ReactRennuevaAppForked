@@ -23,6 +23,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import CarrierTable from "../components/CarrierTable.jsx";
+import BarsChartCarrier from "../components/graph/BarsCharCarrier.js";
 
 function MenuCarrier() {
   const { 
@@ -85,7 +86,7 @@ function MenuCarrier() {
                     height: 580,
                   }}
                 >
-                  <BarsChartVehicle />
+                  <BarsChartCarrier />
                 </Paper>
               </Grid>
             </Grid>

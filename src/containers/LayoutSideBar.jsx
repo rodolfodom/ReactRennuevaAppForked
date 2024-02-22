@@ -162,6 +162,9 @@ export default function MiniDrawer() {
     } else if (index == 1) {
       navigate('/tracking');
     }
+    else if (index == 2) {
+      navigate('/report-history');
+    }
   }
   
 
@@ -306,7 +309,7 @@ export default function MiniDrawer() {
         <Divider />
         <Divider />
         <List>
-          {['Responsivas', "Busqueda"].map((text, index) => (
+          {['Responsivas', "Busqueda","Historial"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 onClick={() => handleClickResponsivas(index)}
@@ -325,6 +328,7 @@ export default function MiniDrawer() {
                 >
                   {index === 0 ? <AssignmentRoundedIcon /> : null}
                   {index === 1 ? <AssignmentRoundedIcon /> : null}
+                  {index === 2 ? <AssignmentRoundedIcon /> : null}
 
 
                 </ListItemIcon>
