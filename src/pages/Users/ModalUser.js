@@ -373,7 +373,7 @@ function ModalUser({ children, mode }) {
               inputProps={{
                 maxLength: 13 // Opcional: si quieres forzar la longitud máxima en el HTML
               }}
-              error={razon_social.length > 0 && (razon_social.length < 12 || razon_social.length > 13)}
+              error={razon_social.length > 0 && (razon_social.length < 0 || razon_social.length > 50)}
               helperText={
                 razon_social.length > 0 && (razon_social.length < 50 || razon_social.length > 50)
                   ? "La Razon Social debe tener entre 0 y 50 caracteres"

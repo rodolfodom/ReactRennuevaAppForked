@@ -42,6 +42,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       openModalCreateCompany, setOpenModalCreateCompany,
       openModalEditCompany, setOpenModalEditCompany,
       openModalDeleteCompany, setOpenModalDeleteCompany,
+      openModalText, setOpenModalText, textOpenModalText, setTextOpenModalText,
 
     } = useContext(TodoContext);
 
@@ -62,7 +63,11 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       } else if (data[0].Tipo === "Centro de Recoleccion") {
         console.log("Es un archivo de recolección");
         url += "/creat-collection-center/";
-      } else {
+      } else if (data[0].Tipo === "Responsiva"){
+        console.log("Es un archivo de responsiva");
+        url += "/import-report/";
+      }
+      else {
         console.log("Tipo desconocido");
         return; // Salir si el tipo no es reconocido
       }
@@ -77,6 +82,16 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         .then(response => {
             const data = response.data;
             console.log("Respuesta del servidor:", data);
+            if (data.message === "Generador creado") {
+              setTextOpenModalText("Generador(es) creado(s) correctamente con el archivo Excel, se crearon: " + data.usuarios_creados + " Generadores");
+              setOpenModalText(true);
+            }
+            if (data.message === "error") {
+              setTextOpenModalText("Error al crear Generador(es) con el archivo Excel, se lograron crear: " + data.usuarios_creados + " Generadores");
+              setOpenModalText(true);
+            }
+            
+            
 
         })
         .catch(error => {
@@ -181,11 +196,11 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         {model === "Company"  ? (
           <OptionButton setOpenModal={setOpenModalEditCompany} text="Editar Compañia" color="#007bff" />
         ) : null}
-        {model === 'ReportHistory' ? (
+        {/* {model === 'ReportHistory' ? (
         <ImportExcelButton text="Importar Centros de Recoleccion Excel" color="blue" onImported={handleDataImported} />
-      ) : null}
+      ) : null} */}
       {model === 'ReportHistory' ? (
-        <div className="create-button">  <ImportExcelButton text="Importar Centros de Reciclaje Excel" color="blue" onImported={handleDataImported} /> </div>
+        <div className="create-button">  <ImportExcelButton text="Importar Responsivas Excel" color="blue" onImported={handleDataImported} /> </div>
       ) : null}
 
       </div>
