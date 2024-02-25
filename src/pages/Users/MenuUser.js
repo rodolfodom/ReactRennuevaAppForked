@@ -80,7 +80,7 @@ function MenuUser() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="xl"  sx={{ mb: 5 }}>
+          <Container maxWidth="xl" >
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper
