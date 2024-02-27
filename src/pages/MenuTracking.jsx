@@ -74,7 +74,7 @@ function MenuTracking() {
                     }}
                 >
                     <Toolbar />
-                    <Container maxWidth="lg">
+                    <Container maxWidth="xl">
                         <Grid container spacing={3}>
                             <Grid item xl >
                                 <Paper

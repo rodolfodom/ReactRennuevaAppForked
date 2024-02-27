@@ -65,9 +65,9 @@ function MenuGenerator() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg">
+          <Container maxWidth="xl">
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} >
                 <Paper
                   sx={{
                     p: 3,
@@ -83,7 +83,7 @@ function MenuGenerator() {
                   <GeneratorTable />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} >
                 <Paper
                   sx={{
                     p: 4,

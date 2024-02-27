@@ -23,6 +23,9 @@ import { MenuTracking } from '../pages/MenuTracking.jsx';
 import { MenuDonorRecolection } from '../pages/MenuDonorRecolection.js';
 import { MenuCompany } from '../pages/Menus/MenuCompany.js';
 import { MenuReportHistory } from '../pages/Menus/MenuReportHistory.js';
+import { MenuMainGenerator } from '../pages/Menus/MenuMainGenerator.js';
+import ResponsiveAppBar from '../containers/LayoutAppBar.jsx';
+import LayoutGenerator from '../containers/LayoutGenerator.jsx';
 
 
 
@@ -56,6 +59,7 @@ function App() {
             <Route path="/donor-recolection" element={<Layout><MenuDonorRecolection /></Layout>} />
             <Route path="/company" element={<Layout><MenuCompany /></Layout>} />
             <Route path="/report-history" element={<Layout><MenuReportHistory/></Layout>} />
+            <Route path="/main-generator" element={<LayoutGenerator><MenuMainGenerator/></LayoutGenerator> } />
             
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>

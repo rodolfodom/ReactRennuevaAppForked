@@ -108,7 +108,7 @@ export default function Dashboard() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 0, mb: 0 }}>
+          <Container maxWidth="xl" sx={{ mt: 0, mb: 0 }}>
             <Grid container spacing={2}>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={8}>
