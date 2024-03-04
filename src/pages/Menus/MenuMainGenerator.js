@@ -41,7 +41,7 @@ function MenuMainGenerator() {
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom>
-          Blog de Ejemplo
+          Blog Rennueva
         </Typography>
         <Button variant="contained" onClick={handleOpen}>
           Agregar Post

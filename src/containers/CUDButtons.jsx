@@ -82,14 +82,29 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         .then(response => {
             const data = response.data;
             console.log("Respuesta del servidor:", data);
+            if (data.error) {
+              setTextOpenModalText("Error al crear Generador(es) con el archivo Excel, se lograron crear: " + data.usuarios_creados + " Generadores error en la creacion por: " + data.error);
+              setOpenModalText(true);
+            }
+            if (data.message === "Responsivas creadas") {
+              setTextOpenModalText("Responsivas creadas correctamente con el archivo Excel, se crearon: " + data.responsivas_creadas + " Responsivas");
+              setOpenModalText(true);
+            }
+            if (data.error_responsiva ) {
+              setTextOpenModalText("Error al crear Responsivas con el archivo Excel, se lograron crear: " + data.responsivas_creadas + " Responsivas error en la creacion por: " + data.error_responsiva);
+              setOpenModalText(true);
+            }
             if (data.message === "Generador creado") {
               setTextOpenModalText("Generador(es) creado(s) correctamente con el archivo Excel, se crearon: " + data.usuarios_creados + " Generadores");
               setOpenModalText(true);
             }
             if (data.message === "error") {
-              setTextOpenModalText("Error al crear Generador(es) con el archivo Excel, se lograron crear: " + data.usuarios_creados + " Generadores");
+              setTextOpenModalText("Error al crear Generador(es) con el archivo Excel, se lograron crear: " + data.usuarios_creados + " Generadores error en la creacion por: " + data.error);
               setOpenModalText(true);
             }
+
+
+          
             
             
 

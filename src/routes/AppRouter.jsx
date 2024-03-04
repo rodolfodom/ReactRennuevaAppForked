@@ -26,6 +26,7 @@ import { MenuReportHistory } from '../pages/Menus/MenuReportHistory.js';
 import { MenuMainGenerator } from '../pages/Menus/MenuMainGenerator.js';
 import ResponsiveAppBar from '../containers/LayoutAppBar.jsx';
 import LayoutGenerator from '../containers/LayoutGenerator.jsx';
+import { MenuMyResponsivasGenerator } from '../pages/Menus/MenuMyResponsivasGenerator.js';
 
 
 
@@ -36,9 +37,6 @@ function App() {
   return (
     <TodoProvider>
       <BrowserRouter>
-
-
-
           <Routes>
           <Route path="/login" element={<Login />} />
             <Route path="/" element={<Login />} />
@@ -60,7 +58,10 @@ function App() {
             <Route path="/company" element={<Layout><MenuCompany /></Layout>} />
             <Route path="/report-history" element={<Layout><MenuReportHistory/></Layout>} />
             <Route path="/main-generator" element={<LayoutGenerator><MenuMainGenerator/></LayoutGenerator> } />
-            
+            <Route path='/responsivas-generator' element ={<LayoutGenerator><MenuMyResponsivasGenerator/></LayoutGenerator>} />
+
+
+
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>
 
