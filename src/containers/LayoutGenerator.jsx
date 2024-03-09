@@ -21,6 +21,8 @@ import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import LeaderboardRoundedIcon from "@mui/icons-material/LeaderboardRounded";
 
+import { ThemeContext, ThemeProvider } from "@emotion/react";
+import ResponsiveAppBarGenerator from "./ResponsiveAppBarGenerator";
 const drawerWidth = 240;
 const drawerWidthView = 27;
 
@@ -29,6 +31,7 @@ const openedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
+  
   }),
   overflowX: "hidden",
 });
@@ -37,6 +40,7 @@ const closedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
+
   }),
   overflowX: "hidden",
 
@@ -65,13 +69,20 @@ const Drawer = styled(MuiDrawer, {
   boxSizing: "border-box",
   ...(open && {
     ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
+    "& .MuiDrawer-paper": {
+      ...openedMixin(theme),
+      backgroundColor: "#081C15", // Set your desired green color here
+    },
   }),
   ...(!open && {
     ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
+    "& .MuiDrawer-paper": {
+      ...closedMixin(theme),
+      backgroundColor: "#081C15", // Set your desired green color here
+    },
   }),
 }));
+
 
 const LayoutGenerator = ({ children }) => {
   const navigate = useNavigate();
@@ -99,17 +110,33 @@ const LayoutGenerator = ({ children }) => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
-      <Box sx={{ display: "flex" }}>
+    <ThemeProvider  theme={theme}>
+    <div style={{ width: "100%", backgroundColor : "#081C15" }}>
+      <Box sx={{ display: "flex"}}>
         <CssBaseline />
-        <ResponsiveAppBar />
-        <Drawer variant="permanent" open={open}>
+        <ResponsiveAppBarGenerator/>
+        <Drawer variant="permanent" open={open} sx={{bgcolor : "#081C15"}}>
+          <Box
+            sx={{
+             
+              bgcolor: "#1B4332",
+              borderRight: "1px solid #1B4332",
+              height: "100vh",
+              borderRadius: "25px",
+              marginTop: 1,
+              marginBottom: 1,
+              marginLeft: 1,
+              
+
+
+            }} > 
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              marginTop: 0.9,
-              marginBottom: 0.9,
+              paddingTop: 0.9,
+              paddingBottom: 0.9
+             
             }}
           >
             <DrawerHeader>
@@ -125,7 +152,8 @@ const LayoutGenerator = ({ children }) => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              height: 150,
+              height: 150
+              
             }}
           >
             <Avatar
@@ -202,6 +230,7 @@ const LayoutGenerator = ({ children }) => {
           <Divider />
 
           <Divider />
+          </Box>    
         </Drawer>
       </Box>
 
@@ -217,6 +246,8 @@ const LayoutGenerator = ({ children }) => {
             transition: theme.transitions.create(['margin', 'width'], { // Añade esta línea
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.enteringScreen,
+              
+              
 
             }), // Añade esta línea
           }}
@@ -225,6 +256,7 @@ const LayoutGenerator = ({ children }) => {
         {children}
       </Box>
     </div>
+    </ThemeProvider>
   );
 };
 

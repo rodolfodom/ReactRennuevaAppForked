@@ -37,6 +37,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 
 const QRCode = require("qrcode");
 
@@ -204,14 +207,7 @@ const generatePdf = (report, data) => {
   doc.autoTable({
     startY: 35,
     tableWidth: 190,
-    body: [
-      [
-        "RFC:",
-        report.rfc_usuario,
-        "Razón Social:",
-        data[0].razon_social,
-      ],
-    ],
+    body: [["RFC:", report.rfc_usuario, "Razón Social:", data[0].razon_social]],
     theme: "plain",
     styles: tableStyles,
   });
@@ -435,7 +431,14 @@ function MenuReport() {
     setOpenModalDelete,
     openModalDelete,
     openModalCreateReport,
+    openModalEditReport,
+    openModalDeleteReport,
+
     setOpenModalCreateReport,
+    setOpenModalEditReport,
+    setOpenModalDeleteReport,
+
+
 
     openModalCreateResidueReport,
     setOpenModalCreateResidueReport,
@@ -466,8 +469,6 @@ function MenuReport() {
 
   const [datos, setDatos] = useState([]);
 
-  // ... otros handlers y useEffect ...
-
   const defaultTheme = createTheme();
 
   //##############################################################################################################
@@ -479,6 +480,7 @@ function MenuReport() {
   const [userSelectModal, setUserSelectModal] = useState("");
   const [reportSelectModal, setReportSelectModal] = useState("");
   const [id_report, setIdReport] = useState("");
+  const [reportSelect, setReportSelect] = useState([]);
 
   useEffect(() => {
     axios
@@ -525,7 +527,7 @@ function MenuReport() {
           <Toolbar />
           <Container maxWidth="xl">
             <Grid container spacing={3}>
-              <Grid item xs={12} >
+              <Grid item xs={12}>
                 <Paper
                   sx={{
                     p: 3,
@@ -564,6 +566,8 @@ function MenuReport() {
                             <TableCell>Residuos</TableCell>
                             <TableCell>Firma Generador</TableCell>
                             <TableCell>Reporte</TableCell>
+                            <TableCell>Editar</TableCell>
+                            <TableCell>Borrar</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -666,7 +670,6 @@ function MenuReport() {
                                           console.log("VALIDATE");
                                           console.log(validate);
                                           if (validate == true) {
-                                          
                                             await generateQR(
                                               "http://localhost:3000/report"
                                             );
@@ -681,15 +684,36 @@ function MenuReport() {
                                             console.log(data[0]);
 
                                             generatePdf(reporte, data);
-                                          }else {
+                                          } else {
                                             setOpenModalText(true);
-                                            setTextOpenModalText("No se puede generar el reporte, aun no se han firmado todos los campos"); 
+                                            setTextOpenModalText(
+                                              "No se puede generar el reporte, aun no se han firmado todos los campos"
+                                            );
                                           }
-
                                         }}
                                       >
                                         Reporte
                                       </StyledButton>
+                                    </TableCell>
+                                    <TableCell>
+                                      <IconButton aria-label="editar" onClick={ () => {
+                                        console.log("Editar");
+                                        console.log(reporte.id_report);
+                                        setIdReport(reporte.id_report);
+                                        console.log(reporte  )
+                                        console.log(report);
+                                        setReportSelect(reporte); 
+                                        setOpenModalEditReport(true);
+
+                                      }
+                                      } >
+                                        <EditIcon />
+                                      </IconButton>
+                                    </TableCell>
+                                    <TableCell>
+                                      <IconButton aria-label="borrar">
+                                        <DeleteIcon />
+                                      </IconButton>
                                     </TableCell>
                                   </TableRow>
                                 )
@@ -758,12 +782,12 @@ function MenuReport() {
               La funcionalidad de agregar TODO
             </ModalReport>
           )}
-          {openModalEdit && (
-            <ModalReport mode={"EDITAR"}>
+          {openModalEditReport && (
+            <ModalReport mode={"EDITAR"} report = {reportSelect} >
               La funcionalidad de editar TODO
             </ModalReport>
           )}
-          {openModalDelete && (
+          {openModalDeleteReport && (
             <ModalReport mode={"BORRAR"}>
               La funcionalidad de borrar TODO
             </ModalReport>

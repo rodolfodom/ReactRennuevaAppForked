@@ -20,14 +20,10 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
-function ModalReport({ children, mode }) {
+function ModalReport({ children, mode , report}) {
   const [datos, setDatos] = useState([]);
-  const [groups, setGroups] = useState([]);
   const [carriers, setCarriers] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [recyclingCollectionCenters, setRecyclingCollectionCenters] = useState(
-    []
-  );
+  const [recyclingCollectionCenters, setRecyclingCollectionCenters] = useState([]);
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -47,7 +43,11 @@ function ModalReport({ children, mode }) {
   const [isSameLocation, setIsSameLocation] = useState(true);
   const [haveTransport, setHaveTransport] = useState(true);
   const [carrier, setCarrier] = useState("");
+  const [userToEdit, setUserToEdit] = useState("");
   const [transportAvailable, setTransportAvailable] = useState(false);
+
+  console.log("Report");
+  console.log(report);
 
   const {
     setOpenModalText,
@@ -106,6 +106,40 @@ function ModalReport({ children, mode }) {
       boxSizing: "border-box",
     },
   }));
+
+  useEffect(() => {
+      if (mode === "EDITAR") {
+        console.log("EditaEDIr");
+        console.log(report);
+        console.log(report.id_report);
+        console.log(report.compania_usuario);
+        setUser(report.email_usuario);
+        setEmail(report.email_usuario);
+        setFirstName(report.nombre_real_usuario);
+        setLastName(report.apellido_usuario);
+        setRfc(report.rfc_usuario);
+        setCompany(report.compania_usuario);
+        setStreet(report.calle_usuario);
+        setLocality(report.colonia_usuario);
+        setCity(report.ciudad_usuario);
+        setState(report.estado_usuario);
+        setPostalCode(report.cp_usuario);
+        setCompany(report.compania_usuario);
+        if (report.centro_reciclaje != null ) {
+          console.log("paseo por aqui")
+          console.log(report.centro_reciclaje);
+          setRecyclingCollection(report.centro_reciclaje);
+        }
+        if (report.centro_recoleccion != null) {
+          setRecyclingCollection(report.centro_recoleccion);
+        }
+
+
+
+        
+
+      }
+  }, []);
 
   useEffect(() => {
     axios
@@ -239,6 +273,7 @@ function ModalReport({ children, mode }) {
   };
 
   const handleCenterChange = (event) => {
+    console.log(event.target.value);
     setRecyclingCollection(event.target.value);
   };
 
@@ -256,6 +291,7 @@ function ModalReport({ children, mode }) {
     setUser(datoEncontrado.user);
     setPassword(datoEncontrado.password);
     setEmail(datoEncontrado.email);
+    console.log(datoEncontrado.first_name)
     setFirstName(datoEncontrado.first_name);
     setLastName(datoEncontrado.last_name);
     setGroup(datoEncontrado.group);
@@ -267,6 +303,7 @@ function ModalReport({ children, mode }) {
     setLocality(datoEncontrado.address_locality);
     setStreet(datoEncontrado.address_street);
     setPostalCode(datoEncontrado.address_postal_code);
+    setUserToEdit(datoEncontrado.user);
 
     if (datoEncontrado.group === "Generador") {
       setTransportAvailable(true);
@@ -329,6 +366,7 @@ function ModalReport({ children, mode }) {
                   labelId="rol-select-label"
                   id="rol-select"
                   required
+                  
                   onChange={(e) => handleSelectChange(e, setUser)}
                 >
                   {nameGenerator.map((name, index) => (
@@ -544,6 +582,7 @@ function ModalReport({ children, mode }) {
                         id="rol-select"
                         required
                         onChange={(e) => handleCenterChange(e, setUser)}
+                        value={recyclingCollection}
                       >
                         {recyclingCollectionCenters.map((name, index) => (
                           <MenuItem

@@ -38,6 +38,8 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       openModalEditVehicle, setOpenModalEditVehicle,
       openModalDeleteVehicle, setOpenModalDeleteVehicle,
       openModalCreateReport, setOpenModalCreateReport,
+      openModalEditReport, setOpenModalEditReport,
+      openModalDeleteReport, setOpenModalDeleteReport,
 
       openModalCreateCompany, setOpenModalCreateCompany,
       openModalEditCompany, setOpenModalEditCompany,
@@ -206,7 +208,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
           <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Vehicle" color="#007bff" />
         ) : null}
         {model === "Responsiva"  ? (
-          <OptionButton setOpenModal={setOpenModalEditVehicle} text="Editar Responsiva" color="#007bff" />
+          <OptionButton setOpenModal={setOpenModalEditReport} text="Editar Responsiva" color="#007bff" />
         ) : null}
         {model === "Company"  ? (
           <OptionButton setOpenModal={setOpenModalEditCompany} text="Editar Compañia" color="#007bff" />
@@ -251,7 +253,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
           <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Vehicle" color="#dc3545" />
         ): null}
         {model === "Responsiva" ? (
-          <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Responsiva" color="#dc3545" />
+          <OptionButton setOpenModal={setOpenModalDeleteReport} text="Borrar Responsiva" color="#dc3545" />
         ): null}
         {model === "Company" ? (
           <OptionButton setOpenModal={setOpenModalDeleteCompany} text="Borrar Compañia" color="#dc3545" />

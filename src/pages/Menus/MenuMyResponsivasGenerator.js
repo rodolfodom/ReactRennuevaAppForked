@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Grid from '@mui/material/Grid';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
   Table,
@@ -24,6 +25,8 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import { PieChart, Pie, Cell } from 'recharts';
+
 
 function createData(name, calories, fat, carbs, protein, price) {
     return {
@@ -112,7 +115,6 @@ function Row(props) {
       </React.Fragment>
     );
   }
-
 Row.propTypes = {
     row: PropTypes.shape({
       calories: PropTypes.number.isRequired,
@@ -130,48 +132,124 @@ Row.propTypes = {
       protein: PropTypes.number.isRequired,
     }).isRequired,
   };
-
 const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
+  createData("Adrian Dali Hernandez Rueda", "XXXXAXXXXX", "13-12-2024", "SI", "SI"),
+  createData("Adrian Dali Hernandez Rueda", "XXXXAXXXXX", "13-12-2024", "SI", "SI"),
+  createData("Adrian Dali Hernandez Rueda", "XXXXAXXXXX", "13-12-2024", "SI", "SI"),
+  createData("Adrian Dali Hernandez Rueda", "XXXXAXXXXX", "13-12-2024", "SI", "SI")
+
 ];
 
+// Datos de ejemplo para la gráfica circular
+const data = [
+  { name: 'Grupo A', value: 400 },
+  { name: 'Grupo B', value: 300 },
+  { name: 'Grupo C', value: 300 },
+  { name: 'Grupo D', value: 200 },
+];
+
+// Colores para cada segmento de la gráfica circular
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+
 function MenuMyResponsivasGenerator() {
+  const exampleNumber = 75;
+  const totalResponsivas = 123;
+
   return (
     <ThemeProvider theme={theme}>
-    
-    <Box
+    <Grid container spacing={2} >
+
+
+    <Grid item xs={4}>
+      <Paper sx={{ marginLeft: 3, height: '30vh', marginTop: -9, bgcolor: '#1B4332', borderRadius: '25px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 2 }}>
+        <Typography sx={{ color: '#FFF' }}>
+          Mis Responsivas Generadas
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+          <PieChart width={200} height={200}>
+            <Pie data={data} cx="50%" cy="50%" outerRadius={60} fill="#8884d8" dataKey="value" >
+              {
+                data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+              }
+            </Pie>
+          </PieChart>
+          <Typography variant="h3" sx={{ marginLeft: 3, color: '#FFF' }}>
+            {exampleNumber}%
+          </Typography>
+        </Box>
+      </Paper>
+    </Grid>
+
+
+    <Grid item xs={4}>
+      <Paper sx={{
+        height: '30vh',
+        marginTop: -9,
+        bgcolor: '#1B4332',
+        borderRadius: "25px",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        {/* Círculo y número de responsivas */}
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <svg width="100" height="100">
+            <circle cx="50" cy="50" r="40" stroke="white" strokeWidth="3" fill="#4caf50" />
+            <text x="50%" y="50%" textAnchor="middle" stroke="white" strokeWidth="1px" dy=".3em" fill="white" fontSize="20">
+              {totalResponsivas}
+            </text>
+          </svg>
+          <Typography variant="h6" sx={{ mt: 2, color: 'white' }}>
+            Total Responsivas
+          </Typography>
+        </Box>
+      </Paper>
+    </Grid>
+
+
+    <Grid item xs={4}  >
+    <Paper sx={{height: "30vh", marginTop : -9, bgcolor : '#1B4332', borderRadius: "25px",}}>    
+    <Typography >
+        Mis Responsivas Generadas
+    </Typography>
+
+
+
+    </Paper>
+    </Grid>
+    <Grid item xs={12} sx={{
+          minHeight: "80%"}} >
+    <Paper
         sx={{
           p: 3,
           bgcolor: "generator.bg_main",
-          mt: -7,
           ml: 3,
-          borderRadius: "10px",
-          height: "60%",
+          borderRadius: "25px",
+          height: "80%",
+          minHeight: "80%",
         }}
       >
         <Typography sx = {{ color : "#ffffff", fontWeight : "bold"}} variant="h6" gutterBottom component="div">
                 Mis Responsivas Generadas
             </Typography>
-        <TableContainer component={Box} sx={{ maxHeight : "90%" }}>
+        <TableContainer component={Box} sx={{ maxHeight : "90%",minHeight: "80%" }}>
           <Table sx={{ minWidth: 650, }} aria-label="simple table">
             
             <TableHead >
             
               <TableRow>
               <TableCell > </TableCell>
-                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}}>Dessert (100g serving)</TableCell>
-                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}} align="right" >Calories</TableCell>
-                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}} align="right">Fat&nbsp;(g)</TableCell>
-                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}} align="right">Carbs&nbsp;(g)</TableCell>
-                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}} align="right">Protein&nbsp;(g)</TableCell>
+                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}}>Nombre</TableCell>
+                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}} align="right" >RFC</TableCell>
+                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}} align="right">Fecha</TableCell>
+                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}} align="right">Descargar</TableCell>
+                <TableCell sx = {{color : "#ffffff", fontWeight: 'bold'}} align="right">Finalizada</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -181,7 +259,9 @@ function MenuMyResponsivasGenerator() {
             </TableBody>
           </Table>
         </TableContainer>
-      </Box>
+      </Paper>
+        </Grid>
+    </Grid>
     </ThemeProvider>
   );
 }
