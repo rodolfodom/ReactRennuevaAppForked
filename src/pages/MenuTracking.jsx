@@ -1,64 +1,50 @@
-import React, { useState, useContext } from "react";
-import '../styles/user/MenuUser.css';
-import { TodoContext } from '../context/index.js';
-// Importa los demás componentes y bibliotecas que necesitas...
-import { Document, Page } from 'react-pdf';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"; // Importar useParams
 import axios from 'axios';
 import { ThemeProvider, createTheme, Box, Grid, Paper, Container, Toolbar, CssBaseline, Button, TextField } from '@mui/material';
 import Title from '../components/Title.js';
 
 function MenuTracking() {
-   
     const [pdfFile, setPdfFile] = useState(null);
-    const [pdfFile2, setPdfFile2] = useState(null);
-    const defaultTheme = createTheme();
     const [url, setUrl] = useState(null);
-    const [url2, setURL2] = useState(null);
-    const [folio, setFolio] = useState(null);
+    const [folio, setFolio] = useState("");
+    const { trackingNumber } = useParams(); // Usar useParams para obtener el número de tracking de la URL
 
-    function openPdfInNewWindow() {
-        const blob = base64ToBlob(pdfFile, 'application/pdf');
-        const url = URL.createObjectURL(blob);
-    
-        // Abrir el PDF en una nueva ventana
-        window.open(url, '_blank');
-    }
-    
-    
+    const defaultTheme = createTheme();
 
-    const getPDF = async () => {
+    useEffect(() => {
+        if (trackingNumber) {
+            setFolio(trackingNumber); // Establecer el número de tracking en el estado folio
+            getPDF(trackingNumber); // Llamar a getPDF automáticamente si hay un número de tracking
+        }
+    }, [trackingNumber]); // El efecto se ejecuta cuando cambia trackingNumber
+
+    async function getPDF(trackingNumber) {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/get-pdf-report/`, { ReportFolio: folio });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/get-pdf-report/`, { ReportFolio: trackingNumber });
             const data = response.data;
-            console.log("Respuesta del servidor:");
-            console.log(data.Reporte);
-    
+
             const blob = base64ToBlob(data.Reporte, 'application/pdf');
-            const url = URL.createObjectURL(blob); // Crea una URL para el blob
-    
-            setUrl(url); // Actualiza el estado con la nueva URL
-            setPdfFile(data.Reporte); // Asumiendo que data ya está en formato base64
-    
-            window.open(url, '_blank'); // Abre el PDF en una nueva ventana
-    
+            const url = URL.createObjectURL(blob);
+
+            setUrl(url);
+            setPdfFile(data.Reporte);
+            window.open(url, '_blank');
         } catch (error) {
             console.log(error);
         }
-    };
-    
+    }
 
     function base64ToBlob(base64, mimeType) {
         const base64Real = base64.split(',')[1] || base64;
-
         const byteCharacters = atob(base64Real);
         const byteNumbers = new Array(byteCharacters.length);
         for (let i = 0; i < byteCharacters.length; i++) {
-          byteNumbers[i] = byteCharacters.charCodeAt(i);
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
         const byteArray = new Uint8Array(byteNumbers);
-        return new Blob([byteArray], {type: mimeType});
-      }
-      
+        return new Blob([byteArray], { type: mimeType });
+    }
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -74,9 +60,9 @@ function MenuTracking() {
                     }}
                 >
                     <Toolbar />
-                    <Container maxWidth="xl">
+                    <Container maxWidth="lg">
                         <Grid container spacing={3}>
-                            <Grid item xl >
+                            <Grid item xs={12}>
                                 <Paper
                                     sx={{
                                         p: 3,
@@ -84,39 +70,26 @@ function MenuTracking() {
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         justifyContent: 'flex-start',
-                                        height: 'auto', // Modificado para ajustar el tamaño del contenedor
+                                        height: 'auto',
                                     }}
                                 >
                                     <Title>Tracking</Title>
-
                                     <TextField
                                         label="Clave de Responsiva"
                                         name="responsiva"
                                         required
                                         fullWidth
-                                        onChange={(e) => setFolio(e.target.value)}
-
+                                        value={folio} // Usar value para que se rellene automáticamente
                                     />
+                                    {/* Puedes optar por omitir este botón si la carga es completamente automática */}
                                     <Button 
                                         variant="contained" 
                                         color="primary" 
                                         sx={{ mt: 3, mb: 2 }}
-                                        onClick={getPDF}
-                                        
+                                        onClick={() => getPDF(folio)}
                                     >
                                         Buscar
                                     </Button>
-
-                                    {/* Visualizador de PDF */}
-                                    {pdfFile && (
-                                        <Document
-                                            file={url}
-                                
-                                            onLoadError={(error) => console.error('Error al cargar el PDF:', error)}
-                                        >
-                                            <Page pageNumber={1} />
-                                        </Document>
-                                    )}
                                 </Paper>
                             </Grid>
                         </Grid>

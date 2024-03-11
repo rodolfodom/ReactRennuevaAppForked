@@ -482,18 +482,27 @@ function MenuReport() {
   const [reportSelect, setReportSelect] = useState([]);
   const [isButtonGreen, setIsButtonGreen] = useState(true);
   const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null); // Estado para almacenar el ID del reporte a borrar
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id_report) => {
+    setDeleteId(id_report); // Guarda el ID del reporte en el estado
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleConfirmDelete = () => {
-    // Coloca aquí tu lógica para manejar la acción de borrado
     console.log('Borrado confirmado');
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/delete-report/`, {
+        reportId: deleteId, // Usa el ID almacenado en el estado
+      })
+      .then((response) => {
+        console.log("##############################################info delete report####");
+        console.log(response.data);
+        setUpdateReportInfo(true);
+      });
     handleClose();
   };
 
@@ -595,9 +604,11 @@ function MenuReport() {
                             .map(
                               (reporte, index) => (
                                 console.log(
+                                  
                                   "###############" +
                                     reporte.nombre_real_usuario
                                 ),
+                                
                                 (
                                   <TableRow
                                     key={index}
@@ -623,18 +634,18 @@ function MenuReport() {
                                       {reporte.telefono_usuario}
                                     </TableCell>
                                     <TableCell>
-                                      {reporte.estado_usuario}
+                                      {reporte.estado_reporte}
                                     </TableCell>
                                     <TableCell>
-                                      {reporte.ciudad_usuario}
+                                      {reporte.ciudad_reporte}
                                     </TableCell>
                                     <TableCell>
-                                      {reporte.colonia_usuario}
+                                      {reporte.colonia_reporte}
                                     </TableCell>
                                     <TableCell>
-                                      {reporte.calle_usuario}
+                                      {reporte.calle_reporte}
                                     </TableCell>
-                                    <TableCell>{reporte.cp_usuario}</TableCell>
+                                    <TableCell>{reporte.cp_reporte}</TableCell>
                                     <TableCell>
                                       {reporte.fecha_inicio_reporte}
                                     </TableCell>
@@ -654,6 +665,7 @@ function MenuReport() {
                                         onClick={() => {
                                           setIdReport(reporte.id_report);
                                           setOpenModalCreateFirmaReceptor(true);
+                                          setUpdateReportInfo(true);
                                         }}
                                     >
                                         Firma
@@ -686,9 +698,12 @@ function MenuReport() {
                                           setReportSelectModal(
                                             reporte.id_report
                                           );
+                                          
+                                          setUpdateReportInfo(true);
+                                          
                                         }}
                                     >
-                                        Firma
+                                        Residuo
                                       </Button>
                                       
                                     </TableCell>
@@ -711,6 +726,7 @@ function MenuReport() {
                                         onClick={() => {
                                           setIdReport(reporte.id_report);
                                           setOpenModalCreateFirma(true);
+                                          
                                         }}
                                     >
                                         Firma
@@ -761,13 +777,29 @@ function MenuReport() {
                                           );
                                           console.log("VALIDATE");
                                           console.log(validate);
+                                          
                                           if (validate == true) {
-                                            await generateQR(
-                                              "http://localhost:3000/report"
-                                            );
                                             const data = await getAllInfoReport(
                                               reporte.id_report
                                             );
+
+                                            let key_centro = "";
+                                            if (data[0].key_centro_reciclaje != null) {
+                                              key_centro = data[0].key_centro_reciclaje;
+                                              
+                                            }
+                                            if (data[0].key_centro_recoleccion != null) {
+                                              key_centro = data[0].key_centro_recoleccion;
+                                              
+                                            }
+                                            
+
+                                            const folio_busqueda = data[0].key_grupo_usuario + "-"+ key_centro + "-" +reporte.id_report;
+
+                                            await generateQR(
+                                              "http://localhost:3000/tracking-external/" + folio_busqueda // Aquí deberías poner la URL correcta para el reporte
+                                            );
+                                            
                                             console.log("DATA de la funcion1");
                                             console.log(reporte);
                                             console.log(
@@ -806,7 +838,7 @@ function MenuReport() {
                                       </IconButton>
                                     </TableCell>
                                     <TableCell>
-      <IconButton aria-label="borrar" onClick={handleClickOpen}>
+      <IconButton aria-label="borrar" onClick={() => handleClickOpen(reporte.id_report)}> {/* Suponiendo que el ID del reporte es "1", aquí deberías pasar el ID real según tu lógica */}
         <DeleteIcon />
       </IconButton>
       <Dialog
@@ -825,7 +857,7 @@ function MenuReport() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleConfirmDelete} autoFocus>
+          <Button onClick={handleConfirmDelete} autoFocus> {/* Aquí no necesitas pasar el ID ya que se maneja a través del estado */}
             Confirmar
           </Button>
         </DialogActions>

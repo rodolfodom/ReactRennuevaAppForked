@@ -44,10 +44,14 @@ function ModalReport({ children, mode , report}) {
   const [haveTransport, setHaveTransport] = useState(true);
   const [carrier, setCarrier] = useState("");
   const [userToEdit, setUserToEdit] = useState("");
-  const [transportAvailable, setTransportAvailable] = useState(false);
+  const [transportAvailable, setTransportAvailable] = useState(true);
+  const [state_2, setState_2] = useState("");
+  const [city_2, setCity_2] = useState("");
+  const [locality_2, setLocality_2] = useState("");
+  const [street_2, setStreet_2] = useState("");
+  const [postal_code_2, setPostalCode_2] = useState("");
 
-  console.log("Report");
-  console.log(report);
+
 
   const {
     setOpenModalText,
@@ -305,6 +309,12 @@ function ModalReport({ children, mode , report}) {
     setPostalCode(datoEncontrado.address_postal_code);
     setUserToEdit(datoEncontrado.user);
 
+    setState_2(datoEncontrado.address_state);
+    setCity_2(datoEncontrado.address_city);
+    setLocality_2(datoEncontrado.address_locality);
+    setStreet_2(datoEncontrado.address_street);
+    setPostalCode_2(datoEncontrado.address_postal_code);
+
     if (datoEncontrado.group === "Generador") {
       setTransportAvailable(true);
     }
@@ -319,6 +329,7 @@ function ModalReport({ children, mode , report}) {
 
   const handleSwitchChange = (event) => {
     setIsSameLocation(event.target.checked);
+    
   };
   const handleSwitchChangeCarrier = (event) => {
     setHaveTransport(event.target.checked);
@@ -331,6 +342,15 @@ function ModalReport({ children, mode , report}) {
       setLocality("");
       setStreet("");
       setPostalCode("");
+    }
+    else {
+      setState(state_2);
+      setCity(city_2);
+      setLocality(locality_2);
+      setStreet(street_2);
+      setPostalCode(postal_code_2);
+      
+      
     }
   }, [isSameLocation]);
 
@@ -368,10 +388,12 @@ function ModalReport({ children, mode , report}) {
                   required
                   
                   onChange={(e) => handleSelectChange(e, setUser)}
+
+                  
                 >
                   {nameGenerator.map((name, index) => (
                     <MenuItem key={index} value={name.name}>
-                      {name.name + " " + name.rfc}
+                      {name.rfc }
                     </MenuItem>
                   ))}
                 </Select>
@@ -473,6 +495,7 @@ function ModalReport({ children, mode , report}) {
                             id="rol-select"
                             required
                             onChange={(e) => handleCarrierChange(e, setUser)}
+                            value={mode === "EDITAR" ? report.transportista : carrier}
                           >
                             {carriers.map((name, index) => (
                               <MenuItem key={index} value={name.company_name}>
@@ -513,6 +536,7 @@ function ModalReport({ children, mode , report}) {
                       inputProps={{ "aria-label": "ant design" }}
                     />
                     <Typography>Si</Typography>
+                    
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}></Grid>
