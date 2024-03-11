@@ -797,7 +797,7 @@ function MenuReport() {
                                             const folio_busqueda = data[0].key_grupo_usuario + "-"+ key_centro + "-" +reporte.id_report;
 
                                             await generateQR(
-                                              "http://localhost:3000/tracking-external/" + folio_busqueda // Aquí deberías poner la URL correcta para el reporte
+                                              "https://rewards.rennueva.com/tracking-external/" + folio_busqueda // Aquí deberías poner la URL correcta para el reporte
                                             );
                                             
                                             console.log("DATA de la funcion1");
