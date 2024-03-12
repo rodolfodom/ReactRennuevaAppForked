@@ -493,19 +493,20 @@ function MenuReport() {
   };
 
   const handleConfirmDelete = () => {
-    console.log('Borrado confirmado');
+    console.log("Borrado confirmado");
     axios
       .post(`${process.env.REACT_APP_API_URL}/delete-report/`, {
         reportId: deleteId, // Usa el ID almacenado en el estado
       })
       .then((response) => {
-        console.log("##############################################info delete report####");
+        console.log(
+          "##############################################info delete report####"
+        );
         console.log(response.data);
         setUpdateReportInfo(true);
       });
     handleClose();
   };
-
 
   useEffect(() => {
     axios
@@ -604,11 +605,9 @@ function MenuReport() {
                             .map(
                               (reporte, index) => (
                                 console.log(
-                                  
                                   "###############" +
                                     reporte.nombre_real_usuario
                                 ),
-                                
                                 (
                                   <TableRow
                                     key={index}
@@ -661,16 +660,19 @@ function MenuReport() {
                                       </StyledButton> */}
                                       <Button
                                         variant="contained"
-                                        color={reporte.firma_responsiva_receptor ? "success" : "error"}
+                                        color={
+                                          reporte.firma_responsiva_receptor
+                                            ? "success"
+                                            : "error"
+                                        }
                                         onClick={() => {
                                           setIdReport(reporte.id_report);
                                           setOpenModalCreateFirmaReceptor(true);
                                           setUpdateReportInfo(true);
                                         }}
-                                    >
+                                      >
                                         Firma
                                       </Button>
-                                      
                                     </TableCell>
 
                                     <TableCell>
@@ -689,7 +691,11 @@ function MenuReport() {
                                       </StyledButton> */}
                                       <Button
                                         variant="contained"
-                                        color={reporte.residuos_agregados ? "success" : "error"}
+                                        color={
+                                          reporte.residuos_agregados
+                                            ? "success"
+                                            : "error"
+                                        }
                                         onClick={() => {
                                           setOpenModalCreateResidueReport(true);
                                           setUserSelectModal(
@@ -698,14 +704,12 @@ function MenuReport() {
                                           setReportSelectModal(
                                             reporte.id_report
                                           );
-                                          
+
                                           setUpdateReportInfo(true);
-                                          
                                         }}
-                                    >
+                                      >
                                         Residuo
                                       </Button>
-                                      
                                     </TableCell>
 
                                     <TableCell>
@@ -722,13 +726,16 @@ function MenuReport() {
                                       </StyledButton> */}
                                       <Button
                                         variant="contained"
-                                        color={reporte.firma_responsiva_generador ? "success" : "error"}
+                                        color={
+                                          reporte.firma_responsiva_generador
+                                            ? "success"
+                                            : "error"
+                                        }
                                         onClick={() => {
                                           setIdReport(reporte.id_report);
                                           setOpenModalCreateFirma(true);
-                                          
                                         }}
-                                    >
+                                      >
                                         Firma
                                       </Button>
                                     </TableCell>
@@ -766,40 +773,56 @@ function MenuReport() {
                                       >
                                         Reporte
                                       </StyledButton> */}
-                                      
+
                                       <Button
                                         variant="contained"
-                                        color={reporte.firma_responsiva_generador && reporte.firma_responsiva_receptor && reporte.residuos_agregados ? "success" : "error"}
-                                        
+                                        color={
+                                          reporte.firma_responsiva_generador &&
+                                          reporte.firma_responsiva_receptor &&
+                                          reporte.residuos_agregados
+                                            ? "success"
+                                            : "error"
+                                        }
                                         onClick={async () => {
                                           const validate = await ValidateReport(
                                             reporte.id_report
                                           );
                                           console.log("VALIDATE");
                                           console.log(validate);
-                                          
+
                                           if (validate == true) {
                                             const data = await getAllInfoReport(
                                               reporte.id_report
                                             );
 
                                             let key_centro = "";
-                                            if (data[0].key_centro_reciclaje != null) {
-                                              key_centro = data[0].key_centro_reciclaje;
-                                              
+                                            if (
+                                              data[0].key_centro_reciclaje !=
+                                              null
+                                            ) {
+                                              key_centro =
+                                                data[0].key_centro_reciclaje;
                                             }
-                                            if (data[0].key_centro_recoleccion != null) {
-                                              key_centro = data[0].key_centro_recoleccion;
-                                              
+                                            if (
+                                              data[0].key_centro_recoleccion !=
+                                              null
+                                            ) {
+                                              key_centro =
+                                                data[0].key_centro_recoleccion;
                                             }
-                                            
 
-                                            const folio_busqueda = data[0].key_grupo_usuario + "-"+ key_centro + "-" +reporte.id_report;
+                                            const folio_busqueda =
+                                              data[0].key_grupo_usuario +
+                                              "-" +
+                                              key_centro +
+                                              "-" +
+                                              reporte.id_report;
 
                                             await generateQR(
-                                              "https://rewards.rennueva.com/tracking-external/" + folio_busqueda // Aquí deberías poner la URL correcta para el reporte
+                                              "https://rewards.rennueva.com/tracking-external/" +
+                                                folio_busqueda // Aquí deberías poner la URL correcta para el reporte
                                             );
-                                            
+
                                             console.log("DATA de la funcion1");
                                             console.log(reporte);
                                             console.log(
@@ -815,11 +838,9 @@ function MenuReport() {
                                             );
                                           }
                                         }}
-                                    >
+                                      >
                                         Reporte
                                       </Button>
-
-
                                     </TableCell>
                                     <TableCell>
                                       <IconButton
@@ -838,31 +859,45 @@ function MenuReport() {
                                       </IconButton>
                                     </TableCell>
                                     <TableCell>
-      <IconButton aria-label="borrar" onClick={() => handleClickOpen(reporte.id_report)}> {/* Suponiendo que el ID del reporte es "1", aquí deberías pasar el ID real según tu lógica */}
-        <DeleteIcon />
-      </IconButton>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"¿Estás seguro de querer borrar?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Esta acción no se puede deshacer.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleConfirmDelete} autoFocus> {/* Aquí no necesitas pasar el ID ya que se maneja a través del estado */}
-            Confirmar
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </TableCell>
+                                      <IconButton
+                                        aria-label="borrar"
+                                        onClick={() =>
+                                          handleClickOpen(reporte.id_report)
+                                        }
+                                      >
+                                        {" "}
+                                        {/* Suponiendo que el ID del reporte es "1", aquí deberías pasar el ID real según tu lógica */}
+                                        <DeleteIcon />
+                                      </IconButton>
+                                      <Dialog
+                                        open={open}
+                                        onClose={handleClose}
+                                        aria-labelledby="alert-dialog-title"
+                                        aria-describedby="alert-dialog-description"
+                                      >
+                                        <DialogTitle id="alert-dialog-title">
+                                          {"¿Estás seguro de querer borrar?"}
+                                        </DialogTitle>
+                                        <DialogContent>
+                                          <DialogContentText id="alert-dialog-description">
+                                            Esta acción no se puede deshacer.
+                                          </DialogContentText>
+                                        </DialogContent>
+                                        <DialogActions>
+                                          <Button onClick={handleClose}>
+                                            Cancelar
+                                          </Button>
+                                          <Button
+                                            onClick={handleConfirmDelete}
+                                            autoFocus
+                                          >
+                                            {" "}
+                                            {/* Aquí no necesitas pasar el ID ya que se maneja a través del estado */}
+                                            Confirmar
+                                          </Button>
+                                        </DialogActions>
+                                      </Dialog>
+                                    </TableCell>
                                   </TableRow>
                                 )
                               )

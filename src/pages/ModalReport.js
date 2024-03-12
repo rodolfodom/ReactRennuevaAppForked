@@ -20,10 +20,12 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
-function ModalReport({ children, mode , report}) {
+function ModalReport({ children, mode, report }) {
   const [datos, setDatos] = useState([]);
   const [carriers, setCarriers] = useState([]);
-  const [recyclingCollectionCenters, setRecyclingCollectionCenters] = useState([]);
+  const [recyclingCollectionCenters, setRecyclingCollectionCenters] = useState(
+    []
+  );
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -40,7 +42,7 @@ function ModalReport({ children, mode , report}) {
   const [phone, setPhone] = useState("");
   const [recyclingCollection, setRecyclingCollection] = useState("");
   const [nameGenerator, setNameGenerator] = useState([]);
-  const [isSameLocation, setIsSameLocation] = useState(true);
+  const [isSameLocation, setIsSameLocation] = useState(false);
   const [haveTransport, setHaveTransport] = useState(true);
   const [carrier, setCarrier] = useState("");
   const [userToEdit, setUserToEdit] = useState("");
@@ -51,7 +53,15 @@ function ModalReport({ children, mode , report}) {
   const [street_2, setStreet_2] = useState("");
   const [postal_code_2, setPostalCode_2] = useState("");
 
+  const [state_3, setState_3] = useState("");
+  const [city_3, setCity_3] = useState("");
+  const [locality_3, setLocality_3] = useState("");
+  const [street_3, setStreet_3] = useState("");
+  const [postal_code_3, setPostalCode_3] = useState("");
 
+  const [completeName, setCompleteName] = useState("");
+  const [addrees_different, setAddressDifferent] = useState(true);
+  const [isFirstRun, setIsFirstRun] = useState(true);
 
   const {
     setOpenModalText,
@@ -112,38 +122,94 @@ function ModalReport({ children, mode , report}) {
   }));
 
   useEffect(() => {
-      if (mode === "EDITAR") {
-        console.log("EditaEDIr");
-        console.log(report);
-        console.log(report.id_report);
-        console.log(report.compania_usuario);
-        setUser(report.email_usuario);
-        setEmail(report.email_usuario);
-        setFirstName(report.nombre_real_usuario);
-        setLastName(report.apellido_usuario);
-        setRfc(report.rfc_usuario);
-        setCompany(report.compania_usuario);
-        setStreet(report.calle_usuario);
-        setLocality(report.colonia_usuario);
-        setCity(report.ciudad_usuario);
-        setState(report.estado_usuario);
-        setPostalCode(report.cp_usuario);
-        setCompany(report.compania_usuario);
-        if (report.centro_reciclaje != null ) {
-          console.log("paseo por aqui")
-          console.log(report.centro_reciclaje);
-          setRecyclingCollection(report.centro_reciclaje);
-        }
-        if (report.centro_recoleccion != null) {
-          setRecyclingCollection(report.centro_recoleccion);
-        }
-
-
-
-        
-
+    if (mode === "EDITAR") {
+      console.log("EditaEDIr");
+      console.log(report);
+      console.log(report.id_report);
+      console.log(report.compania_usuario);
+      setUser(report.email_usuario);
+      setEmail(report.email_usuario);
+      setFirstName(report.nombre_real_usuario);
+      setLastName(report.apellido_usuario);
+      setRfc(report.rfc_usuario);
+      setCompany(report.compania_usuario);
+      if (report.estado_reporte == report.estado_usuario) {
+        console.log("son iguales");
+        setAddressDifferent(true);
+        setIsSameLocation(true);
+      } else {
+        console.log("son diferentes");
+        setAddressDifferent(false);
+        setIsSameLocation(false);
       }
+      setStreet(report.calle_reporte);
+      setLocality(report.colonia_reporte);
+      setCity(report.ciudad_reporte);
+      setState(report.estado_reporte);
+      setPostalCode(report.cp_reporte);
+      setCompany(report.compania_usuario);
+      setState_2(report.estado_usuario);
+      console.log(report.estado_usuario);
+      console.log(report.ciudad_reporte);
+      console.log(report.colonia_reporte);
+      console.log(report.calle_reporte);
+      console.log(report.cp_reporte);
+
+      setCity_2(report.ciudad_usuario);
+      setLocality_2(report.colonia_usuario);
+      setStreet_2(report.calle_usuario);
+      setPostalCode_2(report.cp_usuario);
+      
+
+      setCompleteName(
+        report.nombre_real_usuario + " " + report.apellido_usuario
+      );
+      if (report.centro_reciclaje != null) {
+        console.log("paseo por aqui");
+        console.log(report.centro_reciclaje);
+        setRecyclingCollection(report.centro_reciclaje);
+      }
+      if (report.centro_recoleccion != null) {
+        setRecyclingCollection(report.centro_recoleccion);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    if (isSameLocation === false) {
+
+      if (mode === "EDITAR") {
+
+        if (isFirstRun) {
+          console.log("Primer run");
+          setIsFirstRun(false);
+          
+
+        } else {
+
+          console.log("Segundo run");
+          setState("");
+          setCity("");
+          setLocality("");
+          setStreet("");
+          setPostalCode("");
+        }
+      }
+      if (mode === "CREAR") {
+        setState("");
+        setCity("");
+        setLocality("");
+        setStreet("");
+        setPostalCode("");
+      }
+    } else {
+      setState(state_2);
+      setCity(city_2);
+      setLocality(locality_2);
+      setStreet(street_2);
+      setPostalCode(postal_code_2);
+    }
+  }, [isSameLocation]);
 
   useEffect(() => {
     axios
@@ -295,7 +361,7 @@ function ModalReport({ children, mode , report}) {
     setUser(datoEncontrado.user);
     setPassword(datoEncontrado.password);
     setEmail(datoEncontrado.email);
-    console.log(datoEncontrado.first_name)
+    console.log(datoEncontrado.first_name);
     setFirstName(datoEncontrado.first_name);
     setLastName(datoEncontrado.last_name);
     setGroup(datoEncontrado.group);
@@ -309,11 +375,7 @@ function ModalReport({ children, mode , report}) {
     setPostalCode(datoEncontrado.address_postal_code);
     setUserToEdit(datoEncontrado.user);
 
-    setState_2(datoEncontrado.address_state);
-    setCity_2(datoEncontrado.address_city);
-    setLocality_2(datoEncontrado.address_locality);
-    setStreet_2(datoEncontrado.address_street);
-    setPostalCode_2(datoEncontrado.address_postal_code);
+    setCompleteName(selectedOption);
 
     if (datoEncontrado.group === "Generador") {
       setTransportAvailable(true);
@@ -329,30 +391,10 @@ function ModalReport({ children, mode , report}) {
 
   const handleSwitchChange = (event) => {
     setIsSameLocation(event.target.checked);
-    
   };
   const handleSwitchChangeCarrier = (event) => {
     setHaveTransport(event.target.checked);
   };
-
-  useEffect(() => {
-    if (!isSameLocation) {
-      setState("");
-      setCity("");
-      setLocality("");
-      setStreet("");
-      setPostalCode("");
-    }
-    else {
-      setState(state_2);
-      setCity(city_2);
-      setLocality(locality_2);
-      setStreet(street_2);
-      setPostalCode(postal_code_2);
-      
-      
-    }
-  }, [isSameLocation]);
 
   return ReactDOM.createPortal(
     <Modal open={true} onClose={closeModal}>
@@ -386,14 +428,12 @@ function ModalReport({ children, mode , report}) {
                   labelId="rol-select-label"
                   id="rol-select"
                   required
-                  
-                  onChange={(e) => handleSelectChange(e, setUser)}
-
-                  
+                  value={completeName}
+                  onChange={(e) => handleSelectChange(e, setCompleteName)}
                 >
                   {nameGenerator.map((name, index) => (
                     <MenuItem key={index} value={name.name}>
-                      {name.rfc }
+                      {name.name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -495,7 +535,9 @@ function ModalReport({ children, mode , report}) {
                             id="rol-select"
                             required
                             onChange={(e) => handleCarrierChange(e, setUser)}
-                            value={mode === "EDITAR" ? report.transportista : carrier}
+                            value={
+                              mode === "EDITAR" ? report.transportista : carrier
+                            }
                           >
                             {carriers.map((name, index) => (
                               <MenuItem key={index} value={name.company_name}>
@@ -534,9 +576,9 @@ function ModalReport({ children, mode , report}) {
                       onChange={handleSwitchChange}
                       checked={isSameLocation}
                       inputProps={{ "aria-label": "ant design" }}
+                      value={addrees_different}
                     />
                     <Typography>Si</Typography>
-                    
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}></Grid>
@@ -576,7 +618,7 @@ function ModalReport({ children, mode , report}) {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     label="Calle y Numero"
-                    name="street"
+                    name="calle"
                     required
                     fullWidth
                     value={street}
