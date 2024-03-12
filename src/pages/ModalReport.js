@@ -122,6 +122,15 @@ function ModalReport({ children, mode, report }) {
   }));
 
   useEffect(() => {
+    if (mode === "CREAR") {
+      console.log("CREAR");
+      setIsSameLocation(true);
+
+      
+      
+      
+      //setAddressDifferent(true);
+    }
     if (mode === "EDITAR") {
       console.log("EditaEDIr");
       console.log(report);
@@ -173,9 +182,19 @@ function ModalReport({ children, mode, report }) {
         setRecyclingCollection(report.centro_recoleccion);
       }
     }
+    
   }, []);
 
   useEffect(() => {
+    if (mode === "CREAR") {
+      console.log("Primer run");
+      setState("");
+      setCity("");
+      setLocality("");
+      setStreet("");
+      setPostalCode("");
+    } 
+
     if (isSameLocation === false) {
 
       if (mode === "EDITAR") {
@@ -195,13 +214,7 @@ function ModalReport({ children, mode, report }) {
           setPostalCode("");
         }
       }
-      if (mode === "CREAR") {
-        setState("");
-        setCity("");
-        setLocality("");
-        setStreet("");
-        setPostalCode("");
-      }
+      
     } else {
       setState(state_2);
       setCity(city_2);
@@ -374,6 +387,13 @@ function ModalReport({ children, mode, report }) {
     setStreet(datoEncontrado.address_street);
     setPostalCode(datoEncontrado.address_postal_code);
     setUserToEdit(datoEncontrado.user);
+    if (mode === "CREAR") {
+    setStreet_2(datoEncontrado.address_street);
+    setLocality_2(datoEncontrado.address_locality);
+    setCity_2(datoEncontrado.address_city);
+    setState_2(datoEncontrado.address_state);
+    setPostalCode_2(datoEncontrado.address_postal_code);
+    }
 
     setCompleteName(selectedOption);
 
@@ -519,6 +539,7 @@ function ModalReport({ children, mode, report }) {
                           onChange={handleSwitchChangeCarrier}
                           checked={haveTransport}
                           inputProps={{ "aria-label": "ant design" }}
+                          
                         />
                         <Typography>Si</Typography>
                       </Stack>
