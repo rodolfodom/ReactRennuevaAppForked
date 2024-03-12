@@ -142,6 +142,7 @@ function ModalReport({ children, mode, report }) {
       setLastName(report.apellido_usuario);
       setRfc(report.rfc_usuario);
       setCompany(report.compania_usuario);
+      setCarrier(report.transportista);
       if (report.estado_reporte == report.estado_usuario) {
         console.log("son iguales");
         setAddressDifferent(true);
@@ -305,6 +306,44 @@ function ModalReport({ children, mode, report }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (mode === "EDITAR") {
+      console.log("###############EDITAR USUARIOS##################");
+      console.log({
+        username: user,
+        street: street,
+        locality: locality,
+        city: city,
+        state: state,
+        postalCode: postal_code,
+        recyclingCollection: recyclingCollection,
+        carrier: carrier,
+        reportId: report.id_report,
+      });  
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/edit-report/`, {
+          username: user,
+          street: street,
+          locality: locality,
+          city: city,
+          state: state,
+          postalCode: postal_code,
+          recyclingCollection: recyclingCollection,
+          carrier: carrier,
+          reportId: report.id_report,
+        })
+        .then((response) => {
+          console.log(response);
+          setUpdateReportInfo(true);
+          setOpenModalText(true);
+          setTextOpenModalText("Reporte actualizado correctamente");
+          closeModal();
+          e.target.reset();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+    }
     if (mode === "CREAR") {
       console.log("###############CREAR USUARIOS##################");
       console.log({
@@ -557,7 +596,7 @@ function ModalReport({ children, mode, report }) {
                             required
                             onChange={(e) => handleCarrierChange(e, setUser)}
                             value={
-                              mode === "EDITAR" ? report.transportista : carrier
+                              mode === "EDITAR" ? carrier : carrier
                             }
                           >
                             {carriers.map((name, index) => (
