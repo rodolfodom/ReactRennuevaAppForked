@@ -144,17 +144,24 @@ const generatePdf = (report, data) => {
   let direccion_centro = "";
   let centro = "";
   let titulo_centro = "";
+  let permiso_centro = [];
   if (data[0].key_centro_reciclaje != null) {
     key_centro = data[0].key_centro_reciclaje;
     direccion_centro = data[0].ubicacion_centro_reciclaje;
     centro = data[0].centro_reciclaje;
     titulo_centro = "Reciclaje";
+    console.log("###############permiso")
+    console.log(data[0].permiso_centro_reciclaje)
+    console.log(data[0].permiso_centro_reciclaje[0])
+    permiso_centro = data[0].permiso_centro_reciclaje;
   }
   if (data[0].key_centro_recoleccion != null) {
     key_centro = data[0].key_centro_recoleccion;
     direccion_centro = data[0].ubicacion_centro_recoleccion;
     centro = data[0].centro_recoleccion;
     titulo_centro = "Recoleccion";
+    console.log("###############permiso")
+    permiso_centro = data[0].permiso_centro_recoleccion;
   }
   console.log("KEY CENTRO");
   console.log(key_centro);
@@ -173,10 +180,22 @@ const generatePdf = (report, data) => {
 
   // Text on the top right side
   doc.setFontSize(8);
-  doc.text("Responsiva de Recepcion de Residuos", 150, 10, { align: "left" });
-  doc.text("RA-TRE-01-06-01/2020", 150, 15, { align: "left" });
-  doc.text("PM-TRE-01-06-01/2021", 150, 20, { align: "left" });
-  doc.text("NOM-161-SEMARNAT-2011", 150, 25, { align: "left" });
+  doc.text("Responsiva de Recepcdsfsdfion de Residuos", 150, 10, { align: "left" });
+  for (let i = 0; i < permiso_centro.length; i++) {
+    console.log("###############permiso")
+    console.log(permiso_centro[i])
+    doc.text(
+      permiso_centro[i],
+      150,
+      15 + i * 5,
+      { align: "left" }
+    );  
+
+  
+  }
+  // doc.text("RA-TRE-01-06-01/2020", 150, 15, { align: "left" });
+  // doc.text("PM-TRE-01-06-01/2021", 150, 20, { align: "left" });
+  // doc.text("NOM-161-SEMARNAT-2011", 150, 25, { align: "left" });
 
   // Title before the table
   doc.setFontSize(16);
