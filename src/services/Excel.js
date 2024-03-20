@@ -3,6 +3,25 @@ import React, {useState} from "react";
 import axios from "axios";
 import * as XLSX from 'xlsx';
 
+const generateExcelResponsiva = () => {
+  axios
+  .get(`${process.env.REACT_APP_API_URL}/get-all-reports/`)
+  .then((response) => {
+    const data = response.data;
+    console.log(data);
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Reportes");
+    XLSX.writeFile(workbook, "Reportes.xlsx");
+  }
+  )
+  .catch((error) => {
+    console.error(error);
+  }
+  );
+};
+
+
 const generateExcel = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/get-all-donors-recollection/`)
@@ -40,4 +59,4 @@ const importExcel = (file, onImported) => {
 
 
 
-export { generateExcel, importExcel};
+export { generateExcel, importExcel, generateExcelResponsiva};

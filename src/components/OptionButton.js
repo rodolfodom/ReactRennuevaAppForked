@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { generateExcel} from '../services/Excel.js';
+import { generateExcel, generateExcelResponsiva} from '../services/Excel.js';
 import * as XLSX from 'xlsx';
 
 
@@ -31,6 +31,22 @@ function ActionButtonOrdersExcel({text, color }) {
     </Button>
   );
 }
+
+function ActionButtonResponsivaExcel({text, color }) {
+  return (
+    <Button
+      variant="contained"
+      onClick={() => {
+        generateExcelResponsiva(); // Llamar a la función para generar Excel
+      }
+      }
+      style={{ backgroundColor: color , color: 'black'}}
+    >
+      {text}
+    </Button>
+  );
+}
+
 
 function importExcel(file, callback) {
   // Read the file using FileReader
@@ -78,4 +94,4 @@ function ImportExcelButton({ text, color, onImported }) {
   );
 }
 
-export { OptionButton, ActionButtonOrdersExcel , ImportExcelButton};
+export { OptionButton, ActionButtonOrdersExcel , ImportExcelButton, ActionButtonResponsivaExcel};

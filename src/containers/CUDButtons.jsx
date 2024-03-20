@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { TodoContext } from '../context/index.js';
-import { OptionButton, ActionButtonOrdersExcel, ImportExcelButton } from '../components/OptionButton';
+import { OptionButton, ActionButtonOrdersExcel, ImportExcelButton , ActionButtonResponsivaExcel} from '../components/OptionButton';
 import axios from 'axios';
 
 const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
@@ -216,6 +216,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       {model === 'ReportHistory' ? (
         <div className="create-button">  <ImportExcelButton text="Importar Responsivas Excel" color="blue" onImported={handleDataImported} /> </div>
       ) : null}
+      
 
       </div>
         <div className="create-button">
@@ -259,6 +260,17 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
           <OptionButton setOpenModal={setOpenModalDeleteVehicle} text="Borrar Historial de Reportes" color="#dc3545" />
         ): null}
 
+      </div>
+      <div className="create-button" >
+      {model === 'ReportHistory' ? (
+        
+        <ActionButtonResponsivaExcel 
+        text="Exportar a Excel"
+        color="#28a745"
+        
+      />
+        
+      ) : null}
       </div>
         </div>
     );

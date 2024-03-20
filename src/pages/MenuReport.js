@@ -180,7 +180,7 @@ const generatePdf = (report, data) => {
 
   // Text on the top right side
   doc.setFontSize(8);
-  doc.text("Responsiva de Recepcdsfsdfion de Residuos", 150, 10, { align: "left" });
+  doc.text("Responsiva de Recepion de Residuos", 150, 10, { align: "left" });
   for (let i = 0; i < permiso_centro.length; i++) {
     console.log("###############permiso")
     console.log(permiso_centro[i])
@@ -275,6 +275,14 @@ const generatePdf = (report, data) => {
     styles: tableStyles,
   });
   doc.text("Datos del Transportista ", 14, 115);
+  if(data[0].transportista_nombre == null){
+    doc.setFontSize(12);
+    doc.text("El generador trajo sus reciduos con vehiculo propio", 14, 125);
+    doc.setFontSize(16);
+
+
+  }
+  else {
   doc.autoTable({
     startY: 120,
     tableWidth: 190,
@@ -289,7 +297,7 @@ const generatePdf = (report, data) => {
     theme: "plain",
     styles: tableStyles,
   });
-
+  }
   doc.setFontSize(16);
   doc.text("Datos del Residuo", 14, 135);
 
@@ -330,10 +338,10 @@ const generatePdf = (report, data) => {
   doc.text("Solicite, con su numero de folio, el", 70, distancia + 35, {
     align: "left",
   });
-  doc.text("deslose de los materiales y", 70, distancia + 40, {
+  doc.text("desglose de los materiales y", 70, distancia + 40, {
     align: "left",
   });
-  doc.text("comprobante al siguiente correo", 70, distancia + 45, {
+  doc.text("comprobante al siguiente correo:", 70, distancia + 45, {
     align: "left",
   });
   doc.text("plasticos@rennueva.com", 70, distancia + 50, { align: "left" });
