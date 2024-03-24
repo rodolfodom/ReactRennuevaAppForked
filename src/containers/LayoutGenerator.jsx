@@ -25,6 +25,7 @@ import { ThemeContext, ThemeProvider } from "@emotion/react";
 import ResponsiveAppBarGenerator from "./ResponsiveAppBarGenerator";
 const drawerWidth = 240;
 const drawerWidthView = 27;
+const headerWidth = 20;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -114,7 +115,31 @@ const LayoutGenerator = ({ children }) => {
     <div style={{ width: "100%", backgroundColor : "#081C15" }}>
       <Box sx={{ display: "flex"}}>
         <CssBaseline />
-        <ResponsiveAppBarGenerator/>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            bgcolor: "#081C15",
+            p: 3,
+            //width: `calc(100% - ${drawerWidthView}px)`, // Remueve esta línea
+            width: "100%",
+            //height: "100vh",
+            marginLeft: open ? headerWidth : 0, // Añade esta línea
+
+            transition: theme.transitions.create(['margin', 'width'], { // Añade esta línea
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen,
+
+              
+              
+
+            }), // Añade esta línea
+          }}
+        >
+          <ResponsiveAppBarGenerator/>
+
+        </Box>
+        
         <Drawer variant="permanent" open={open} sx={{bgcolor : "#081C15"}}>
           <Box
             sx={{

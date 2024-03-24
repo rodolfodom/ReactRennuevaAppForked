@@ -152,6 +152,15 @@ function ModalReport({ children, mode, report }) {
         setAddressDifferent(false);
         setIsSameLocation(false);
       }
+      console.log(report.transportista);
+      if (report.transportista != null) {
+        console.log("Tiene transportista");
+        setHaveTransport(true);
+      } else {
+        console.log("No tiene transportista");
+        setHaveTransport(false);
+      }
+
       setStreet(report.calle_reporte);
       setLocality(report.colonia_reporte);
       setCity(report.ciudad_reporte);
@@ -306,6 +315,7 @@ function ModalReport({ children, mode, report }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  
     if (mode === "EDITAR") {
       console.log("###############EDITAR USUARIOS##################");
       console.log({
@@ -453,6 +463,7 @@ function ModalReport({ children, mode, report }) {
   };
   const handleSwitchChangeCarrier = (event) => {
     setHaveTransport(event.target.checked);
+    setCarrier("");
   };
 
   return ReactDOM.createPortal(
