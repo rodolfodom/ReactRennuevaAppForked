@@ -935,12 +935,13 @@ function MenuReport() {
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25]}
                       component="div"
-                      count={clientes.length}
+                      count={report.length}
                       rowsPerPage={rowsPerPage}
                       page={page}
                       onPageChange={handleChangePage}
                       onRowsPerPageChange={handleChangeRowsPerPage}
                     />
+                    
 
                     {openModalCreateFirma && (
                       <ModalFirmar
