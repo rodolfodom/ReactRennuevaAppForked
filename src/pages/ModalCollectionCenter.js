@@ -302,6 +302,7 @@ const handlePermisoChange = (index, event) => {
       (users) => users.CollectionCenterName === selectedOption
     );
     console.log("Dato Encontrado");
+    console.log(datoEncontrado);
     console.log(datoEncontrado.CollectionCenterRfc);
     console.log(datoEncontrado.CollectionCenterKey);
     setCenterName(datoEncontrado.CollectionCenterName);

@@ -298,6 +298,7 @@ function ModalRecyclingCenter({ children, mode }) {
     setAddressNumExt(datoEncontrado.AddressNumExt);
     setIdCenter(datoEncontrado.RecyclingCenterId);
     setKey(datoEncontrado.RecyclingCenterKey);
+    setPermisos(datoEncontrado.RecyclingCenterPermiso);
 
     // Actualizar el estado con el dato encontrado
   };
@@ -331,6 +332,8 @@ const handlePermisoChange = (index, event) => {
   // Actualizar el valor en la posición específica
   nuevosPermisos[index] = nuevoValor;
   // Establecer la nueva lista de permisos en el estado
+  console.log("PERMISOS");
+  console.log(nuevosPermisos);
   setPermisos(nuevosPermisos);
 }
 
