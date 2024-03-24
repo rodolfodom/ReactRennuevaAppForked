@@ -1,5 +1,4 @@
-import React, { useState,   useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useContext } from "react";
 import '../styles/user/MenuUser.css';
 import { TodoContext } from '../context/index.js';
 // Importa los demás componentes y bibliotecas que necesitas...
@@ -14,7 +13,6 @@ function MenuTracking() {
     const [pdfFile2, setPdfFile2] = useState(null);
     const defaultTheme = createTheme();
     const [url, setUrl] = useState(null);
-    const [url2, setURL2] = useState(null);
     const [folio, setFolio] = useState(null);
 
     function openPdfInNewWindow() {
@@ -25,35 +23,23 @@ function MenuTracking() {
         window.open(url, '_blank');
     }
     
-    const { trackingNumber } = useParams(); // Usar useParams para obtener el número de tracking de la URL
-
- 
-
-    useEffect(() => {
-        if (trackingNumber) {
-            setFolio(trackingNumber); // Establecer el número de tracking en el estado folio
-            getPDF(trackingNumber); // Llamar a getPDF automáticamente si hay un número de tracking
-        }
-    }, [trackingNumber]); // El efecto se ejecuta cuando cambia trackingNumber
-
     
 
-    async function getPDF(trackingNumber) {
+    const getPDF = async () => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/get-pdf-report/`, { ReportFolio: trackingNumber });
+            const response = await axios.post('http://127.0.0.1:8000/Rennueva/get-pdf-report/', { ReportFolio: folio});
             const data = response.data;
-
+            console.log("Respuesta del servidor:");
+            console.log(data.Reporte);
             const blob = base64ToBlob(data.Reporte, 'application/pdf');
-            const url = URL.createObjectURL(blob);
-
-            setUrl(url);
-            setPdfFile(data.Reporte);
-            window.open(url, '_blank');
+            
+            setUrl(URL.createObjectURL(blob));
+            setPdfFile(data.Reporte); // Asumiendo que data ya está en formato base64
+            openPdfInNewWindow(data.Reporte);
         } catch (error) {
             console.log(error);
         }
-    }
-    
+    };
 
     function base64ToBlob(base64, mimeType) {
         const base64Real = base64.split(',')[1] || base64;
@@ -82,7 +68,7 @@ function MenuTracking() {
                     }}
                 >
                     <Toolbar />
-                    <Container maxWidth="xl">
+                    <Container maxWidth="lg">
                         <Grid container spacing={3}>
                             <Grid item xl >
                                 <Paper

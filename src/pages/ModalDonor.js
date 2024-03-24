@@ -49,6 +49,8 @@ function ModalDonor({ children, mode }) {
     },
     { "gender": "Otro",}
         ]);
+  const [address_reference, setReference] = useState("");
+  
 
 
 
@@ -100,6 +102,8 @@ function ModalDonor({ children, mode }) {
         address_street: e.target.street.value,
         address_postal_code: e.target.postal_code.value,
         address_num_int: e.target.address_num_int.value,
+        address_num_ext: e.target.address_num_ext.value,
+        address_reference: e.target.address_reference.value,
         address_lat: 0,
         address_lng: 0,
         razon_social: e.target.razon_social.value,
@@ -145,6 +149,8 @@ function ModalDonor({ children, mode }) {
         address_street: e.target.street.value,
         address_postal_code: e.target.postal_code.value,
         address_num_int: e.target.address_num_int.value,
+        address_num_ext: e.target.address_num_ext.value,
+        address_reference: e.target.address_reference.value,
         address_lat: 0,
         address_lng: 0,
         razon_social: e.target.razon_social.value,
@@ -270,6 +276,8 @@ function ModalDonor({ children, mode }) {
     setId(datoEncontrado.id_django);
     setBirthday(datoEncontrado.birthdate);
     setGender(datoEncontrado.gender );
+    setReference(datoEncontrado.address_reference);
+    setAddressNumExt(datoEncontrado.address_num_ext);
   };
 
   const handleInputChange = (e, setState, mode) => {
@@ -519,12 +527,30 @@ function ModalDonor({ children, mode }) {
                 margin="dense"
               />
               <TextField
+                label="Numero exterior"
+                name="address_num_ext"
+                required
+                fullWidth
+                value={address_num_ext}
+                onChange={(e) => handleInputChange(e, setAddressNumExt, mode)}
+                margin="dense"
+              />
+              <TextField
                 label="Numero interior"
                 name="address_num_int"
                 required
                 fullWidth
                 value={address_num_int}
                 onChange={(e) => handleInputChange(e, setAddressNumInt, mode)}
+                margin="dense"
+              />
+              <TextField
+                label="Referencia"
+                name="address_reference"
+                required
+                fullWidth
+                value={address_reference}
+                onChange={(e) => handleInputChange(e, setReference, mode)}
                 margin="dense"
               />
 

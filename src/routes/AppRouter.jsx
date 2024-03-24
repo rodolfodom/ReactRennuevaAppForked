@@ -53,8 +53,8 @@ function App() {
             <Route path="/carrier" element={<Layout><MenuCarrier /></Layout>} />
             <Route path="/collection-center" element={<Layout><MenuCollectionCenter /></Layout>} />
             <Route path="/report" element={<Layout><MenuReport /></Layout>} />
-            <Route path="/tracking" element={<Layout><MenuTracking /></Layout>} />
-            <Route path="/tracking-external/:trackingNumber" element={<MenuTracking />} />
+            <Route path="/tracking" element={<Layout><MenuTracking mode = "tracking"/></Layout>} />
+            <Route path="/tracking-external/:trackingNumber" element={<MenuTracking mode = "tracking external"/>} />
             <Route path="/donor-recolection" element={<Layout><MenuDonorRecolection /></Layout>} />
             <Route path="/company" element={<Layout><MenuCompany /></Layout>} />
             <Route path="/report-history" element={<Layout><MenuReportHistory/></Layout>} />
