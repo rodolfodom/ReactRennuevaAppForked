@@ -118,17 +118,18 @@ const LayoutGenerator = ({ children }) => {
         <Box
           component="main"
           sx={{
-            flexGrow: 1,
-            bgcolor: "#081C15",
-            p: 3,
+            //flexGrow: 1,
+            //bgcolor: "#081C15",
+            p: 0,
             //width: `calc(100% - ${drawerWidthView}px)`, // Remueve esta línea
             width: "100%",
             //height: "100vh",
             marginLeft: open ? headerWidth : 0, // Añade esta línea
-
+            // width: open ? `calc(100% - ${drawerWidth}px)` : `calc(100% - ${drawerWidthView}px)`, // Añade esta línea
+            
             transition: theme.transitions.create(['margin', 'width'], { // Añade esta línea
               easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.enteringScreen,
+               duration: theme.transitions.duration.enteringScreen,
 
               
               
