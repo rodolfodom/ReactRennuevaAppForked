@@ -32,7 +32,6 @@ const openedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
-  
   }),
   overflowX: "hidden",
 });
@@ -41,7 +40,6 @@ const closedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
-
   }),
   overflowX: "hidden",
 
@@ -72,18 +70,17 @@ const Drawer = styled(MuiDrawer, {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": {
       ...openedMixin(theme),
-      backgroundColor: "#081C15", // Set your desired green color here
+      backgroundColor: "#f1f1f1", // Set your desired green color here
     },
   }),
   ...(!open && {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": {
       ...closedMixin(theme),
-      backgroundColor: "#081C15", // Set your desired green color here
+      backgroundColor: "#f1f1f1", // Set your desired green color here
     },
   }),
 }));
-
 
 const LayoutGenerator = ({ children }) => {
   const navigate = useNavigate();
@@ -111,177 +108,159 @@ const LayoutGenerator = ({ children }) => {
   };
 
   return (
-    <ThemeProvider  theme={theme}>
-    <div style={{ width: "100%", backgroundColor : "#081C15" }}>
-      <Box sx={{ display: "flex"}}>
-        <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <div style={{ width: "100%", backgroundColor: "#f1f1f1" }}>
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          
+
+          <Drawer variant="permanent" open={open} sx={{ bgcolor: "#f1f1f1" }}>
+            <Box
+              sx={{
+                bgcolor: "#ffffff",
+                borderRight: "1px solid #f1f1f1",
+                height: "100vh",
+                borderRadius: "25px",
+                marginTop: 1,
+                marginBottom: 1,
+                marginLeft: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  paddingTop: 0.9,
+                  paddingBottom: 0.9,
+                }}
+              >
+                <DrawerHeader>
+                  <IconButton onClick={handleDrawerOpenClose}>
+                    {open === false ? (
+                      <ChevronRightIcon />
+                    ) : (
+                      <ChevronLeftIcon />
+                    )}
+                  </IconButton>
+                </DrawerHeader>
+              </Box>
+              <Divider />
+              <Box
+                sx={{
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: 150,
+                }}
+              >
+                <Avatar
+                  src={user.avatar}
+                  sx={{ width: open ? 64 : 32, height: open ? 64 : 32, mb: 1 }}
+                />
+                <Typography variant="h6" sx={{ opacity: open ? 1 : 0 }}>
+                  {user.name}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: open ? 1 : 0 }}>
+                  {user.email}{" "}
+                </Typography>
+              </Box>
+
+              <Divider />
+              <List>
+                {["Responsivas"].map((text, index) => (
+                  <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                    <ListItemButton
+                      onClick={() => {
+                        navigate("/dash");
+                      }}
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {index === 0 ? <LeaderboardRoundedIcon /> : null}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={text}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+
+              <Divider />
+              <List>
+                {["Usuarios", "Grupos"].map((text, index) => (
+                  <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                    <ListItemButton
+                      onClick={() => handleClickUsersGroups(index)}
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {index % 2 === 0 ? (
+                          <AccountBoxRoundedIcon />
+                        ) : (
+                          <GroupsRoundedIcon />
+                        )}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={text}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+              <Divider />
+
+              <Divider />
+            </Box>
+          </Drawer>
+        </Box>
+
         <Box
           component="main"
           sx={{
-            //flexGrow: 1,
-            //bgcolor: "#081C15",
-            p: 0,
-            //width: `calc(100% - ${drawerWidthView}px)`, // Remueve esta línea
-            width: "100%",
-            //height: "100vh",
-            marginLeft: open ? headerWidth : 0, // Añade esta línea
-            // width: open ? `calc(100% - ${drawerWidth}px)` : `calc(100% - ${drawerWidthView}px)`, // Añade esta línea
-            
-            transition: theme.transitions.create(['margin', 'width'], { // Añade esta línea
-              easing: theme.transitions.easing.sharp,
-               duration: theme.transitions.duration.enteringScreen,
-
-              
-              
-
-            }), // Añade esta línea
-          }}
-        >
-          <ResponsiveAppBarGenerator/>
-
-        </Box>
-        
-        <Drawer variant="permanent" open={open} sx={{bgcolor : "#081C15"}}>
-          <Box
-            sx={{
-             
-              bgcolor: "#1B4332",
-              borderRight: "1px solid #1B4332",
-              height: "100vh",
-              borderRadius: "25px",
-              marginTop: 1,
-              marginBottom: 1,
-              marginLeft: 1,
-              
-
-
-            }} > 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              paddingTop: 0.9,
-              paddingBottom: 0.9
-             
-            }}
-          >
-            <DrawerHeader>
-              <IconButton onClick={handleDrawerOpenClose}>
-                {open === false ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-              </IconButton>
-            </DrawerHeader>
-          </Box>
-          <Divider />
-          <Box
-            sx={{
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              height: 150
-              
-            }}
-          >
-            <Avatar
-              src={user.avatar}
-              sx={{ width: open ? 64 : 32, height: open ? 64 : 32, mb: 1 }}
-            />
-            <Typography variant="h6" sx={{ opacity: open ? 1 : 0 }}>
-              {user.name}
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: open ? 1 : 0 }}>
-              {user.email}{" "}
-            </Typography>
-          </Box>
-
-          <Divider />
-          <List>
-            {["Responsivas"].map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  onClick={() => {
-                    navigate("/dash");
-                  }}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {index === 0 ? <LeaderboardRoundedIcon /> : null}
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-
-          <Divider />
-          <List>
-            {["Usuarios", "Grupos"].map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  onClick={() => handleClickUsersGroups(index)}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {index % 2 === 0 ? (
-                      <AccountBoxRoundedIcon />
-                    ) : (
-                      <GroupsRoundedIcon />
-                    )}
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-
-          <Divider />
-          </Box>    
-        </Drawer>
-      </Box>
-
-      <Box
-          component="main"
-          sx={{
             flexGrow: 1,
-            bgcolor: "#081C15",
+            bgcolor: "#f1f1f1",
             p: 3,
             //width: `calc(100% - ${drawerWidthView}px)`, // Remueve esta línea
             height: "100vh",
             marginLeft: open ? drawerWidthView : 5, // Añade esta línea
-            transition: theme.transitions.create(['margin', 'width'], { // Añade esta línea
+            transition: theme.transitions.create(["margin", "width"], {
+              // Añade esta línea
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.enteringScreen,
-              
-              
-
             }), // Añade esta línea
           }}
         >
-        <DrawerHeader />
-        {children}
-      </Box>
-    </div>
+          <DrawerHeader />
+          
+            <ResponsiveAppBarGenerator />
+          
+          {children}
+        </Box>
+      </div>
     </ThemeProvider>
   );
 };

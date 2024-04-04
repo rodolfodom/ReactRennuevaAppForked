@@ -41,7 +41,7 @@ function ResponsiveAppBarGenerator() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1EE732' , borderRadius : "25px", borderColor :'#1B4332', marginLeft: 10, width : "95%", marginTop: 1}}>
+    <AppBar position="static" sx={{ backgroundColor: '#ffffff' , borderRadius : "25px", borderColor :'#ffffff', marginLeft: 2,width : "98%", marginTop: -10}}>
       <Container maxWidth="xl" sx={{borderRadius : "25px"}}>
         <Toolbar disableGutters>
           <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 25 , borderRadius : "25px"}}>
