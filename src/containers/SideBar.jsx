@@ -20,9 +20,12 @@ import Avatar from "@mui/material/Avatar";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import LeaderboardRoundedIcon from "@mui/icons-material/LeaderboardRounded";
-
 import { ThemeContext, ThemeProvider } from "@emotion/react";
 import ResponsiveAppBarGenerator from "./ResponsiveAppBarGenerator";
+import AdminList from "./ListSideBar/AdminList";
+import { TodoContext } from "../context";
+
+
 const drawerWidth = 240;
 const drawerWidthView = 27;
 const headerWidth = 20;
@@ -82,13 +85,20 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const LayoutGenerator = ({ children }) => {
+const SideBar = ({ children }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const {
+    openSideBar,
+    setOpenSideBar,
+    
+  } = React.useContext(TodoContext);
 
   const handleDrawerOpenClose = () => {
     setOpen((prevOpen) => !prevOpen);
+    setOpenSideBar(!openSideBar);
+    
   };
 
   const handleClickUsersGroups = (index) => {
@@ -100,6 +110,51 @@ const LayoutGenerator = ({ children }) => {
       navigate("/groups");
     }
   };
+  const handleClickResidueGeneratorDonor = (index) => {
+    console.log("index");
+    console.log(index);
+    if (index == 0) {
+      navigate('/residue');
+    } else if (index == 1) {
+      navigate('/generator');
+    } else if (index == 2) {
+      navigate('/company');
+    } else if (index == 3) {
+      navigate('/donor');
+    } else if (index == 4) {
+      navigate('/donor-recolection');
+    }
+
+  }
+  const handleClickCCDriverCarrier = (index) => {
+    console.log("index");
+    console.log(index);
+    if (index == 0) {
+      navigate('/recycling-center');
+    } else if (index == 1) {
+      navigate('/collection-center');
+    } else if (index == 2) {
+      navigate('/driver');
+    } else if (index == 3) {
+      navigate('/vehicle');
+    }
+    else if (index == 4) {
+      navigate('/carrier');
+    }
+
+  }
+  const handleClickResponsivas = (index) => {
+    console.log("index");
+    console.log(index);
+    if (index == 0) {
+      navigate('/report');
+    } else if (index == 1) {
+      navigate('/tracking');
+    }
+    else if (index == 2) {
+      navigate('/report-history');
+    }
+  }
 
   const user = {
     name: "Usuario Ejemplo",
@@ -122,7 +177,7 @@ const LayoutGenerator = ({ children }) => {
                 height: "100vh",
                 borderRadius: "25px",
                 marginTop: 1,
-                marginBottom: 1,
+                marginBottom: 3,
                 marginLeft: 1,
               }}
             >
@@ -167,70 +222,12 @@ const LayoutGenerator = ({ children }) => {
               </Box>
 
               <Divider />
-              <List>
-                {["Responsivas"].map((text, index) => (
-                  <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                    <ListItemButton
-                      onClick={() => {
-                        navigate("/dash");
-                      }}
-                      sx={{
-                        minHeight: 48,
-                        justifyContent: open ? "initial" : "center",
-                        px: 2.5,
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: 0,
-                          mr: open ? 3 : "auto",
-                          justifyContent: "center",
-                        }}
-                      >
-                        {index === 0 ? <LeaderboardRoundedIcon /> : null}
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={text}
-                        sx={{ opacity: open ? 1 : 0 }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
+              
+                <AdminList
+                  
+                />
+              
 
-              <Divider />
-              <List>
-                {["Usuarios", "Grupos"].map((text, index) => (
-                  <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                    <ListItemButton
-                      onClick={() => handleClickUsersGroups(index)}
-                      sx={{
-                        minHeight: 48,
-                        justifyContent: open ? "initial" : "center",
-                        px: 2.5,
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: 0,
-                          mr: open ? 3 : "auto",
-                          justifyContent: "center",
-                        }}
-                      >
-                        {index % 2 === 0 ? (
-                          <AccountBoxRoundedIcon />
-                        ) : (
-                          <GroupsRoundedIcon />
-                        )}
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={text}
-                        sx={{ opacity: open ? 1 : 0 }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
               <Divider />
 
               <Divider />
@@ -266,4 +263,4 @@ const LayoutGenerator = ({ children }) => {
   );
 };
 
-export default LayoutGenerator;
+export default SideBar;

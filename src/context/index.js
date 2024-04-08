@@ -37,7 +37,7 @@ function TodoProvider({ children }) {
   const [openModalCreateVehicle, setOpenModalCreateVehicle] = React.useState(false);
   const [openModalEditVehicle, setOpenModalEditVehicle] = React.useState(false);
   const [openModalDeleteVehicle, setOpenModalDeleteVehicle] = React.useState(false);
-  const [openSideBar , setOpenSideBar] = React.useState(false);
+  const [openSideBar , setOpenSideBar] = React.useState(true);
   const [openModalText, setOpenModalText] = React.useState(false);
   const [openModalCreateReport, setOpenModalCreateReport] = React.useState(false);
   const [openModalEditReport, setOpenModalEditReport] = React.useState(false);
