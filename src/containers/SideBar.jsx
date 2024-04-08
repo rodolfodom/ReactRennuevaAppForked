@@ -101,60 +101,7 @@ const SideBar = ({ children }) => {
     
   };
 
-  const handleClickUsersGroups = (index) => {
-    console.log("index");
-    console.log(index);
-    if (index == 0) {
-      navigate("/users");
-    } else if (index == 1) {
-      navigate("/groups");
-    }
-  };
-  const handleClickResidueGeneratorDonor = (index) => {
-    console.log("index");
-    console.log(index);
-    if (index == 0) {
-      navigate('/residue');
-    } else if (index == 1) {
-      navigate('/generator');
-    } else if (index == 2) {
-      navigate('/company');
-    } else if (index == 3) {
-      navigate('/donor');
-    } else if (index == 4) {
-      navigate('/donor-recolection');
-    }
 
-  }
-  const handleClickCCDriverCarrier = (index) => {
-    console.log("index");
-    console.log(index);
-    if (index == 0) {
-      navigate('/recycling-center');
-    } else if (index == 1) {
-      navigate('/collection-center');
-    } else if (index == 2) {
-      navigate('/driver');
-    } else if (index == 3) {
-      navigate('/vehicle');
-    }
-    else if (index == 4) {
-      navigate('/carrier');
-    }
-
-  }
-  const handleClickResponsivas = (index) => {
-    console.log("index");
-    console.log(index);
-    if (index == 0) {
-      navigate('/report');
-    } else if (index == 1) {
-      navigate('/tracking');
-    }
-    else if (index == 2) {
-      navigate('/report-history');
-    }
-  }
 
   const user = {
     name: "Usuario Ejemplo",
@@ -164,7 +111,7 @@ const SideBar = ({ children }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div style={{ width: "100%", backgroundColor: "#f1f1f1" }}>
+      <div style={{ width: "100%", backgroundColor: "#f1f1f1" , overflowX : "hidden", overflowY : "hidden" }}>
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           
@@ -179,6 +126,7 @@ const SideBar = ({ children }) => {
                 marginTop: 1,
                 marginBottom: 3,
                 marginLeft: 1,
+                overflow: "hidden",
               }}
             >
               <Box

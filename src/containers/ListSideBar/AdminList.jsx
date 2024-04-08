@@ -43,6 +43,21 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 const AdminList = () => {
   const navigate = useNavigate();
   const { openSideBar, setOpenSideBar } = React.useContext(TodoContext);
+  const [expanded, setExpanded] = React.useState(false); // Estado para controlar la expansión de los Accordion
+  const [expanded2, setExpanded2] = React.useState(false); // Estado para controlar la expansión de los Accordion
+  const [expanded3, setExpanded3] = React.useState(false); // Estado para controlar la expansión de los Accordion
+  const [expanded4, setExpanded4] = React.useState(false); // Estado para controlar la expansión de los Accordion
+  const [expanded5, setExpanded5] = React.useState(false); // Estado para controlar la expansión de los Accordion
+  React.useEffect(() => {
+    if (openSideBar === false) {
+      setExpanded(false);
+      setExpanded2(false);
+      setExpanded3(false);
+      setExpanded4(false);
+      setExpanded5(false);
+
+    }
+  }, [openSideBar]);
 
 // Definir arrays con iconos específicos
 const items_residue = [{ label: "Residuo", icon: <DeleteIcon /> }];
@@ -91,6 +106,7 @@ const items_entities = [
       "Centro Recoleccion": "/collection-center",
       Compañia: "/company",
       Vehiculo: "/vehicle",
+      Dashboard: "/dash",
     };
 
     const path = routeMap[label];
@@ -103,8 +119,18 @@ const items_entities = [
     }
   };
 
+    // Método para manejar el cambio de expansión de los Accordion
+    const handleAccordionChange = (mode) => {
+      if (mode === 1) setExpanded(!expanded);
+      if (mode === 2) setExpanded2(!expanded2);
+      if (mode === 3) setExpanded3(!expanded3);
+      if (mode === 4) setExpanded4(!expanded4);
+      if (mode === 5) setExpanded5(!expanded5);
+      
+    };
+
   return (
-    <div className="sidebar">
+    <div className="sidebar" style={{ maxHeight: "60%", minHeight : "60%",overflowY: "auto" , overflowX : "hidden" }}>
       <ListItem key={1} disablePadding sx={{ display: "block" }}>
         <ListItemButton
           sx={{
@@ -112,6 +138,7 @@ const items_entities = [
             justifyContent: openSideBar ? "initial" : "center",
             px: 2.5,
           }}
+          onClick={() => doNavigate("Dashboard")}
         >
           <ListItemIcon
             sx={{
@@ -131,7 +158,7 @@ const items_entities = [
 
       <Divider></Divider>
 
-      <Accordion >
+      <Accordion  expanded={expanded} onChange={ () => handleAccordionChange(1)}>
         <AccordionSummary
           expandIcon={openSideBar ? <ExpandMoreIcon /> : null}
           aria-controls="panel1a-content"
@@ -154,7 +181,7 @@ const items_entities = [
         </AccordionDetails>
       </Accordion>
 
-      <Accordion>
+      <Accordion expanded={expanded2} onChange={ () => handleAccordionChange(2)}>
         <AccordionSummary
           expandIcon={openSideBar ? <ExpandMoreIcon /> : null}
           aria-controls="panel2a-content"
@@ -177,7 +204,7 @@ const items_entities = [
         </AccordionDetails>
       </Accordion>
 
-      <Accordion>
+      <Accordion expanded={expanded3} onChange={ () => handleAccordionChange(3)}>
         <AccordionSummary
           expandIcon={openSideBar ? <ExpandMoreIcon /> : null}
           aria-controls="panel3a-content"
@@ -199,7 +226,7 @@ const items_entities = [
           </List>
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      <Accordion expanded={expanded4} onChange={ () => handleAccordionChange(4)}>
         <AccordionSummary
           expandIcon={openSideBar ? <ExpandMoreIcon /> : null}
           aria-controls="panel4a-content"
@@ -221,7 +248,7 @@ const items_entities = [
           </List>
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      <Accordion expanded={expanded5} onChange={ () => handleAccordionChange(5)}>
         <AccordionSummary
           expandIcon={openSideBar ? <ExpandMoreIcon /> : null}
           aria-controls="panel5a-content"
