@@ -4,6 +4,7 @@ import '../styles/user/CreateUser.css';
 import { TodoContext } from '../context/index.js';
 import axios from 'axios';
 import { Modal, TextField, Button, Select, MenuItem, Box, FormControl, InputLabel } from '@mui/material';
+import PhoneExtensionSelect from '../components/PhoneExtensionSelect.jsx';
 import Title from '../components/Title';
 
 function ModalDonor({ children, mode }) {
@@ -30,6 +31,9 @@ function ModalDonor({ children, mode }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [old_user, setOldUser] = useState("");
     const [razonSocial, setRazonSocial] = useState("");
+    const [phoneExtension, setPhoneExtension] = useState("");
+    const [id, setId] = useState(null);
+    
 
     const { setUpdateDonorInfo, openModalText, setTextOpenModalText, setOpenModalText, openModalCreateDonor, setOpenModalCreateDonor, openModalEditDonor, openModalDeleteDonor, setOpenModalEditDonor, setOpenModalDeleteDonor } = useContext(TodoContext);
     const closeModal = () => {
@@ -72,10 +76,11 @@ function ModalDonor({ children, mode }) {
                 address_lat: 0,
                 address_lng: 0,
                 razon_social: e.target.razon_social.value,
+                phone_extention: phoneExtension
             };
 
             axios
-                .post(`${process.env.REACT_APP_API_URL}/create-django-user/`, nuevoDato)
+                .post(`${process.env.REACT_APP_API_URL}/create-donor/`, nuevoDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -98,6 +103,7 @@ function ModalDonor({ children, mode }) {
             rfcValue = 'XAXX010101000'; // Aquí puedes poner el RFC por defecto que desees
         }
             const editarDato = {
+                id: id,
                 user: e.target.email.value,
                 //password: e.target.password.value,
                 email: e.target.email.value,
@@ -116,14 +122,15 @@ function ModalDonor({ children, mode }) {
                 address_lat: 0,
                 address_lng: 0,
                 razon_social: e.target.razon_social.value,
-
+                phone_extention: phoneExtension,
                 antiguoUser: old_user,
             };
             console.log("##SDAFSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSDFSDFSDF")
             console.log(editarDato)
 
+            
             axios
-                .put(`${process.env.REACT_APP_API_URL}/update-django-user/`, editarDato)
+                .post(`${process.env.REACT_APP_API_URL}/update-donor/`, editarDato)
                 .then(response => {
                     const data = response.data;
                     console.log(data)
@@ -137,6 +144,7 @@ function ModalDonor({ children, mode }) {
                 .catch(error => {
                     console.error(error);
                 })
+                
 
         }
         if (mode === "BORRAR") {
@@ -194,7 +202,7 @@ function ModalDonor({ children, mode }) {
 
 
     useEffect(() => {
-        const fetchUsers = axios.post(`${process.env.REACT_APP_API_URL}/get-all-users/`, { group: "Donador" });
+        const fetchUsers = axios.get(`${process.env.REACT_APP_API_URL}/get-all-donors/`);
         const fetchCompanies = axios.get(`${process.env.REACT_APP_API_URL}/get-all-companies/`);
 
         Promise.all([fetchUsers,fetchCompanies])
@@ -217,7 +225,8 @@ function ModalDonor({ children, mode }) {
         console.log(selectedOption)
         // Buscar el dato seleccionado en el arreglo de datos
         const datoEncontrado = users.find((users) => users.user === selectedOption);
-        console.log(datoEncontrado)
+        console.log("######################DatoEncontrado##################################")
+        console.log(datoEncontrado) 
         setUser(datoEncontrado.user);
         setPassword(datoEncontrado.password);
         setEmail(datoEncontrado.email);
@@ -234,9 +243,9 @@ function ModalDonor({ children, mode }) {
         setPostalCode(datoEncontrado.address_postal_code);
         setAddressNumInt(datoEncontrado.address_num_int);
         setOldUser(selectedOption);
+        setPhoneExtension(datoEncontrado.phone_extention);
+        setId(datoEncontrado.id_rennueva)
         setRazonSocial(datoEncontrado.razon_social);
-
-
 
     }
 
@@ -376,10 +385,7 @@ function ModalDonor({ children, mode }) {
                         }
 
                         <FormControl fullWidth mt={2} mb={2}>
-
-
-
-
+                            <PhoneExtensionSelect value={phoneExtension} setValue={setPhoneExtension} />
                             <TextField
                                 label="Celular"
                                 name="phone"
@@ -474,8 +480,6 @@ function ModalDonor({ children, mode }) {
                     <Button type="submit" variant="contained" fullWidth>{mode}</Button>
                 </form>
             </Box>
-
-
         </Modal>,
 
         document.getElementById('modal')

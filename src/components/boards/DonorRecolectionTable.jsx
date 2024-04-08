@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Edit } from '@mui/icons-material';
 import axios from "axios";
 import {
   Paper,
@@ -9,14 +10,18 @@ import {
   TableHead,
   TableRow,
   TablePagination,
+  Button
 } from "@mui/material";
 import { TodoContext } from "../../context";
+import EditRecolectionModal from '../boards/EditRecolectionModal';
 
 const DonorRecolectionTable = () => {
   const [clientes, setClientes] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const { updateDonorInfo, setUpdateDonorInfo } = useContext(TodoContext);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [recolectionToEdit, setRecolectionToEdit] = useState(null);
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/get-all-donors-recollection/`)
@@ -39,6 +44,7 @@ const DonorRecolectionTable = () => {
   };
 
   return (
+    <>
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer sx={{ maxHeight: 300, minHeight: 300 }}>
         <Table size="small" stickyHeader>
@@ -55,6 +61,7 @@ const DonorRecolectionTable = () => {
               <TableCell>Codigo Postal</TableCell>
               <TableCell>Latitud</TableCell>
               <TableCell>Longitud</TableCell>
+              <TableCell>Editar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -73,6 +80,16 @@ const DonorRecolectionTable = () => {
                   <TableCell>{orden.codigo_postal}</TableCell>
                   <TableCell>{orden.latitud}</TableCell>
                   <TableCell>{orden.longitud}</TableCell>
+                  <TableCell>
+                    <Button 
+                      onClick={() => {
+                        setRecolectionToEdit(orden);
+                        setOpenEditModal(true);
+                      }}
+                    >
+                      <Edit />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
@@ -88,6 +105,8 @@ const DonorRecolectionTable = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
+    <EditRecolectionModal open={openEditModal} setOpen={setOpenEditModal} recolection={recolectionToEdit}/>
+    </>
   );
 };
 
