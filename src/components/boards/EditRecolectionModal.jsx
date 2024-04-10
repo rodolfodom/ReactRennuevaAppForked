@@ -9,22 +9,22 @@ import { useState } from "react";
 
 const style = {
     position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          bgcolor: "background.paper",
-          boxShadow: 24,
-          p: 4,
-          borderRadius: 2,
-        }
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2,
+}
 
 export default function EditRecolectionModal({ open, setOpen, recolection, setMessage, setOpenMessageModal }) {
     const [isDateCorrect, setIsDateCorrect] = useState(false)
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(!isDateCorrect) return
+        if (!isDateCorrect) return
         console.log(recolection);
         console.log(e.target.date.value);
         const reformattedDate = e.target.date.value.split('/').reverse().join('-')
@@ -46,16 +46,21 @@ export default function EditRecolectionModal({ open, setOpen, recolection, setMe
                 setMessage('Ha ocurrido un error al actualizar la fecha de recolección')
                 setOpenMessageModal(true)
             })
-        }
-    
+    }
+
     return (createPortal(
         <Modal
             open={open}
             onClose={() => setOpen(false)}
-            
 
         >
             <Box sx={style}>
+                <Button
+                    onClick={() => setOpen(false)}
+                    sx={{ position: "absolute", right: 2, top: 2 }}
+                >
+                    &times;
+                </Button>
                 <Title>Editar Recolección</Title>
                 <form onSubmit={
                     handleSubmit
@@ -63,32 +68,32 @@ export default function EditRecolectionModal({ open, setOpen, recolection, setMe
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                        disablePast 
-                        format="DD/MM/YYYY"
-                        onAccept={(date) => {
-                            setIsDateCorrect(true)
-                        }}
-                        onError={(reason, value) => {
-                            if(reason === null){
+                            disablePast
+                            format="DD/MM/YYYY"
+                            onAccept={(date) => {
                                 setIsDateCorrect(true)
-                            }else{
-                                setIsDateCorrect(false)
-                            }
-                        }}    
-                        slotProps={{
-                            field: {
-                                margin: 'dense',
-                                fullWidth: 'true',
-                                required: 'true',
-                                name: 'date',
-                            },
-                            textField:{
-                                label: 'Fecha de recolección',
-                                name: 'date',
-                            }
-                        }}
+                            }}
+                            onError={(reason, value) => {
+                                if (reason === null) {
+                                    setIsDateCorrect(true)
+                                } else {
+                                    setIsDateCorrect(false)
+                                }
+                            }}
+                            slotProps={{
+                                field: {
+                                    margin: 'dense',
+                                    fullWidth: 'true',
+                                    required: 'true',
+                                    name: 'date',
+                                },
+                                textField: {
+                                    label: 'Fecha de recolección',
+                                    name: 'date',
+                                }
+                            }}
                         />
-                    </LocalizationProvider> 
+                    </LocalizationProvider>
                     <Button fullWidth color="success" variant="contained" type="submit" disabled={!isDateCorrect}>Guardar cambios</Button>
                 </form>
             </Box>
