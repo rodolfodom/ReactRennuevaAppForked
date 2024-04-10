@@ -5,6 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from "axios";
+import { useState } from "react";
 
 const style = {
     position: 'absolute',
@@ -19,9 +20,13 @@ const style = {
 };
 
 export default function EditRecolectionModal({ open, setOpen, recolection, setMessage, setOpenMessageModal }) {
+    const [isDateCorrect, setIsDateCorrect] = useState(false)
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(!isDateCorrect) return
         console.log(recolection);
+        console.log(e.target.date.value);
         const reformattedDate = e.target.date.value.split('/').reverse().join('-')
         const data = {
             user: recolection.donador,
@@ -57,8 +62,19 @@ export default function EditRecolectionModal({ open, setOpen, recolection, setMe
                 }>
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker 
-                        format="DD/MM/YYYY"    
+                        <DatePicker
+                        disablePast 
+                        format="DD/MM/YYYY"
+                        onAccept={(date) => {
+                            setIsDateCorrect(true)
+                        }}
+                        onError={(reason, value) => {
+                            if(reason === null){
+                                setIsDateCorrect(true)
+                            }else{
+                                setIsDateCorrect(false)
+                            }
+                        }}    
                         slotProps={{
                             field: {
                                 margin: 'dense',
@@ -73,7 +89,7 @@ export default function EditRecolectionModal({ open, setOpen, recolection, setMe
                         }}
                         />
                     </LocalizationProvider>
-                    <Button fullWidth color="success" variant="contained" type="submit" >Guardar cambios</Button>
+                    <Button fullWidth color="success" variant="contained" type="submit" disabled={!isDateCorrect}>Guardar cambios</Button>
                 </form>
             </Box>
 
