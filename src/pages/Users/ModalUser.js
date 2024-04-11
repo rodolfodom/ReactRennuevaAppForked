@@ -9,6 +9,7 @@ import Title from '../../components/Title';
 import { IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Group } from '@mui/icons-material';
 
 
 
@@ -35,9 +36,8 @@ function ModalUser({ children, mode }) {
   const [address_num_int, setAddressNumInt] = useState("");
   const [old_user, setOldUser] = useState("")
   const [razon_social, setRazonSocial] = useState("")
-
-
-
+  const [center, setCenter] = useState("")
+  const [centers, setCenters] = useState([])
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -58,6 +58,25 @@ function ModalUser({ children, mode }) {
       setOpenModalDelete(false);
     }
   };
+
+  const handleGroupChange = (event) => {
+    const value = event.target.value;
+    if (value === "Centro") {
+      axios.get(`${process.env.REACT_APP_API_URL}/get-all-collection-center/`)
+        .then(response => {
+          console.log(response.data)
+          setCenters(response.data);
+        })
+        .catch(error => {
+          console.error("######### ERROR AL TRAER CENTROS DE RECOLECCION#########");
+          console.error(error);
+        });
+    } else {
+      setCenter("")
+      setCenters([])
+    }
+
+  }
 
 
   const handleSubmit = (e) => {
@@ -228,6 +247,28 @@ function ModalUser({ children, mode }) {
       });
   }, []);
 
+  useEffect(() => {
+    if (center === "") {
+      setState("")
+      setCity("")
+      setLocality("")
+      setStreet("")
+      setAddressNumInt("")
+      setPostalCode("")
+    } else {
+      setState(center.AddressState)
+      setCity(center.AddressCity)
+      setLocality(center.AddressLocality)
+      setStreet(center.AddressStreet)
+      setAddressNumInt(center.AddressNumInt)
+      setPostalCode(center.AddressPostalCode)
+    }
+    //console.log("###################### CENTER FETCHED ##################################")
+    //console.log(center)
+
+  }, [center])
+
+
   const handleSelectChange = (event) => {
     const selectedOption = event.target.value; // Obtener la opción seleccionada
     console.log(selectedOption)
@@ -315,8 +356,7 @@ function ModalUser({ children, mode }) {
 
                   }}
                   required
-                  //value={user}
-                  w
+                //value={user}
                 >
                   {users.map((name, index) => (
                     <MenuItem key={index} value={name.user}>{name.user}</MenuItem>
@@ -424,33 +464,60 @@ function ModalUser({ children, mode }) {
                 id="rol-select"
                 required
                 value={group}
-                onChange={(e) => handleInputChange(e, setGroup, mode)}
+                onChange={(e) => {
+                  handleInputChange(e, setGroup, mode)
+                  handleGroupChange(e)
+                }}
               >
                 {groups.map((name, index) => (
                   <MenuItem key={index} value={name.name}>{name.name}</MenuItem>
                 ))}
               </Select>
-
-
-
-              <TextField
-                label="Celular"
-                name="phone"
-                required
-                fullWidth
-                value={phone}
-                onChange={handlePhoneChange}
-                margin="dense"
-                inputProps={{
-                  // Opcional: usar el tipo "tel" para mejor semántica y compatibilidad móvil
-                  type: "tel",
-                  // maxLength: 10 // Opcional: si quieres forzar la longitud máxima en el HTML
-                }}
-                // Para mostrar un mensaje de error si la longitud es menor a 10
-                error={phone.length > 0 && phone.length < 10}
-                helperText={phone.length > 0 && phone.length < 10 ? "El número debe ser de 10 dígitos" : ""}
-              />
             </FormControl>
+            {
+              group === "Centro"
+              && (
+                <FormControl fullWidth margin='dense'>
+                  <InputLabel id="centro-select-label">Centro de recolección</InputLabel>
+                  <Select
+                    labelId="centro-select-label"
+                    id="centro-select"
+                    required
+                    value={center}
+                    onChange={(e) => handleInputChange(e, setCenter, mode)}
+                  >
+                    {centers.map((option, index) => (
+                      <MenuItem key={index} value={option}>{option.CollectionCenterName}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+
+              )
+
+            }
+
+
+            <TextField
+
+              label="Celular"
+              name="phone"
+              required
+              fullWidth
+              value={phone}
+              onChange={handlePhoneChange}
+              margin="dense"
+              inputProps={{
+
+
+                // Opcional: usar el tipo "tel" para mejor semántica y compatibilidad móvil
+                type: "tel",
+                // maxLength: 10 // Opcional: si quieres forzar la longitud máxima en el HTML
+              }}
+              // Para mostrar un mensaje de error si la longitud es menor a 10
+              error={phone.length > 0 && phone.length < 10}
+              helperText={phone.length > 0 && phone.length < 10 ? "El número debe ser de 10 dígitos" : ""}
+            />
 
 
             <Title>Ubicacion</Title>
@@ -463,6 +530,7 @@ function ModalUser({ children, mode }) {
               onChange={(e) => handleInputChange(e, setState, mode)}
               margin="dense"
               inputProps={{
+                readOnly: group === "Centro",
                 maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
               }}
               error={state.length < 3 && state.length > 50}
@@ -482,7 +550,8 @@ function ModalUser({ children, mode }) {
               onChange={(e) => handleInputChange(e, setCity, mode)}
               margin="dense"
               inputProps={{
-                maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
+                readOnly: group === "Centro",
+                maxLength: 50, // Opcional: si quieres forzar la longitud máxima en el HTML
               }}
               error={state.length < 3 && city.length > 50}
               helperText={
@@ -492,6 +561,7 @@ function ModalUser({ children, mode }) {
               }
             />
             <TextField
+
               label="Colonia"
               name="locality"
               required
@@ -500,6 +570,7 @@ function ModalUser({ children, mode }) {
               onChange={(e) => handleInputChange(e, setLocality, mode)}
               margin="dense"
               inputProps={{
+                readOnly: group === "Centro",
                 maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
               }}
               error={state.length < 3 && locality.length > 50}
@@ -518,6 +589,7 @@ function ModalUser({ children, mode }) {
               onChange={(e) => handleInputChange(e, setStreet, mode)}
               margin="dense"
               inputProps={{
+                readOnly: group === "Centro",
                 maxLength: 50 // Opcional: si quieres forzar la longitud máxima en el HTML
               }}
               error={state.length < 3 && street.length > 50}
@@ -536,14 +608,13 @@ function ModalUser({ children, mode }) {
               onChange={(e) => {
                 // Solo permite números
                 if (e.target.value === '' || /^[0-9\b]+$/.test(e.target.value)) {
-               
-
-               
-                    handleInputChange(e, setAddressNumInt, mode);
-                  
+                  handleInputChange(e, setAddressNumInt, mode);
                 }
               }}
-              inputProps={{ maxLength: 5 }}
+              inputProps={{
+                readOnly: group === "Centro",
+                maxLength: 5
+              }}
               margin="dense"
               error={address_num_int.length > 0 && address_num_int.length > 5}
               helperText={
@@ -552,7 +623,6 @@ function ModalUser({ children, mode }) {
                   : ""
               }
             />
-
 
             <TextField
               label="Codigo postal"
@@ -563,11 +633,14 @@ function ModalUser({ children, mode }) {
               onChange={(e) => {
                 // Solo permite números
                 if (e.target.value === '' || /^[0-9\b]+$/.test(e.target.value)) {
-             
+
                   handleInputChange(e, setPostalCode, mode);
                 }
               }}
-              inputProps={{ maxLength: 5 }}
+              inputProps={{
+                readOnly: group === "Centro",
+                maxLength: 5
+              }}
               margin="dense"
               error={postal_code.length > 0 && postal_code.length > 5}
               helperText={
