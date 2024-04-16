@@ -62,7 +62,7 @@ const DonorRecolectionTable = () => {
                 <TableCell>Codigo Postal</TableCell>
                 <TableCell>Latitud</TableCell>
                 <TableCell>Longitud</TableCell>
-                <TableCell>Editar</TableCell>
+                <TableCell>Editar estado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -87,6 +87,7 @@ const DonorRecolectionTable = () => {
                           setRecolectionToEdit(orden);
                           setOpenEditModal(true);
                         }}
+                        color={orden.status === "solicitado" ? "primary" : "error"}
                       >
                         <Edit />
                       </Button>

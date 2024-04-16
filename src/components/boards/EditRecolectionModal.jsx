@@ -5,7 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const style = {
     position: "absolute",
@@ -21,12 +21,21 @@ const style = {
 
 export default function EditRecolectionModal({ open, setOpen, recolection, setMessage, setOpenMessageModal }) {
     const [isDateCorrect, setIsDateCorrect] = useState(false)
+    const [status, setStatus] = useState("")
+
+
+    useEffect(() => {
+        if (recolection != null) {
+            setStatus(recolection.status)
+        }else{
+            setStatus("")
+        }
+    }, [recolection])
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!isDateCorrect) return
-        console.log(recolection);
-        console.log(e.target.date.value);
+        if(status === "pendienteRecoleccion"){
         const reformattedDate = e.target.date.value.split('/').reverse().join('-')
         const data = {
             user: recolection.donador,
@@ -46,6 +55,7 @@ export default function EditRecolectionModal({ open, setOpen, recolection, setMe
                 setMessage('Ha ocurrido un error al actualizar la fecha de recolección')
                 setOpenMessageModal(true)
             })
+        }
     }
 
     return (createPortal(
@@ -65,36 +75,62 @@ export default function EditRecolectionModal({ open, setOpen, recolection, setMe
                 <form onSubmit={
                     handleSubmit
                 }>
-
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                            disablePast
-                            format="DD/MM/YYYY"
-                            onAccept={(date) => {
-                                setIsDateCorrect(true)
-                            }}
-                            onError={(reason, value) => {
-                                if (reason === null) {
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel id="demo-simple-select-label">Estado</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={status}
+                                label="Estado"
+                                onChange={(e) => {
+                                    
+                                    setStatus(e.target.value)
+                                }}
+                            >
+                                <MenuItem value="solicitado">Solicitada</MenuItem>
+                                <MenuItem value="pendienteRecoleccion">Recolección pendiente</MenuItem>
+                                <MenuItem value="recolectada">Recolectada</MenuItem>
+                            </Select>
+                        </FormControl>
+                        
+                        {status === "pendienteRecoleccion" && (
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                disablePast
+                                format="DD/MM/YYYY"
+                                onAccept={(date) => {
                                     setIsDateCorrect(true)
-                                } else {
-                                    setIsDateCorrect(false)
-                                }
-                            }}
-                            slotProps={{
-                                field: {
-                                    margin: 'dense',
-                                    fullWidth: 'true',
-                                    required: 'true',
-                                    name: 'date',
-                                },
-                                textField: {
-                                    label: 'Fecha de recolección',
-                                    name: 'date',
-                                }
-                            }}
-                        />
-                    </LocalizationProvider>
-                    <Button fullWidth color="success" variant="contained" type="submit" disabled={!isDateCorrect}>Guardar cambios</Button>
+                                }}
+                                onError={(reason, value) => {
+                                    if (reason === null) {
+                                        setIsDateCorrect(true)
+                                    } else {
+                                        setIsDateCorrect(false)
+                                    }
+                                }}
+                                slotProps={{
+                                    field: {
+                                        margin: 'dense',
+                                        fullWidth: 'true',
+                                        required: 'true',
+                                        name: 'date',
+                                    },
+                                    textField: {
+                                        label: 'Fecha de recolección',
+                                        name: 'date',
+                                    }
+                                }}
+                            />
+                        </LocalizationProvider>
+                        )}
+                        {status === "pendienteRecoleccion" && (
+                            <Button fullWidth color="success" variant="contained" type="submit" disabled={!isDateCorrect || !status}>Guardar cambios</Button>
+                        )}
+
+                        {status !== "pendienteRecoleccion" && (
+                            <Button fullWidth color="success" variant="contained" type="submit" disabled={!status}>Guardar cambios</Button>
+                        )}
+                        
                 </form>
             </Box>
 
