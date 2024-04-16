@@ -83,6 +83,7 @@ const DonorRecolectionTable = () => {
                     <TableCell>{orden.longitud}</TableCell>
                     <TableCell>
                       <Button
+                        color={orden.status === 'solicitado' ? 'primary' : 'error'}
                         onClick={() => {
                           setRecolectionToEdit(orden);
                           setOpenEditModal(true);
@@ -106,7 +107,7 @@ const DonorRecolectionTable = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <EditRecolectionModal open={openEditModal} setOpen={setOpenEditModal} recolection={recolectionToEdit} setMessage={setTextOpenModalText} setOpenMessageModal={setOpenModalText}/>
+      <EditRecolectionModal open={openEditModal} setOpen={setOpenEditModal} recolection={recolectionToEdit} setMessage={setTextOpenModalText} setOpenMessageModal={setOpenModalText} update={updateDonorInfo} setUpdate={setUpdateDonorInfo}/>
     </>
   );
 };
