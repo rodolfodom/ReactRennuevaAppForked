@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Edit } from '@mui/icons-material';
+import { Edit } from "@mui/icons-material";
 import {
   Paper,
   Table,
@@ -10,16 +10,23 @@ import {
   TableHead,
   TableRow,
   TablePagination,
-  Button
+  Button,
 } from "@mui/material";
 import { TodoContext } from "../../context";
-import EditRecolectionModal from './EditRecolectionModal';
+import EditRecolectionModal from "./EditRecolectionModal";
+import { IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 const DonorRecolectionTable = () => {
   const [clientes, setClientes] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { updateDonorInfo, setUpdateDonorInfo, setOpenModalText, setTextOpenModalText } = useContext(TodoContext);
+  const {
+    updateDonorInfo,
+    setUpdateDonorInfo,
+    setOpenModalText,
+    setTextOpenModalText,
+  } = useContext(TodoContext);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [recolectionToEdit, setRecolectionToEdit] = useState(null);
 
@@ -27,6 +34,8 @@ const DonorRecolectionTable = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/get-all-donors-recollection/`)
       .then((response) => {
+        console.log("Donor recolection data");
+        console.log(response.data.ordenes);
         setClientes(response.data.ordenes);
         setUpdateDonorInfo(false);
       })
@@ -60,8 +69,7 @@ const DonorRecolectionTable = () => {
                 <TableCell>Colonia</TableCell>
                 <TableCell>Calle</TableCell>
                 <TableCell>Codigo Postal</TableCell>
-                <TableCell>Latitud</TableCell>
-                <TableCell>Longitud</TableCell>
+                <TableCell>Estado</TableCell>
                 <TableCell>Editar</TableCell>
               </TableRow>
             </TableHead>
@@ -79,11 +87,31 @@ const DonorRecolectionTable = () => {
                     <TableCell>{orden.localidad}</TableCell>
                     <TableCell>{orden.calle}</TableCell>
                     <TableCell>{orden.codigo_postal}</TableCell>
-                    <TableCell>{orden.latitud}</TableCell>
-                    <TableCell>{orden.longitud}</TableCell>
+                    <TableCell
+                      bgcolor={
+                        orden.status === "solicitado" ? "primary" : "error"
+                      }
+                      sx={{
+                        borderRadius: "10px", // Adjust the radius to your preference
+                        padding: "1px", // Example of adjusting padding
+                        marginTop: "13px", // Example of adjusting margin
+                        display: "flex", // Center the content horizontally and vertically
+                        justifyContent: "center", // Center the content horizontally
+
+                        alignItems: "center", // Center the content horizontally and vertically
+                        color: "black", // Text color
+
+                        // Add more styles here
+                      }}
+                    >
+                      {orden.status}
+                    </TableCell>
+
                     <TableCell>
                       <Button
-                        color={orden.status === 'solicitado' ? 'primary' : 'error'}
+                        color={
+                          orden.status === "solicitado" ? "primary" : "error"
+                        }
                         onClick={() => {
                           setRecolectionToEdit(orden);
                           setOpenEditModal(true);
@@ -107,7 +135,15 @@ const DonorRecolectionTable = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <EditRecolectionModal open={openEditModal} setOpen={setOpenEditModal} recolection={recolectionToEdit} setMessage={setTextOpenModalText} setOpenMessageModal={setOpenModalText} update={updateDonorInfo} setUpdate={setUpdateDonorInfo}/>
+      <EditRecolectionModal
+        open={openEditModal}
+        setOpen={setOpenEditModal}
+        recolection={recolectionToEdit}
+        setMessage={setTextOpenModalText}
+        setOpenMessageModal={setOpenModalText}
+        update={updateDonorInfo}
+        setUpdate={setUpdateDonorInfo}
+      />
     </>
   );
 };
