@@ -41,8 +41,32 @@ const DonorRecolectionTable = () => {
     setOpen(true);
   }
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = (user, id) => {
     console.log("Borrado confirmado");
+    console.log(user);
+    console.log(id);
+
+    axios
+    .post(`${process.env.REACT_APP_API_URL}/delete-donor-recollection/`, {
+      user: user,
+      id_order: id 
+    })
+    .then((response) => {
+      console.log(response);
+      setOpen(false);
+      setOpenModalText(true);
+      setTextOpenModalText("Donación eliminada correctamente");
+      setUpdateDonorInfo(true);
+
+
+    })
+    .catch((error) => {
+      console.error(error);
+      setOpen(false);
+      setOpenModalText(true);
+      setTextOpenModalText("Error al eliminar la donación");
+    });
+
 
     handleClose();
   };
@@ -106,7 +130,11 @@ const DonorRecolectionTable = () => {
 
                     <TableCell
                       bgcolor={
-                        orden.status === "solicitado" ? "primary" : "error"
+                        orden.status === "solicitado"
+                          ? "#008000"
+                          : orden.status === "pendienteRecoleccion"
+                          ? "#FFA500"
+                          : "#FF0000"
                       }
                       sx={{
                         borderRadius: "10px", // Adjust the radius to your preference
@@ -129,7 +157,7 @@ const DonorRecolectionTable = () => {
                     <TableCell>
                       <Button
                         color={
-                          orden.status === "solicitado" ? "primary" : "error"
+                          orden.status === "solicitado" ? "primary" : "error" 
                         }
                         onClick={() => {
                           setRecolectionToEdit(orden);
@@ -165,7 +193,7 @@ const DonorRecolectionTable = () => {
                         </DialogContent>
                         <DialogActions>
                           <Button onClick={handleClose}>Cancelar</Button>
-                          <Button onClick={handleConfirmDelete} autoFocus>
+                          <Button onClick={ () => handleConfirmDelete(orden.donador, orden.id) } autoFocus>
                             {" "}
                             {/* Aquí no necesitas pasar el ID ya que se maneja a través del estado */}
                             Confirmar

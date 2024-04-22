@@ -67,7 +67,7 @@ function MenuDonorRecolection() {
                     justifyContent: 'center'
                   }}
                 >
-                  <Title>Donadores</Title>
+                 
                   <CUDButtons model="DonorRecolection" />
                   <Title>Ordenes de Recoleccion</Title>
                   <DonorRecolectionTable />
