@@ -16,11 +16,18 @@ import { TodoContext } from "../../context";
 import EditRecolectionModal from "./EditRecolectionModal";
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const DonorRecolectionTable = () => {
   const [clientes, setClientes] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [open, setOpen] = useState(false);
   const {
     updateDonorInfo,
     setUpdateDonorInfo,
@@ -29,6 +36,20 @@ const DonorRecolectionTable = () => {
   } = useContext(TodoContext);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [recolectionToEdit, setRecolectionToEdit] = useState(null);
+
+  const handleClickOpen = (id) => {
+    setOpen(true);
+  }
+
+  const handleConfirmDelete = () => {
+    console.log("Borrado confirmado");
+
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     axios
@@ -64,13 +85,11 @@ const DonorRecolectionTable = () => {
                 <TableCell>Id</TableCell>
                 <TableCell>Donador</TableCell>
                 <TableCell>Fecha</TableCell>
-                <TableCell>Estado</TableCell>
-                <TableCell>Ciudad</TableCell>
-                <TableCell>Colonia</TableCell>
-                <TableCell>Calle</TableCell>
-                <TableCell>Codigo Postal</TableCell>
-                <TableCell>Estado</TableCell>
+                <TableCell>Direccion</TableCell>
+                <TableCell>Peso Estimado</TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell>Editar</TableCell>
+                <TableCell>Eliminar</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -82,11 +101,9 @@ const DonorRecolectionTable = () => {
                     <TableCell>{orden.id}</TableCell>
                     <TableCell>{orden.donador}</TableCell>
                     <TableCell>{orden.fecha}</TableCell>
-                    <TableCell>{orden.estado}</TableCell>
-                    <TableCell>{orden.ciudad}</TableCell>
-                    <TableCell>{orden.localidad}</TableCell>
-                    <TableCell>{orden.calle}</TableCell>
-                    <TableCell>{orden.codigo_postal}</TableCell>
+                    <TableCell>{orden.direccion_completa}</TableCell>
+                    <TableCell>{orden.peso_estimado}</TableCell>
+
                     <TableCell
                       bgcolor={
                         orden.status === "solicitado" ? "primary" : "error"
@@ -97,14 +114,16 @@ const DonorRecolectionTable = () => {
                         marginTop: "13px", // Example of adjusting margin
                         display: "flex", // Center the content horizontally and vertically
                         justifyContent: "center", // Center the content horizontally
-
+                        width: "100px", // Adjust the width to your preference
                         alignItems: "center", // Center the content horizontally and vertically
-                        color: "black", // Text color
+                        color: "white", // Change the text color
 
                         // Add more styles here
                       }}
                     >
-                      {orden.status}
+                      {orden.status === "pendienteRecoleccion"
+                        ? "pendiente"
+                        : orden.status}
                     </TableCell>
 
                     <TableCell>
@@ -119,6 +138,40 @@ const DonorRecolectionTable = () => {
                       >
                         <Edit />
                       </Button>
+                    </TableCell>
+
+                    <TableCell>
+                      <IconButton
+                        aria-label="borrar"
+                        onClick={() => handleClickOpen(11)}
+                      >
+                        {" "}
+                        {/* Suponiendo que el ID del reporte es "1", aquí deberías pasar el ID real según tu lógica */}
+                        <DeleteIcon />
+                      </IconButton>
+                      <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title">
+                          {"¿Estás seguro de querer borrar?"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Esta acción no se puede deshacer.
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}>Cancelar</Button>
+                          <Button onClick={handleConfirmDelete} autoFocus>
+                            {" "}
+                            {/* Aquí no necesitas pasar el ID ya que se maneja a través del estado */}
+                            Confirmar
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                     </TableCell>
                   </TableRow>
                 ))}
