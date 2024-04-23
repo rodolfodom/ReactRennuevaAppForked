@@ -27,6 +27,7 @@ import { MenuMainGenerator } from '../pages/Menus/MenuMainGenerator.js';
 import ResponsiveAppBar from '../containers/LayoutAppBar.jsx';
 import LayoutGenerator from '../containers/LayoutGenerator.jsx';
 import { MenuMyResponsivasGenerator } from '../pages/Menus/MenuMyResponsivasGenerator.js';
+import CentroLayout from '../containers/CentroLayout.jsx';
 
 
 
@@ -60,7 +61,10 @@ function App() {
             <Route path="/report-history" element={<Layout><MenuReportHistory/></Layout>} />
             <Route path="/main-generator" element={<LayoutGenerator><MenuMainGenerator/></LayoutGenerator> } />
             <Route path='/responsivas-generator' element ={<LayoutGenerator><MenuMyResponsivasGenerator/></LayoutGenerator>} />
-
+            <Route path='/centro' element ={<CentroLayout><MenuDonor/></CentroLayout>} />
+           
+            
+            
 
 
             <Route path="*" element={<h1>Not Found 404</h1>} />
