@@ -3,6 +3,9 @@ import React, { useState, useEffect, useContext } from "react";
 import { TodoContext } from '../context/index.js';
 import { OptionButton, ActionButtonOrdersExcel, ImportExcelButton , ActionButtonResponsivaExcel} from '../components/OptionButton';
 import axios from 'axios';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+
 
 const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
     const {
@@ -121,9 +124,38 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       }
     };
     
+    const datoss = [
+      { title: 'User' },
+      { title: 'Group' },
+      { title: 'Carrier' },
+      { title: 'CollectionCenter' },
+      { title: 'Donor' },
+      { title: 'Driver' },
+      { title: 'Generator' },
+      { title: 'RecyclingCenter' },
+      { title: 'Residue' },
+      { title: 'Vehicle' },
+      { title: 'Company' },
+      { title: 'ReportHistory' },
+    ];
+
     
     return (
         <div style={{display :"flex"}}>
+          <div className="create-button" >
+      <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={datoss}
+                    sx={{ width: 300 }}
+                    getOptionLabel={(option) => option.title}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Selecciona el modelo" />
+                    )}
+                  />
+      </div>
+
+
         <div className="create-button">
         {model === 'User' ? (
         <OptionButton setOpenModal={setOpenModalCreate} text="Crear Usuario" color="#28a745"  />
@@ -270,6 +302,10 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
         
       ) : null}
       </div>
+
+      
+
+
         </div>
     );
     }

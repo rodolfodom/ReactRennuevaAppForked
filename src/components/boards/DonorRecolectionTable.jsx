@@ -386,8 +386,7 @@ const DonorRecolectionTable = () => {
                 <TableCell>Donador</TableCell>
                 <TableCell>Fecha Solicitud</TableCell>
                 <TableCell>Direccion</TableCell>
-                <TableCell>Peso Estimado</TableCell>
-                
+                <TableCell>Peso Estimado</TableCell> 
                 <TableCell>Editar</TableCell>
                 <TableCell>Eliminar</TableCell>
                 <TableCell>Status</TableCell>
