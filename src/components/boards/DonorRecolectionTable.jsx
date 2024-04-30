@@ -302,6 +302,7 @@ const rows = [
 
 const DonorRecolectionTable = () => {
   const [clientes, setClientes] = useState([]);
+  const [correoCliente, setCorreoCliente] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
@@ -313,6 +314,7 @@ const DonorRecolectionTable = () => {
   } = useContext(TodoContext);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [recolectionToEdit, setRecolectionToEdit] = useState(null);
+  const [filterClient, setFilterClient] = useState(null);
 
 
   useEffect(() => {
@@ -329,6 +331,23 @@ const DonorRecolectionTable = () => {
         console.error(error);
       });
   }, [updateDonorInfo]);
+
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/get-all-donor-email/`)
+      .then((response) => {
+        console.log("Donor recolection data");
+        console.log(response.data);
+        setCorreoCliente(response.data);
+
+        setUpdateDonorInfo(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [updateDonorInfo]);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -355,16 +374,18 @@ const DonorRecolectionTable = () => {
           <Autocomplete
             disablePortal
             id="combo-box-demo1"
-            options={clientes}
+            options={correoCliente}
             sx={{ width: "100%" }} // Usa el ancho completo del Grid item
-            getOptionLabel={(option) => option.donador}
+            getOptionLabel={(option) => option.email}
             renderInput={(params) => (
               <TextField {...params} label="Filtrar por Donador" />
             )}
             onChange={(event, value) => {
               if (value) {
                 console.log(value);
-                setClientes(clientes.filter((cliente) => cliente.donador === value.donador) );
+                console.log (value.email);
+                setFilterClient(value.email);
+                setClientes(clientes.filter((cliente) => cliente.donador === value.email) );
                 
                   
               } else {
@@ -374,6 +395,7 @@ const DonorRecolectionTable = () => {
                     console.log("Donor recolection data");
                     console.log(response.data.ordenes);
                     setClientes(response.data.ordenes);
+                    setFilterClient(null);
                   })
                   .catch((error) => {
                     console.error(error);
@@ -396,18 +418,46 @@ const DonorRecolectionTable = () => {
             )}
             onChange={(event, value) => {
               if (value) {
+                console.log(value);
+                let status = ""
+                if (value.title === "Solicitado") {
+                  status = "solicitado";
+                  console.log(status);
+                }
+                if (value.title === "Pendiente Recoleccion") {
+                  status = "pendienteRecoleccion";
+                  console.log(status);
+                }
+                if (value.title === "Cancelada") {
+                  status = "cancelada";
+                  console.log(status);
+                }
+
+                let requestData = {
+                  status: status
+              };
+          
+              // Añadir la propiedad cliente solo si no es nulo
+              console.log(filterClient);  
+              if (filterClient !== null) {
+                  requestData.user = filterClient;
+              }
+
                 axios
-                  .get(
-                    `${process.env.REACT_APP_API_URL}/get-all-donors-recollection/?status=${value.title}`
+                  .post(
+                    `${process.env.REACT_APP_API_URL}/get-all-donor-recollection-filter-status/`,
+                    requestData
                   )
                   .then((response) => {
                     console.log("Donor recolection data");
-                    console.log(response.data.ordenes);
-                    setClientes(response.data.ordenes);
+                    console.log(response.data);
+                    setClientes(response.data);
                   })
                   .catch((error) => {
                     console.error(error);
                   });
+
+
               } else {
                 axios
                   .get(`${process.env.REACT_APP_API_URL}/get-all-donors-recollection/`)
