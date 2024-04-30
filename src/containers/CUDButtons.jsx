@@ -12,7 +12,7 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       totalListlUsers,
       openModalCreate, setOpenModalCreate,
       openModalEdit, setOpenModalEdit,
-      openModalDelete, setOpenModalDelete, theme, setTheme, themeStyle,
+      openModalDelete, setOpenModalDelete,
       openModalCreateGroup, setOpenModalCreateGroup,
       openModalEditGroup, setOpenModalEditGroup,
       openModalDeleteGroup, setOpenModalDeleteGroup,
@@ -41,9 +41,6 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       openModalEditVehicle, setOpenModalEditVehicle,
       openModalDeleteVehicle, setOpenModalDeleteVehicle,
       openModalCreateReport, setOpenModalCreateReport,
-      openModalEditReport, setOpenModalEditReport,
-      openModalDeleteReport, setOpenModalDeleteReport,
-
       openModalCreateCompany, setOpenModalCreateCompany,
       openModalEditCompany, setOpenModalEditCompany,
       openModalDeleteCompany, setOpenModalDeleteCompany,
@@ -125,35 +122,15 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
     };
     
     const datoss = [
-      { title: 'User' },
-      { title: 'Group' },
-      { title: 'Carrier' },
-      { title: 'CollectionCenter' },
-      { title: 'Donor' },
-      { title: 'Driver' },
-      { title: 'Generator' },
-      { title: 'RecyclingCenter' },
-      { title: 'Residue' },
-      { title: 'Vehicle' },
-      { title: 'Company' },
-      { title: 'ReportHistory' },
+      { title: 'Solicitado' },
+      { title: 'Pendiente Recoleccion' },
+      { title: 'Cancelada' },
+
     ];
 
     
     return (
         <div style={{display :"flex"}}>
-          <div className="create-button" >
-      <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={datoss}
-                    sx={{ width: 300 }}
-                    getOptionLabel={(option) => option.title}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Selecciona el modelo" />
-                    )}
-                  />
-      </div>
 
 
         <div className="create-button">
@@ -193,13 +170,6 @@ const CUDButtons = ({ handleAdd, handleDelete, handleUpdate, model }) => {
       ) : null}
       {model === 'Company' ? (
         <OptionButton setOpenModal={setOpenModalCreateCompany} text="Crear Compañia" color="#28a745" />
-      ) : null}
-      {model === 'DonorRecolection' ? (
-        <ActionButtonOrdersExcel 
-        text="Exportar a Excel"
-        color="#28a745"
-        
-      />
       ) : null}
       {model === 'ReportHistory' ? (
         <ImportExcelButton text="Importar Generadores Excel" color="blue" onImported={handleDataImported} />

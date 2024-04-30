@@ -27,6 +27,12 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { OptionButton, ActionButtonOrdersExcel} from '../../components/OptionButton';
+
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+
 
 
 function Row(props) {
@@ -35,10 +41,6 @@ function Row(props) {
   const [openCancelModal, setOpenCancelModal] = React.useState(false);
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [recolectionToEdit, setRecolectionToEdit] = React.useState(null);
-
-  const [clientes, setClientes] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const {
     updateDonorInfo,
     setUpdateDonorInfo,
@@ -312,43 +314,6 @@ const DonorRecolectionTable = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [recolectionToEdit, setRecolectionToEdit] = useState(null);
 
-  const handleClickOpen = (id) => {
-    setOpen(true);
-  }
-
-  const handleConfirmDelete = (user, id) => {
-    console.log("Borrado confirmado");
-    console.log(user);
-    console.log(id);
-
-    axios
-    .post(`${process.env.REACT_APP_API_URL}/delete-donor-recollection/`, {
-      user: user,
-      id_order: id 
-    })
-    .then((response) => {
-      console.log(response);
-      setOpen(false);
-      setOpenModalText(true);
-      setTextOpenModalText("Donación eliminada correctamente");
-      setUpdateDonorInfo(true);
-
-
-    })
-    .catch((error) => {
-      console.error(error);
-      setOpen(false);
-      setOpenModalText(true);
-      setTextOpenModalText("Error al eliminar la donación");
-    });
-
-
-    handleClose();
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   useEffect(() => {
     axios
@@ -357,6 +322,7 @@ const DonorRecolectionTable = () => {
         console.log("Donor recolection data");
         console.log(response.data.ordenes);
         setClientes(response.data.ordenes);
+
         setUpdateDonorInfo(false);
       })
       .catch((error) => {
@@ -373,9 +339,97 @@ const DonorRecolectionTable = () => {
     setPage(0);
   };
 
+  const datoss = [
+    { title: 'Solicitado' },
+    { title: 'Pendiente Recoleccion' },
+    { title: 'Cancelada' },
+
+  ];
+
   return (
     <>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      
+      <Grid container spacing={2} justifyContent="center" margin="10px">
+        <Grid item xs={4} sm={6}>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo1"
+            options={clientes}
+            sx={{ width: "100%" }} // Usa el ancho completo del Grid item
+            getOptionLabel={(option) => option.donador}
+            renderInput={(params) => (
+              <TextField {...params} label="Filtrar por Donador" />
+            )}
+            onChange={(event, value) => {
+              if (value) {
+                console.log(value);
+                setClientes(clientes.filter((cliente) => cliente.donador === value.donador) );
+                
+                  
+              } else {
+                axios
+                  .get(`${process.env.REACT_APP_API_URL}/get-all-donors-recollection/`)
+                  .then((response) => {
+                    console.log("Donor recolection data");
+                    console.log(response.data.ordenes);
+                    setClientes(response.data.ordenes);
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
+              }
+            }
+            }
+          />
+          
+        </Grid>
+        <Grid item xs={4} sm={5}>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo2" // Cambia el ID para que sea único
+            options={datoss}
+            sx={{ width: "50%" }} // Usa el ancho completo del Grid item
+            getOptionLabel={(option) => option.title}
+            renderInput={(params) => (
+              <TextField {...params} label="Filtrar por Status" />
+            )}
+            onChange={(event, value) => {
+              if (value) {
+                axios
+                  .get(
+                    `${process.env.REACT_APP_API_URL}/get-all-donors-recollection/?status=${value.title}`
+                  )
+                  .then((response) => {
+                    console.log("Donor recolection data");
+                    console.log(response.data.ordenes);
+                    setClientes(response.data.ordenes);
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
+              } else {
+                axios
+                  .get(`${process.env.REACT_APP_API_URL}/get-all-donors-recollection/`)
+                  .then((response) => {
+                    console.log("Donor recolection data");
+                    console.log(response.data.ordenes);
+                    setClientes(response.data.ordenes);
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
+              }
+            }
+            }
+          />            
+        </Grid>
+        <Grid item xs={4} sm={1}>
+        <ActionButtonOrdersExcel text="Exportar a Excel" color="#28a745" />
+        </Grid>
+      </Grid>
+  
+
         <TableContainer sx={{ maxHeight: 300, minHeight: 300 }}>
           <Table size="small" stickyHeader>
             <TableHead>
